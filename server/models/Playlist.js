@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const Song = require('./Song');
 const dateFormat = require('../utils/dateFormat');
 
-const listSchema = new Schema({
+const playlistSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -25,6 +25,6 @@ const listSchema = new Schema({
   songs: [Song.schema],
 });
 
-const List = model('List', listSchema);
+const Playlist = model('Playlist', playlistSchema);
 
-module.exports = List;
+module.exports = Playlist;
