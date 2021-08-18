@@ -10,7 +10,8 @@ const resolvers = {
         const userData = await User.findOne({ _id: context.user._id })
           .select('-__v -password')
           .populate('thoughts')
-          .populate('friends');
+          .populate('friends')
+          .populate('playlists');
 
         return userData;
       }
@@ -87,7 +88,7 @@ const resolvers = {
     addUser: async (parent, args) => {
       const user = await User.create(args);
       const token = signToken(user);
-// const token = "FAKE_TOKEN";
+
       return { token, user };
     },
     login: async (parent, { email, password }) => {
@@ -104,7 +105,7 @@ const resolvers = {
       }
 
       const token = signToken(user);
-      // const token = "FAKE_TOKEN";
+
       return { token, user };
     },
     addFriend: async (parent, { friendId }, context) => {
@@ -137,21 +138,23 @@ const resolvers = {
     },
     updatePlaylist: async (parent, { playlistId, playlist }, context) => {
       if (context.user) {
+        console.log(playlist);
         const updatedPlaylist = !playlistId ?
-          await Playlist.create({ ...playlist, username: context.user.username }) :
+          await Playlist.create({ ...playlist, songs: [], username: context.user.username }) :
           await Playlist.findOneAndUpdate(
             { _id: playlistId },
             { ...playlist, username: context.user.username },
-            { new: true }
+            { new: true, runValidators: true }
           );
 
-        await User.findByIdAndUpdate(
+        const updatedUser = await User.findByIdAndUpdate(
           { _id: context.user._id },
           { $push: { playlists: updatedPlaylist._id } },
           { new: true }
-        );
+        )
+        .populate('playlists');
 
-        return updatedPlaylist;
+        return updatedUser;
       }
 
       throw new AuthenticationError('You need to be logged in to manage playlists!');
@@ -164,7 +167,8 @@ const resolvers = {
           { _id: context.user._id },
           { $pull: { playlists: playlistId } },
           { new: true }
-        );
+        )
+        .populate('playlists');
 
         return updatedUser;
       }
@@ -211,7 +215,7 @@ const resolvers = {
       const updatedParty = await Party.findOne({ _id: partyId });
       return updatedParty;
     },
-    removeParty: async(parent, { partyId }) => {
+    removeParty: async (parent, { partyId }) => {
       return {};
     }
   }

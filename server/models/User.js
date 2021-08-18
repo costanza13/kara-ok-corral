@@ -27,7 +27,7 @@ const userSchema = new Schema(
     },
     playlists: [{
       type: Schema.Types.ObjectId,
-      ref: 'List'
+      ref: 'Playlist'
     }],
     friends: [{
       type: Schema.Types.ObjectId,

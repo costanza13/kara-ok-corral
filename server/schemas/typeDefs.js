@@ -69,7 +69,6 @@ input SongInfo {
 input PartyInfo {
   name: String!
   username: String!
-  _id: ID
   members: [String]
   playlist: PlaylistInfo
 }
@@ -92,7 +91,7 @@ type Mutation {
   removePlaylist(playlistId: ID!): User
   updateSong(playlistId: ID!, songId: ID, song: SongInfo!): Playlist
   removeSong(playlistId: ID!, songId: ID!): Playlist
-  updateParty(party: PartyInfo!): Party
+  updateParty(partyId: ID, party: PartyInfo!): Party
   removeParty(partyId: ID!): User
 }
 `;
