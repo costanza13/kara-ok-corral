@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const dateFormat = require('../utils/dateFormat');
 
 const performanceSchema = new Schema({
   // set custom id to avoid confusion with parent Song _id

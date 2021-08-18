@@ -80,6 +80,8 @@ type Query {
   stats: SiteStats
   playlist(_id: ID!): Playlist
   party(_id: ID!): Party
+  songs: [Song]
+  song(_id: ID!): Song
 }
 
 type Mutation {
