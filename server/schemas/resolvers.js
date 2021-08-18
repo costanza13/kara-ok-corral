@@ -1,6 +1,7 @@
 // const { AuthenticationError } = require('apollo-server-express');
 const { User, Playlist, Song, Party } = require('../models');
-// const { signToken } = require('../utils/auth');
+const { signToken } = require('../utils/auth');
+
 
 const resolvers = {
   Query: {
@@ -85,8 +86,8 @@ const resolvers = {
   Mutation: {
     addUser: async (parent, args) => {
       const user = await User.create(args);
-      // const token = signToken(user);
-const token = "FAKE_TOKEN";
+      const token = signToken(user);
+// const token = "FAKE_TOKEN";
       return { token, user };
     },
     login: async (parent, { email, password }) => {
@@ -102,8 +103,8 @@ const token = "FAKE_TOKEN";
         throw new AuthenticationError('Incorrect credentials');
       }
 
-      // const token = signToken(user);
-      const token = "FAKE_TOKEN";
+      const token = signToken(user);
+      // const token = "FAKE_TOKEN";
       return { token, user };
     },
     addFriend: async (parent, { friendId }, context) => {
