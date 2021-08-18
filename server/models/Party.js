@@ -15,15 +15,13 @@ const partySchema = new Schema({
     type: String,
     required: true
   },
-  members: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
-  ],
+  members: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   playist: {
     type: Schema.Types.ObjectId,
-    ref: 'List'
+    ref: 'Playlist'
   },
 });
 
