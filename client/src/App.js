@@ -33,7 +33,7 @@ function App() {
           <Nav />
           <Switch>
             <Route exact path="/" component={Dashboard} />
-            {/* <Login></Login> */}
+            <Login></Login>
           </Switch>
         </>
       </Router>
