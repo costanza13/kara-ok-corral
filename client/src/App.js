@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import Dashboard from './pages/Dashboard';
+import Login from './components/Login';
 
 // const httpLink = createHttpLink({
 //   uri: "http://localhost:3001/graphql",
@@ -26,6 +27,7 @@ function App() {
   return (
     <>
      <Dashboard></Dashboard>
+    <Login></Login>
     </>
   );
 }
