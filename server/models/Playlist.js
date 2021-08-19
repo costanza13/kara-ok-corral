@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const Song = require('./Song');
 const dateFormat = require('../utils/dateFormat');
 
 const playlistSchema = new Schema({
@@ -17,16 +16,16 @@ const playlistSchema = new Schema({
     type: String,
     required: true
   },
-  members: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  }],
+  members: [String],
   visibility: {
     type: String,
     enum: ['private', 'public', 'shared'],
     default: 'private'
   },
-  songs: [Song.schema],
+  songs: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Song'
+  }]
 });
 
 const Playlist = model('Playlist', playlistSchema);

@@ -18,28 +18,29 @@ type Playlist {
   name: String
   createdAt: String
   username: String
-  members: [ID]
+  members: [String]
   visibility: String
   songs: [Song]
 }
 
+type PlaylistName {
+  name: String
+}
+
+type UserBasic {
+  username: String
+  playlists: [PlaylistName]
+  playlistCount: Int
+}
+
 type User {
-  _id: ID
   username: String
   email: String
   friendCount: Int
-  playlists: [Playlist]
   friends: [User]
-  parties: [Party]
-}
-
-type Party {
-  _id: ID
-  name: String
-  createdAt: String
-  username: String
-  members: [User]
-  playlist: Playlist
+  playlistCount: Int
+  playlists: [Playlist]
+  partyPlaylists: [Playlist]
 }
 
 type Auth {
@@ -51,7 +52,7 @@ type SiteStats {
   userCount: Int 
   songCount: Int
   performanceCount: Int
-  partyCount: Int
+  playlistCount: Int
 }
 
 input PlaylistInfo {
@@ -65,16 +66,16 @@ input SongInfo {
   artist: String!
   lyricsUrl: String
   videoUrl: String
-  username: String!
 }
 
 type Query {
   me: User
-  users: [User]
+  users: [UserBasic]
   user(username: String!): User
   stats: SiteStats
+  publicPlaylists: [Playlist]
+  partyPlaylists: [Playlist]
   playlist(_id: ID!): Playlist
-  party(_id: ID!): Party
   songs: [Song]
   song(_id: ID!): Song
 }
