@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from "@apollo/client/link/context";
 import Dashboard from './pages/Dashboard';
+import Nav from './components/Nav';
 import Login from './components/Login';
 
 const httpLink = createHttpLink({
@@ -26,12 +27,16 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    
     <ApolloProvider client={client}>
-      <>
-        <Dashboard></Dashboard>
-        <Login></Login>
-      </>
+      <Router>
+        <>
+          <Nav />
+          <Switch>
+            <Route exact path="/" component={Dashboard} />
+            {/* <Login></Login> */}
+          </Switch>
+        </>
+      </Router>
     </ApolloProvider>
   );
 }
