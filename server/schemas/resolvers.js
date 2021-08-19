@@ -84,6 +84,13 @@ const resolvers = {
     }
   },
 
+  User: {
+    partyPlaylists: async ({ username }) => {
+      const playlists = await Playlist.find({ members: { $in: [username] } });
+      return playlists;
+    }
+  },
+
   Mutation: {
     addUser: async (parent, args) => {
       const user = await User.create(args);

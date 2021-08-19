@@ -40,6 +40,7 @@ type User {
   friends: [User]
   playlistCount: Int
   playlists: [Playlist]
+  partyPlaylists: [Playlist]
 }
 
 type Auth {

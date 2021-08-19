@@ -37,7 +37,13 @@ const Dashboard = () => {
         <div className="playlist-list">
           <h5>Your Playlists</h5>
           {user.playlists.map(playlist => {
-            return <Playlist key={playlist._id} playlist={playlist}></Playlist>
+            return <Playlist key={playlist._id} playlistId={playlist._id}></Playlist>
+          })}
+        </div>
+        <div className="playlist-list">
+          <h5>Party Playlists</h5>
+          {user.partyPlaylists.map(playlist => {
+            return <Playlist key={playlist._id} playlistId={playlist._id}></Playlist>
           })}
         </div>
       </div>
