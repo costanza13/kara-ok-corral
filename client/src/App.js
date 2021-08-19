@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import Dashboard from './pages/Dashboard';
 
 // const httpLink = createHttpLink({
 //   uri: "http://localhost:3001/graphql",
@@ -24,7 +25,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@ap
 function App() {
   return (
     <>
-     
+     <Dashboard></Dashboard>
     </>
   );
 }
