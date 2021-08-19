@@ -11,7 +11,8 @@ const resolvers = {
           .select('-__v -password')
           .populate('thoughts')
           .populate('friends')
-          .populate('playlists');
+          .populate('playlists')
+          .populate('playlists.playlist.members');
 
         return userData;
       }
@@ -35,36 +36,11 @@ const resolvers = {
         userCount: 34,
         songCount: 287,
         performanceCount: 19,
-        partyCount: 8
+        playlistCount: 8
       };
     },
     playlist: async (parent, { _id }) => {
       return Playlist.findOne({ _id });
-    },
-    party: async (parent, { _id }) => {
-      return {
-        name: "Pool Party!",
-        username: "costanza",
-        createdAt: '2021-08-17 00:17:48',
-        members: [],
-        playlist: {
-          name: 'A Playlist',
-          username: 'costanza',
-          createdAt: '2021-08-17 00:17:48',
-          visibility: 'private',
-          songs: [
-            {
-              _id: 123456,
-              title: 'Roxanne',
-              artist: 'The Police',
-              lyricsUrl: 'https://genius.com/The-police-roxanne-lyrics',
-              videoUrl: 'https://www.youtube.com/watch?v=RKACuaeXmQ0',
-              createdAt: '2021-08-17 00:17:48',
-              username: "costanza"
-            }
-          ]
-        }
-      };
     },
     songs: async () => {
       const songs = await Song.find();
