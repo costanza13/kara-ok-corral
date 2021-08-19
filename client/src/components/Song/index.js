@@ -24,8 +24,8 @@ const Song = () => {
          <div className="song-display">
             <h6>Tu Me Dejaste de Querer</h6>
             <p>C. Tangana</p>
-            <a href="https://genius.com/C-tangana-la-hungara-and-nino-de-elche-tu-me-dejaste-de-querer-lyrics" target="_blank" rel="noreferrer">lyrics</a>
-            <a href="https://www.youtube.com/watch?v=ET5DAb4Bri0" target="_blank" rel="noreferrer">youtube</a>
+            <p><a href="https://genius.com/C-tangana-la-hungara-and-nino-de-elche-tu-me-dejaste-de-querer-lyrics" target="_blank" rel="noreferrer">lyrics</a>{' - '}
+            <a href="https://www.youtube.com/watch?v=ET5DAb4Bri0" target="_blank" rel="noreferrer">youtube</a></p>
             <button className="btn btn-primary edit-song">edit</button>
             <button className="btn btn-primary delete-song">delete</button>
          </div>
