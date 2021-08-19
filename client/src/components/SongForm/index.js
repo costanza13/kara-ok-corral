@@ -1,33 +1,25 @@
 import React from 'react';
-import Form from 'react-bootstrap/Form';
+
 
 const SongForm = () => {
    return (
-     <Form>
-       <Form.Group className="mb-3" controlId="songTitle">
-         <Form.Label>Song Title</Form.Label>
-         <Form.Control type="text" placeholder="song title" />
-       </Form.Group>
-
-       <Form.Group className="mb-3" controlId="songArtist">
-         <Form.Label>Artist</Form.Label>
-         <Form.Control type="text" placeholder="artist" />
-       </Form.Group>
-
-       <Form.Group className="mb-3" controlId="songArtist">
-         <Form.Label>Lyrics</Form.Label>
-         <Form.Control type="text" placeholder="link to lyrics" />
-       </Form.Group>
-
-       <Form.Group className="mb-3" controlId="songArtist">
-         <Form.Label>Video</Form.Label>
-         <Form.Control type="text" placeholder="link to youtube" />
-       </Form.Group>
-
-       <Button variant="primary" type="submit">
-         add song!
-       </Button>
-     </Form>
+      <div>
+         <form>
+            <div className="mb-3">
+               <input type="text" className="form-control" id="songTitle" placeholder="song title"></input>
+            </div>
+            <div className="mb-3">
+               <input type="text" className="form-control" id="songArtist" placeholder="artist"></input>
+            </div>
+            <div className="mb-3">
+               <input type="url" className="form-control" id="lyrics" placeholder="link to lyrics"></input>
+            </div>
+            <div className="mb-3">
+               <input type="url" className="form-control" id="youtube" placeholder="link to youtube"></input>
+            </div>
+            <button type="submit" class="btn btn-primary">add song</button>
+         </form>
+      </div>
    );
 }
 
