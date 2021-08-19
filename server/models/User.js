@@ -32,10 +32,6 @@ const userSchema = new Schema(
     friends: [{
       type: Schema.Types.ObjectId,
       ref: 'User'
-    }],
-    parties: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Party'
     }]
   },
   {
@@ -62,6 +58,10 @@ userSchema.methods.isCorrectPassword = async function (password) {
 
 userSchema.virtual('friendCount').get(function () {
   return this.friends.length;
+});
+
+userSchema.virtual('playlistCount').get(function () {
+  return this.playlists.length;
 });
 
 const User = model('User', userSchema);

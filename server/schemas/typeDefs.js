@@ -13,28 +13,33 @@ type Song {
   username: String
 }
 
-type UserBasic {
-  _id: ID
-  username: String
-}
-
 type Playlist {
   _id: ID
   name: String
   createdAt: String
   username: String
-  members: [UserBasic]
+  members: [String]
   visibility: String
   songs: [Song]
 }
 
+type PlaylistName {
+  name: String
+}
+
+type UserBasic {
+  username: String
+  playlists: [PlaylistName]
+  playlistCount: Int
+}
+
 type User {
-  _id: ID
   username: String
   email: String
   friendCount: Int
-  playlists: [Playlist]
   friends: [User]
+  playlistCount: Int
+  playlists: [Playlist]
 }
 
 type Auth {
@@ -60,14 +65,15 @@ input SongInfo {
   artist: String!
   lyricsUrl: String
   videoUrl: String
-  username: String!
 }
 
 type Query {
   me: User
-  users: [User]
+  users: [UserBasic]
   user(username: String!): User
   stats: SiteStats
+  publicPlaylists: [Playlist]
+  partyPlaylists: [Playlist]
   playlist(_id: ID!): Playlist
   songs: [Song]
   song(_id: ID!): Song

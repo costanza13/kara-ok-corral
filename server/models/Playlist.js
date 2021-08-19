@@ -17,10 +17,7 @@ const playlistSchema = new Schema({
     type: String,
     required: true
   },
-  members: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  }],
+  members: [String],
   visibility: {
     type: String,
     enum: ['private', 'public', 'shared'],
