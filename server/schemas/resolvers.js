@@ -131,6 +131,14 @@ const resolvers = {
     updatePlaylist: async (parent, { playlistId, playlist }, context) => {
       if (context.user) {
         console.log(playlist);
+
+        // turn array of members' usernames into array of user _ids
+        if (playlist.members && playlist.members.length > 0) {
+          const members = await User.find({ username: [...playlist.members] }, '_id');
+          playlist.members = members.map(member => member._id);
+          console.log(members);
+        }
+
         const updatedPlaylist = !playlistId
           ? await Playlist.create({ ...playlist, songs: [], username: context.user.username })
           : await Playlist.findOneAndUpdate(
@@ -178,7 +186,7 @@ const resolvers = {
           );
 
         // if this song wasn't already in the list (this is an add, not an update), push it onto the list
-        const updatedPlaylist = 
+        const updatedPlaylist =
           await Playlist.findOneAndUpdate(
             { _id: playlistId },
             { $addToSet: { songs: updatedSong } },
@@ -208,13 +216,6 @@ const resolvers = {
       }
 
       throw new AuthenticationError('You need to be logged in to manage playlists!');
-    },
-    updateParty: async (parent, { partyId, party }) => {
-      const updatedParty = await Party.findOne({ _id: partyId });
-      return updatedParty;
-    },
-    removeParty: async (parent, { partyId }) => {
-      return {};
     }
   }
 };

@@ -18,6 +18,7 @@ type Playlist {
   name: String
   createdAt: String
   username: String
+  members: [ID]
   visibility: String
   songs: [Song]
 }
@@ -56,6 +57,7 @@ type SiteStats {
 input PlaylistInfo {
   name: String!
   visibility: String!
+  members: [String]
 }
 
 input SongInfo {
@@ -64,13 +66,6 @@ input SongInfo {
   lyricsUrl: String
   videoUrl: String
   username: String!
-}
-
-input PartyInfo {
-  name: String!
-  username: String!
-  members: [String]
-  playlist: PlaylistInfo
 }
 
 type Query {
@@ -93,8 +88,6 @@ type Mutation {
   removePlaylist(playlistId: ID!): User
   updateSong(playlistId: ID!, songId: ID, song: SongInfo!): Playlist
   removeSong(playlistId: ID!, songId: ID!): Playlist
-  updateParty(partyId: ID, party: PartyInfo!): Party
-  removeParty(partyId: ID!): User
 }
 `;
 
