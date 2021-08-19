@@ -23,7 +23,9 @@ import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@ap
 
 function App() {
   return (
-    <></>
+    <>
+     
+    </>
   );
 }
 
