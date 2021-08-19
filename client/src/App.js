@@ -4,6 +4,7 @@ import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@ap
 import { setContext } from "@apollo/client/link/context";
 import Dashboard from './pages/Dashboard';
 import Login from './components/Login';
+import Signup from './components/SignupForm';
 
 const httpLink = createHttpLink({
   uri: "http://localhost:3001/graphql",
@@ -31,6 +32,7 @@ function App() {
       <>
         <Dashboard></Dashboard>
         <Login></Login>
+        <Signup></Signup>
       </>
     </ApolloProvider>
   );
