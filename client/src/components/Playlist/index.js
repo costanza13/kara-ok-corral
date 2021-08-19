@@ -21,7 +21,9 @@ const Playlist = ({ playlistId }) => {
       {partyMembers}
       <button>+</button>
       <div className="song-list">
-        <Song></Song>
+        {playlist.songs.map(song => {
+          return <Song key={song._id} song={song}></Song>
+        })}
       </div>
     </div>
   );
