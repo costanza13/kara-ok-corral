@@ -23,3 +23,22 @@ export const QUERY_PLAYLISTS = gql`
      }
    }
  `;
+
+export const QUERY_ME = gql`
+  query me {
+    me {
+      username
+      email
+      friendCount
+      playlists {
+        _id
+        name
+        visibility
+        members
+      }
+      friends {
+        username
+      }
+    }
+  }
+`;

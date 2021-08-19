@@ -2,9 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from "@apollo/client/link/context";
+import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
+import Party from './pages/Party';
 import Nav from './components/Nav';
-import Login from './components/Login';
+import Login from './components/LoginForm';
 import Signup from './components/SignupForm';
 
 const httpLink = createHttpLink({
@@ -29,17 +31,18 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-    <Router>
-      <>
-        <Nav />
-        <Switch>
-          <Route exact path="/" component={Dashboard} />
-          <Login></Login>
-          <Signup></Signup>
-        </Switch>
-      </>
-    </Router>
-  </ApolloProvider>
+      <Router>
+        <>
+          <Nav />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/party" component={Party} />
+            <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
+          </Switch>
+        </>
+      </Router>
+    </ApolloProvider>
   );
 }
 
