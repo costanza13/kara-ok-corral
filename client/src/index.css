@@ -1,7 +1,28 @@
+:root {
+  --dark: #270C01;
+  --light: #FCF3EE;
+  --red: #B61624;
+}
+
+a {
+  text-decoration: none;
+  color: var(--red);
+}
+
+a:hover {
+  color: var(--dark);
+}
+
 body {
   font-family: freight-sans-pro, sans-serif;
   font-weight: 400;
   font-style: normal;
+  background-color: var(--dark);
+  color: var(--light);
+}
+
+header {
+  background-color: var(--light);
 }
 
 h1 {
