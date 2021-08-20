@@ -1,22 +1,72 @@
-import React from 'react';
-import { useQuery } from '@apollo/client';
+import React, { useState } from 'react';
+import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../../utils/queries';
+import { SAVE_PLAYLIST } from '../../utils/mutations';
 import Song from '../Song';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
 const Playlist = ({ playlistId }) => {
+  const [editMode, setEditMode] = useState(false);
   const { loading, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
+  const [updatePlaylist] = useMutation(SAVE_PLAYLIST);
 
   if (loading) {
     return '';
   }
 
+  let playlist;
+
+  const handleAddMember = (e) => {
+    e.preventDefault();
+
+    console.log('hello');
+
+    if (!editMode) {
+      return setEditMode(true);
+    }
+
+  }
+
+  const handleRemoveMember = async (e) => {
+    const memberButton = e.target.closest('span');
+    const removeUsername = memberButton.dataset.member;
+
+    const members = playlist.members.filter(member => member !== removeUsername);
+
+    console.log(memberButton);
+    console.log(removeUsername);
+    console.log('members', members);
+
+    const { name, visibility } = playlist;
+
+    const updatedPlaylist = await updatePlaylist({
+      variables: { playlistId: playlist._id, playlist: { name, visibility, members } }
+    });
+
+    playlist = updatedPlaylist.playlist;
+  }
+
   console.log(playlistData);
-  const playlist = playlistData.playlist;
+  playlist = playlistData.playlist;
 
   const partyFlag = playlist.members.length ? ' (party)' : '';
-  const partyMembers = playlist.members.length ? <p>with: {playlist.members.join(', ')}</p> : '';
+  let partyMembers;
+  const removeMemberButton = editMode ? <i className="fas fa-minus-circle" onClick={handleRemoveMember}></i> : '';
+
+  if (playlist.members.length) {
+    const memberButtons = playlist.members.map(member => {
+      console.log(member);
+      return <span key={member} className="btn btn-outline-primary" data-member={member}>{member} {removeMemberButton}</span>
+    });
+    if (memberButtons.length) {
+      partyMembers = <p>with: {memberButtons} <button type="button" className="btn btn-link" onClick={handleAddMember}><i className="fas fa-plus-circle"></i></button></p>
+    }
+
+  } else {
+    partyMembers = <p><button type="button" className="btn btn-link" onClick={handleAddMember}><i className="fas fa-plus-circle"></i></button>{!editMode ? ' Add members to make this a party list!' : ''}</p>
+  }
+
   return (
     <Container fluid="md">
       <Row>
