@@ -30,7 +30,7 @@ const Dashboard = () => {
   const user = userData.me;
 
   return (
-    <Container fluid>
+    <Container>
       <Row>
         <Col>
           <h2>{user.username}</h2>
@@ -43,7 +43,7 @@ const Dashboard = () => {
       <Row xs={1} md={2}>
         <Col>
           <div className="playlist-list">
-            <h5>Your Playlists</h5>
+            <h3>Your Playlists</h3>
             {user.playlists.map((playlist) => {
               return (
                 <Playlist
@@ -56,7 +56,7 @@ const Dashboard = () => {
         </Col>
         <Col>
           <div className="playlist-list">
-            <h5>Party Playlists</h5>
+            <h3>Party Playlists</h3>
             {user.partyPlaylists.map((playlist) => {
               return (
                 <Playlist

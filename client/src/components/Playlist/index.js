@@ -3,7 +3,6 @@ import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../../utils/queries';
 import { SAVE_PLAYLIST } from '../../utils/mutations';
 import Song from '../Song';
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
 const Playlist = ({ playlistId }) => {
@@ -68,7 +67,6 @@ const Playlist = ({ playlistId }) => {
   }
 
   return (
-    <Container fluid="md">
       <Row>
         <h5>{playlist.name + partyFlag}</h5>
         {partyMembers}
@@ -78,7 +76,6 @@ const Playlist = ({ playlistId }) => {
           })}
         </div>
       </Row>
-    </Container>
   );
 };
 

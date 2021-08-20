@@ -10,23 +10,32 @@ a {
 }
 
 a:hover {
-  color: var(--dark);
+  color: var(--light);
 }
 
 body {
   font-family: freight-sans-pro, sans-serif;
   font-weight: 400;
   font-style: normal;
-  background-color: var(--dark);
-  color: var(--light);
+  background-color: var(--light);
+  color: var(--dark);
 }
 
 header {
-  background-color: var(--light);
+  background-color: var(--dark);
 }
 
 h1 {
   font-family: becker-gothics-concave, serif;
   font-style: normal;
   font-weight: 400;
+  text-align: center;
+}
+
+h2 {
+  font-weight: bold;
+}
+
+.song-accordion {
+  background-color: var(--light);
 }

@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import Accordion from "react-bootstrap/Accordion";
 
 const Song = ({ song }) => {
    const [editStatus, setEditStatus] = useState(false);
+
+   // const eventKey = () => {
+      
+   // }
 
    return (
       <div>
@@ -24,14 +29,18 @@ const Song = ({ song }) => {
             </form>
          </div>)}
 
-         <div className="song-display">
-            <h6>{song.title}</h6>
-            <p>{song.artist}</p>
-            <p><a href={song.lyricsUrl} target="_blank" rel="noreferrer">lyrics</a>{' - '}
-               <a href={song.videoUrl} target="_blank" rel="noreferrer">video</a></p>
-            <button className="btn btn-primary edit-song" onClick={() => setEditStatus(true)}>edit</button>
-            <button className="btn btn-primary delete-song">delete</button>
-         </div>
+         <Accordion flush>
+            <Accordion.Item eventKey="0">
+               <Accordion.Header>{song.title}</Accordion.Header>
+               <Accordion.Body>
+                  <p>{song.artist}</p>
+                  <p><a href={song.lyricsUrl} target="_blank" rel="noreferrer">lyrics</a>{' - '}
+                  <a href={song.videoUrl} target="_blank" rel="noreferrer">video</a></p>
+                  <button className="btn btn-primary edit-song" onClick={() => setEditStatus(true)}>edit</button>
+                  <button className="btn btn-primary delete-song">delete</button>
+               </Accordion.Body>
+            </Accordion.Item>
+         </Accordion>
       </div>
    );
 };
