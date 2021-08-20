@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
@@ -8,8 +8,11 @@ import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from 'react-bootstrap/Col';
+import Collapse from 'react-bootstrap/esm/Collapse';
 
 const Dashboard = () => {
+  const [open, setOpen] = useState(false);
+
   const { loading, data: userData } = useQuery(QUERY_ME);
 
   const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -37,8 +40,12 @@ const Dashboard = () => {
           <h2>{user.username}</h2>
         </Col>
         <Col>
-          <p>Friends: {user.friendCount}</p>
-          <FriendsList friends={user.friends} />
+          <p onClick={() => setOpen(!open)} aria-controls="friends-list" aria-expanded={open}>Friends: {user.friendCount}</p>
+          <Collapse in={open}>
+            <div id="friends-list">
+              <FriendsList friends={user.friends} />
+            </div>
+          </Collapse>
         </Col>
       </Row>
       <Row xs={1} md={2}>
