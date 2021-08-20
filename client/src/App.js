@@ -5,6 +5,7 @@ import { setContext } from "@apollo/client/link/context";
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Party from './pages/Party';
+import Playlist from './pages/Playlist';
 import Nav from './components/Nav';
 import Login from './components/LoginForm';
 import Signup from './components/SignupForm';
@@ -37,7 +38,8 @@ function App() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/dashboard" component={Dashboard} />
-            <Route exact path="/party" component={Party} />
+            <Route path="/party/:playlistId" component={Party} />
+            <Route path="/playlist/:playlistId" component={Playlist} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
             <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
