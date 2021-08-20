@@ -2,7 +2,6 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../../utils/queries';
 import Song from '../Song';
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
 const Playlist = ({ playlistId }) => {
@@ -18,7 +17,6 @@ const Playlist = ({ playlistId }) => {
   const partyFlag = playlist.members.length ? ' (party)' : '';
   const partyMembers = playlist.members.length ? <p>with: {playlist.members.join(', ')}</p> : '';
   return (
-    <Container fluid="md">
       <Row>
         <h5>{playlist.name + partyFlag}</h5>
         {partyMembers}
@@ -28,7 +26,6 @@ const Playlist = ({ playlistId }) => {
           })}
         </div>
       </Row>
-    </Container>
   );
 };
 
