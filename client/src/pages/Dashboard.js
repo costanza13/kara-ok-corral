@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
 import Playlist from '../components/Playlist';
@@ -44,14 +45,19 @@ const Dashboard = () => {
         <Col>
           <div className="playlist-list">
             <h3>Your Playlists</h3>
-            {user.playlists.map((playlist) => {
-              return (
-                <Playlist
-                  key={playlist._id}
-                  playlistId={playlist._id}
-                ></Playlist>
-              );
-            })}
+            <ul>
+              {user.playlists.map((playlist) => {
+                return (
+                  <li>
+                    <Link
+                      key={playlist._id}
+                      to={`/playlist/${playlist._id}`}
+                    >{playlist.name}</Link>
+                    {playlist.members.length ? ' (party)' : ''}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </Col>
         <Col>

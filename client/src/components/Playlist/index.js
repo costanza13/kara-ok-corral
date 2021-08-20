@@ -49,7 +49,6 @@ const Playlist = ({ playlistId }) => {
   console.log(playlistData);
   playlist = playlistData.playlist;
 
-  const partyFlag = playlist.members.length ? ' (party)' : '';
   let partyMembers;
   const removeMemberButton = editMode ? <i className="fas fa-minus-circle" onClick={handleRemoveMember}></i> : '';
 
@@ -63,12 +62,12 @@ const Playlist = ({ playlistId }) => {
     }
 
   } else {
-    partyMembers = <p><button type="button" className="btn btn-link" onClick={handleAddMember}><i className="fas fa-plus-circle"></i></button>{!editMode ? ' Add members to make this a party list!' : ''}</p>
+    partyMembers = <p>{!editMode ? ' Add members to make this a party list!' : ''}<button type="button" className="btn btn-link" onClick={handleAddMember}><i className="fas fa-plus-circle"></i></button></p>
   }
 
   return (
       <Row>
-        <h5>{playlist.name + partyFlag}</h5>
+        <h5>{playlist.name}</h5>
         {partyMembers}
         <div className="song-list">
           {playlist.songs.map((song) => {
