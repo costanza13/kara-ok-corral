@@ -1,7 +1,7 @@
 :root {
   --dark: #270C01;
   --light: #FCF3EE;
-  --red: #B61624;
+  --red: #DA1B2B;
 }
 
 a {
@@ -36,6 +36,3 @@ h2 {
   font-weight: bold;
 }
 
-.song-accordion {
-  background-color: var(--light);
-}
