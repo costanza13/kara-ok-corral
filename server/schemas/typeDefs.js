@@ -73,7 +73,7 @@ type Query {
   users: [UserBasic]
   user(username: String!): User
   stats: SiteStats
-  publicPlaylists: [Playlist]
+  publicPlaylists(username: String): [Playlist]
   partyPlaylists: [Playlist]
   playlist(_id: ID!): Playlist
   songs: [Song]
