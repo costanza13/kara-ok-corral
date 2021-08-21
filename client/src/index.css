@@ -40,6 +40,12 @@ h2 {
   margin: 20px;
 }
 
+.col {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+/* song styles */
 .accordion-button {
   background-color: rgba(252, 243, 238, .3);
   color: var(--dark);
@@ -52,4 +58,21 @@ h2 {
 
 .delete-song:hover {
   color: var(--red);
+}
+
+/* dashboard styles */
+.username {
+  text-align: left;
+  align-self: center;
+}
+
+.user-icon {
+  margin-right: 10px;
+  color: var(--red);
+  border: 1px solid var(--red);
+  padding: 10px;
+  padding-top: 15px;
+  border-radius: 50%;
+  background-color: rgba(39, 12, 1, .3);
+  align-self: center;
 }

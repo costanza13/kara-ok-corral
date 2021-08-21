@@ -44,10 +44,19 @@ const Dashboard = () => {
     <Container>
       <Row>
         <Col>
-          <h2>{user.username}</h2>
+         <span className="user-icon">
+              <i class="fas fa-hat-cowboy fa-lg"></i>
+          </span>
+          <h2 className="username">{user.username}</h2>
         </Col>
         <Col>
-          <p onClick={() => setOpen(!open)} aria-controls="friends-list" aria-expanded={open}>Friends: {user.friendCount}</p>
+          <p
+            onClick={() => setOpen(!open)}
+            aria-controls="friends-list"
+            aria-expanded={open}
+          >
+            Friends: {user.friendCount}
+          </p>
           <Collapse in={open}>
             <div id="friends-list">
               <FriendsList friends={user.friends} />
@@ -62,15 +71,19 @@ const Dashboard = () => {
             <ul>
               {user.playlists.map((playlist) => {
                 return (
-                  <li>
-                    <Link
-                      key={playlist._id}
-                      to={`/playlist/${playlist._id}`}
-                    >{playlist.name}</Link>
-                    {playlist.members.length ? ' (party)' : ''}
+                  <li key={"li" + playlist._id}>
+                    <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
+                      {playlist.name}
+                    </Link>
+                    {playlist.members.length ? " (party)" : ""}
                   </li>
                 );
               })}
+              <li key={"linew_playlist"}>
+                <Link key={"new_playlist"} to={"/playlist/new"}>
+                  <em>create a new playlist &raquo;</em>
+                </Link>
+              </li>
             </ul>
           </div>
         </Col>

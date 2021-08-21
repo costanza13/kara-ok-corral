@@ -46,8 +46,12 @@ const resolvers = {
         playlistCount: 8
       };
     },
-    publicPlaylists: async () => {
-      const playlists = await Playlist.find({ visibility: 'public' })
+    publicPlaylists: async (parent, { username }) => {
+      const filter = { visibility: 'public' };
+      if (username) {
+        filter.username = username;
+      }
+      const playlists = await Playlist.find(filter)
         .populate('songs');
       return playlists;
     },

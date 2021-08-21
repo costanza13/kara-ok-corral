@@ -29,7 +29,7 @@ const PlaylistPage = () => {
     );
   }
   console.log(playlistData);
-  const playlist = playlistData.playlist;
+  const playlist = playlistId !== "new" ? playlistData.playlist : { _id: null, username: currentUser.username };
   const isOwner = playlist.username === currentUser.username;
 
   return (

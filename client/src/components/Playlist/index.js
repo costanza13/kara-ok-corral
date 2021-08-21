@@ -13,6 +13,8 @@ const Playlist = ({ playlistId }) => {
   const [updatePlaylist] = useMutation(SAVE_PLAYLIST);
   const [updateSong] = useMutation(SAVE_SONG);
 
+  const isNew = !playlistId;
+
   const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
 
   if (loading) {
@@ -26,7 +28,11 @@ const Playlist = ({ playlistId }) => {
       variables: { playlistId: playlist._id, playlist: { name, visibility, members: updatedMembers } }
     });
 
-    playlist = updatedPlaylist.data.updatePlaylist;
+    if (isNew) {
+      window.location.assign(`/playlist/${updatedPlaylist.data.updatePlaylist._id}`);
+    } else {
+      playlist = updatedPlaylist.data.updatePlaylist;
+    }
   }
 
   const saveSong = async (songData) => {
@@ -38,11 +44,23 @@ const Playlist = ({ playlistId }) => {
     playlist = updatedPlaylist.data.updatePlaylist;
   }
 
-  const save = value => {};
-  const cancel = value => {};
+  const save = async value => {
+    const { visibility, members } = playlist;
+    const updatedPlaylist = await updatePlaylist({
+      variables: { playlistId: playlist._id, playlist: { name: value, visibility, members } }
+    });
+
+    if (isNew) {
+      window.location.assign(`/playlist/${updatedPlaylist.data.updatePlaylist._id}`);
+    } else {
+      playlist = updatedPlaylist.data.updatePlaylist;
+    }
+  };
+  const cancel = value => { };
 
   console.log(playlistData);
-  playlist = playlistData.playlist;
+  playlist = playlistId ? playlistData.playlist : { username: currentUser.username, name: 'Give us a name, eh?', visibility: 'private', members: [], songs: [] };
+
   const isOwner = playlist.username === currentUser.username;
   const isMember = playlist.members.indexOf(currentUser.Usename) > -1;
 
@@ -68,7 +86,7 @@ const Playlist = ({ playlistId }) => {
           return <Song key={song._id} song={song} saveSong={saveSong}></Song>;
         })}
         {
-          isMember || isOwner
+          (isMember || isOwner) && playlistId
             ? <Song key={'newsong'} song={null} saveSong={saveSong}></Song>
             : ''
         }
