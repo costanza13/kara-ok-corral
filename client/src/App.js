@@ -9,6 +9,8 @@ import Playlist from './pages/Playlist';
 import Nav from './components/Nav';
 import Login from './components/LoginForm';
 import Signup from './components/SignupForm';
+import PublicProfile from './pages/PublicProfile';
+
 
 const httpLink = createHttpLink({
   uri: "http://localhost:3001/graphql",
@@ -42,6 +44,7 @@ function App() {
             <Route path="/playlist/:playlistId" component={Playlist} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
+            <Route path="/profile/:username" component={PublicProfile} />
             <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
           </Switch>
         </>
