@@ -1,13 +1,19 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_ME } from '../../utils/queries';
-import EasyEdit from "react-easy-edit";
+import Spinner from "react-bootstrap/Spinner";
 
 const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
   const { loading, data } = useQuery(QUERY_ME);
 
   if (loading) {
-    return <h1>LOADING...</h1>
+    return (
+      <div className="spinner">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    );
   }
 
   console.log('ME', data.me);
@@ -58,7 +64,8 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
   console.log('left to add', leftToAdd);
 
   return (
-    <div className="btn-group my-2" role="group">
+    <div className="btn-group my-2 d-inline-block" role="group">
+      {members.length === 0 && canEdit ? <span className='h-100 align-middle'>Add your friends to make this a party list!</span> : members.length !== 0 ? <span className='d-inline-block h-100 align-middle'>Members: </span> : ''}
       {partyMembers}
       {
         canEdit && leftToAdd.length

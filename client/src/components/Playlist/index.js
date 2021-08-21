@@ -5,6 +5,8 @@ import { SAVE_PLAYLIST } from '../../utils/mutations';
 import Auth from '../../utils/auth';
 import Song from '../Song';
 import PlaylistMembers from '../PlaylistMembers';
+import EasyEdit, { Types } from "react-easy-edit";
+
 
 const Playlist = ({ playlistId }) => {
   const { loading, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
@@ -26,6 +28,9 @@ const Playlist = ({ playlistId }) => {
     playlist = await updatedPlaylist.data.updatePlaylist;
   }
 
+  const save = value => {};
+  const cancel = value => {};
+
   console.log(playlistData);
   playlist = playlistData.playlist;
   const isOwner = playlist.username === currentUser.username;
@@ -36,7 +41,17 @@ const Playlist = ({ playlistId }) => {
   return (
     <>
       <h5>{playlist.name}</h5>
-      {playlist.members.length === 0 ? 'Add your friends to make this a party list!' : ''}
+      <EasyEdit
+        type={Types.TEXT}
+        value={playlist.name}
+        onSave={save}
+        onCancel={cancel}
+        hideSaveButton={true}
+        hideCancelButton={true}
+        saveOnBlur={true}
+        attributes={{ className: 'playlist-title' }}
+      />
+
       <PlaylistMembers members={playlist.members} canEdit={isOwner} updateMembers={updateMembers} />
       <div className="song-list">
         {playlist.songs.map((song) => {
@@ -44,7 +59,7 @@ const Playlist = ({ playlistId }) => {
         })}
         {
           isMember || isOwner
-            ? 'you can add songs'
+            ? <Song key={'newsong'} song={null}></Song>
             : ''
         }
       </div>

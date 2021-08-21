@@ -31,7 +31,6 @@ const PlaylistPage = () => {
   console.log(playlistData);
   const playlist = playlistData.playlist;
   const isOwner = playlist.username === currentUser.username;
-  const isMember = playlist.members.indexOf(currentUser.Usename) > -1;
 
   return (
     <Container>
