@@ -159,9 +159,11 @@ db.once('open', async () => {
     const users = await User.find();
     const costanza13Friends = users.filter(user => user.username !== 'costanza13');
     const crossigarciaFriends = users.filter(user => user.username !== 'crossigarcia');
+    const cupcakesprinkle3Friends = users.filter(user => user.username !== 'cupcakesprinkle3');
 
     await User.updateOne({ username: 'costanza13' }, { friends: [...costanza13Friends] });
     await User.updateOne({ username: 'crossigarcia' }, { friends: [...crossigarciaFriends] });
+    await User.updateOne({ username: 'cupcakesprinkle3' }, { friends: [...cupcakesprinkle3Friends] });
 
     console.log('success!');
 
