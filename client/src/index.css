@@ -1,7 +1,7 @@
 :root {
-  --dark: #270C01;
-  --light: #FCF3EE;
-  --red: #DA1B2B;
+  --dark: #140601;
+  --light: #FBEDDA;
+  --red: #E59824;
 }
 
 a {
@@ -96,3 +96,7 @@ h2 {
   box-shadow: -10px 11px 6px -5px rgba(39, 12, 1, .3);
 }
 
+.fa-glass-cheers {
+  color: var(--red);
+  margin-left: 5px;
+}

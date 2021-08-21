@@ -25,29 +25,29 @@ const AppNavBar = () => {
 
    return (
       <>
-         <header className="mb-4 py-2 flex-row align-center">
-            <div className="container flex-row justify-space-between-lg justify-center align-center">
-               <Link to="/">
-                  <h1>The Kara-OK-Corral</h1>
-               </Link>
+      <header className="mb-4 py-2 flex-row align-center">
+         <div className="container flex-row justify-space-between-lg justify-center align-center">
+            <Link to="/">
+               <h1>The Kara-OK-Corral</h1>
+            </Link>
 
-               <nav className="text-center">
+            <nav className="text-center">
 
-                  {Auth.loggedIn() ? (
-                     <>
-                        <Link to={`/profile/${user.username}`} className="btn btn-light py-1 mx-2">Profile</Link>
-                        <Link to="/dashboard" className="btn btn-light py-1 mx-2">Dashboard</Link>
-                        <a href="/" className="btn btn-light py-1 mx-2" onClick={logout}>
-                           Logout
-              </a>
-                     </>
+               {Auth.loggedIn() ? (
+                  <>
+                     <Link to={`/profile/${user.username}`} className="btn btn-light py-1 mx-2">Profile</Link>
+                     <Link to="/dashboard" className="btn btn-light py-1 mx-2">Dashboard</Link>
+                     <a href="/" className="btn btn-light py-1 mx-2" onClick={logout}>
+                        Logout
+                     </a>
+                  </>
                   ) : (
                         <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
 
-                     )}
-               </nav>
-            </div>
-         </header>
+               )}
+            </nav>
+         </div>
+      </header>
 
          {/* set modal data up */}
          <Modal
@@ -81,10 +81,9 @@ const AppNavBar = () => {
                </Modal.Body>
             </Tab.Container>
          </Modal>
-
       </>
    );
-
+         
 };
-
+         
 export default AppNavBar;

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
 import Playlist from '../components/Playlist';
-import FriendsList from '../components/FriendList';
+import FriendList from '../components/FriendList';
 import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -54,7 +54,7 @@ const Dashboard = () => {
             <Offcanvas.Title>Your Friends:</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <FriendsList friends={user.friends} />
+            <FriendList friends={user.friends} />
           </Offcanvas.Body>
         </Offcanvas>
       </>
@@ -88,7 +88,13 @@ const Dashboard = () => {
                     <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
                       {playlist.name}
                     </Link>
-                    {playlist.members.length ? " (party)" : ""}
+                    {playlist.members.length ? (
+                      <span>
+                        <i class="fas fa-glass-cheers fa-sm"></i>
+                      </span>
+                    ) : (
+                      ""
+                    )}
                   </li>
                 );
               })}
