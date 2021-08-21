@@ -3,27 +3,35 @@ import { useQuery } from '@apollo/client';
 import { QUERY_ME } from '../../utils/queries';
 
 const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
-  const { loading, userData } = useQuery(QUERY_ME);
+  const { loading, data } = useQuery(QUERY_ME);
 
-  // const getFriendsList = async () => {
-  //   const friends = await userData
-  // }
+  if (loading) {
+    return <h1>LOADING...</h1>
+  }
+
+  console.log('ME', data.me);
+
+  const friends = data.me.friends.map(friend => friend.username);
+
+  console.log('MY FREINDS', friends);
 
   const handleAddMember = (e) => {
     const newMember = e.target.value;
 
     const updatedMembers = [...members];
     if (newMember) {
-      if (members.indexOf(newMember) === -1) {
+      if (members.indexOf(newMember) === -1 && friends.indexOf(newMember) !== -1) {
         updatedMembers.push(newMember);
+        updateMembers(updatedMembers);
+
+      } else {
+        alert('You can only add your friends!');
       }
     }
-
-    updateMembers(updatedMembers);
   }
 
   const handleRemoveMember = async (e) => {
-    const memberButton = e.target.closest('span');
+    const memberButton = e.target.closest('li');
     const removeUsername = memberButton.dataset.member;
 
     const updatedMembers = members.filter(member => member !== removeUsername);
@@ -50,7 +58,7 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
       {partyMembers}
       {
         canEdit
-          ? <input type="text" placeholder="add a friend" onBlur={handleAddMember} />
+          ? <input name="friend-to-add" type="text" placeholder="add a friend" onBlur={handleAddMember} />
           : ''
       }
     </>
