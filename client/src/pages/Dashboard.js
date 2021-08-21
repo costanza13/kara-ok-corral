@@ -8,8 +8,8 @@ import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from 'react-bootstrap/Col';
-import Collapse from 'react-bootstrap/esm/Collapse';
 import Spinner from 'react-bootstrap/Spinner';
+import Offcanvas from 'react-bootstrap/Offcanvas';
 
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
@@ -40,20 +40,42 @@ const Dashboard = () => {
   console.log(userData);
   const user = userData.me;
 
+  function FriendsOffCanvas() {
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    return (
+      <>
+        <p className="me-2 friends-toggle" variant="primary" onClick={handleShow}>Friends: {user.friendCount}</p>
+        <Offcanvas show={show} onHide={handleClose} placement="end" scroll={true} backdrop={false}>
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>Your Friends:</Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <FriendsList friends={user.friends} />
+          </Offcanvas.Body>
+        </Offcanvas>
+      </>
+    );
+  }
+
   return (
     <Container>
       <Row>
-        <Col>
-          <h2>{user.username}</h2>
-        </Col>
-        <Col>
-          <p onClick={() => setOpen(!open)} aria-controls="friends-list" aria-expanded={open}>Friends: {user.friendCount}</p>
-          <Collapse in={open}>
-            <div id="friends-list">
-              <FriendsList friends={user.friends} />
-            </div>
-          </Collapse>
-        </Col>
+        <div className="user-info">
+          <span>
+            <i className="fas fa-hat-cowboy fa-lg user-icon"></i>
+          </span>
+          <h2 className="username">
+            {user.username}
+            <br></br>
+            <span className="friend-count">
+              <FriendsOffCanvas />
+            </span>
+          </h2>
+        </div>
       </Row>
       <Row xs={1} md={2}>
         <Col>
@@ -62,20 +84,18 @@ const Dashboard = () => {
             <ul>
               {user.playlists.map((playlist) => {
                 return (
-                  <li key={'li' + playlist._id}>
-                    <Link
-                      key={playlist._id}
-                      to={`/playlist/${playlist._id}`}
-                    >{playlist.name}</Link>
-                    {playlist.members.length ? ' (party)' : ''}
+                  <li key={"li" + playlist._id}>
+                    <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
+                      {playlist.name}
+                    </Link>
+                    {playlist.members.length ? " (party)" : ""}
                   </li>
                 );
               })}
-              <li key={'linew_playlist'}>
-                <Link
-                 key={'new_playlist'}
-                 to={'/playlist/new'}
-                 ><em>create a new playlist &raquo;</em></Link>
+              <li key={"linew_playlist"}>
+                <Link key={"new_playlist"} to={"/playlist/new"}>
+                  <em>create a new playlist &raquo;</em>
+                </Link>
               </li>
             </ul>
           </div>
