@@ -9,6 +9,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from 'react-bootstrap/Col';
 import Collapse from 'react-bootstrap/esm/Collapse';
+import Spinner from 'react-bootstrap/Spinner';
 
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
@@ -28,7 +29,13 @@ const Dashboard = () => {
 
   // if data isn't here yet, say so
   if (loading) {
-    return <h2>LOADING...</h2>;
+    return (
+      <div className="spinner">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    );
   }
   console.log(userData);
   const user = userData.me;
