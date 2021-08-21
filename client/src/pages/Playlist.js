@@ -14,9 +14,8 @@ const PlaylistPage = () => {
   const { loading, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
 
   const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
-  console.log(currentUser);
 
-  const token = Auth.loggedIn() ? Auth.getToken() : null;
+  // const token = Auth.loggedIn() ? Auth.getToken() : null;
 
   // if data isn't here yet, say so
   if (loading) {
@@ -25,6 +24,7 @@ const PlaylistPage = () => {
   console.log(playlistData);
   const playlist = playlistData.playlist;
   const isOwner = playlist.username === currentUser.username;
+  const isMember = playlist.members.indexOf(currentUser.Usename) > -1;
 
   return (
     <Container>
@@ -41,13 +41,11 @@ const PlaylistPage = () => {
       </Row>
       <Row xs={1} md={2}>
         <Col>
-          <div className="playlist-list">
-            <h3>Playlist:</h3>
-            <Playlist
-              key={playlist._id}
-              playlistId={playlist._id}
-            ></Playlist>
-          </div>
+          <h3>Playlist:</h3>
+          <Playlist
+            key={playlist._id}
+            playlistId={playlist._id}
+          ></Playlist>
         </Col>
       </Row>
     </Container>
