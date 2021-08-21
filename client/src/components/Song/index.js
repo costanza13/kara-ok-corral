@@ -1,18 +1,11 @@
 import React, { useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
-import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import EasyEdit from "react-easy-edit";
+
 
 const Song = ({ song, saveSong }) => {
   const [editStatus, setEditStatus] = useState(false);
-
-  const save = (value) => {
-     const updatedSong = {...song, artist: value};
-     saveSong(updatedSong);
-};
-  const cancel = () => {};
 
   return (
     <div>
@@ -62,16 +55,16 @@ const Song = ({ song, saveSong }) => {
         <Accordion.Item eventKey="0">
           <Accordion.Header>{song.title}</Accordion.Header>
           <Accordion.Body>
-             <EasyEdit
-                        type="text"
-                        value={song.artist}
-                        onSave={save}
-                        onCancel={cancel}
-                        saveButtonLabel="Save Me"
-                        cancelButtonLabel="Cancel Me"
-                        attributes={{ name: "song-title", id: 1}}
-               /> 
             <Row>
+              <Col>
+                <p>{song.artist}</p>
+              </Col>
+              <Col>
+                <i
+                  className="far fa-edit edit-song"
+                  onClick={() => setEditStatus(true)}
+                ></i>
+              </Col>
               <Col>
                 <i class="fas fa-trash-alt delete-song"></i>
               </Col>

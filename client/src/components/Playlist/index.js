@@ -9,7 +9,6 @@ import PlaylistMembers from '../PlaylistMembers';
 const Playlist = ({ playlistId }) => {
   const { loading, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
   const [updatePlaylist] = useMutation(SAVE_PLAYLIST);
-  const [updateSong] = useMutation(UPDATE_SONG);
 
   const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
 
@@ -33,13 +32,6 @@ const Playlist = ({ playlistId }) => {
 
   console.log('orig playlist', playlist);
 
-  const saveSong = async (songData) => {
-    console.log(songData);
-    const { title, artist, lyricsUrl, videoUrl } = songData;
-    await updateSong({
-      variables: { playlistId: playlist._id, songId: songData._id, songData: { title, artist, lyricsUrl, videoUrl } },
-    });
-  }
 
   return (
     <>
@@ -48,7 +40,7 @@ const Playlist = ({ playlistId }) => {
       <PlaylistMembers members={playlist.members} canEdit={isOwner} updateMembers={updateMembers} />
       <div className="song-list">
         {playlist.songs.map((song) => {
-          return <Song key={song._id} song={song} saveSong={saveSong}></Song>;
+          return <Song key={song._id} song={song}></Song>;
         })}
         {
           isMember || isOwner
