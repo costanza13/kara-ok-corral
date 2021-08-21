@@ -79,6 +79,11 @@ h2 {
   font-weight: 800;
   color: var(--red);
   font-size: 15px;
+  text-decoration: underline;
+}
+
+.friends-toggle:hover {
+  font-style: italic;
 }
 
 .offcanvas {
