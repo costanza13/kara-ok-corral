@@ -2,6 +2,7 @@
   --dark: #140601;
   --light: #FBEDDA;
   --red: #e7414f;
+  --xtra-light: #fffbf5;
 }
 
 a {
@@ -10,7 +11,7 @@ a {
 }
 
 a:hover {
-  color: var(--light);
+  color: #E59824;
 }
 
 body {
@@ -112,7 +113,19 @@ li {
 
 .playlist-header {
   background-color: var(--red);
-  color: var(--light);
+  color: var(--xtra-light);
   font-weight: bold;
   padding: 10px;
+  margin-bottom: 0;
+}
+
+ul {
+  background-color: var(--xtra-light);
+  padding: 15px;
+  margin-top: 0;
+}
+
+.playlist-name a {
+  font-size: 18px;
+  color: var(--dark);
 }

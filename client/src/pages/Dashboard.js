@@ -84,7 +84,7 @@ const Dashboard = () => {
             <ul>
               {user.playlists.map((playlist) => {
                 return (
-                  <li key={"li" + playlist._id}>
+                  <li key={"li" + playlist._id} className="playlist-name">
                     <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
                       {playlist.name}
                     </Link>
@@ -98,7 +98,7 @@ const Dashboard = () => {
                   </li>
                 );
               })}
-              <li key={"linew_playlist"}>
+              <li key={"linew_playlist"} className="playlist-name">
                 <Link key={"new_playlist"} to={"/playlist/new"}>
                   <em>create a new playlist &raquo;</em>
                 </Link>
@@ -109,15 +109,17 @@ const Dashboard = () => {
         <Col>
           <div className="playlist-list">
             <h3 className="playlist-header">Party Playlists</h3>
-            {user.partyPlaylists.map((playlist) => {
-              return (
-                <li key={"li" + playlist._id}>
-                  <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
-                    {playlist.name}
-                  </Link>
-                </li>
-              );
-            })}
+            <ul>
+              {user.partyPlaylists.map((playlist) => {
+                return (
+                  <li key={"li" + playlist._id} className="playlist-name">
+                    <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
+                      {playlist.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </Col>
       </Row>
