@@ -1,22 +1,17 @@
 import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
-import { UPDATE_SONG } from "../../utils/mutations";
 import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import EasyEdit from "react-easy-edit";
 
-const Song = ({ song }) => {
+const Song = ({ song, saveSong }) => {
   const [editStatus, setEditStatus] = useState(false);
 
-  const [updateSong] = useMutation(UPDATE_SONG);
-
   const save = (value) => {
-    await updateSong({
-      variables: { songs: { artist: value } },
-    });
-  };
+     const updatedSong = {...song, artist: value};
+     saveSong(updatedSong);
+};
   const cancel = () => {};
 
   return (
@@ -77,15 +72,6 @@ const Song = ({ song }) => {
                         attributes={{ name: "song-title", id: 1}}
                /> 
             <Row>
-              <Col>
-                <p>{song.artist}</p>
-              </Col>
-              <Col>
-                <i
-                  className="far fa-edit edit-song"
-                  onClick={() => setEditStatus(true)}
-                ></i>
-              </Col>
               <Col>
                 <i class="fas fa-trash-alt delete-song"></i>
               </Col>
