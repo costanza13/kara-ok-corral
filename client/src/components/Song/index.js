@@ -13,36 +13,16 @@ const Song = ({ song, saveSong }) => {
         <div className="song-form">
           <form>
             <div className="mb-3">
-              <input
-                type="text"
-                className="form-control"
-                id="songTitle"
-                placeholder="song title"
-              ></input>
+              <input type="text" className="form-control" id="songTitle" placeholder="song title"></input>
             </div>
             <div className="mb-3">
-              <input
-                type="text"
-                className="form-control"
-                id="songArtist"
-                placeholder="artist"
-              ></input>
+              <input type="text" className="form-control" id="songArtist" placeholder="artist"></input>
             </div>
             <div className="mb-3">
-              <input
-                type="url"
-                className="form-control"
-                id="lyrics"
-                placeholder="link to lyrics"
-              ></input>
+              <input type="url" className="form-control" id="lyrics" placeholder="link to lyrics" ></input>
             </div>
             <div className="mb-3">
-              <input
-                type="url"
-                className="form-control"
-                id="youtube"
-                placeholder="link to youtube"
-              ></input>
+              <input type="url" className="form-control" id="youtube" placeholder="link to youtube"></input>
             </div>
             <button type="submit" className="btn btn-primary">
               add song
@@ -66,7 +46,7 @@ const Song = ({ song, saveSong }) => {
                 ></i>
               </Col>
               <Col>
-                <i class="fas fa-trash-alt delete-song"></i>
+                <i className="fas fa-trash-alt delete-song"></i>
               </Col>
             </Row>
             <p>
