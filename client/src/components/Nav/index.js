@@ -1,8 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { QUERY_ME } from '../../utils/queries';
+import { useQuery } from '@apollo/client';
+
+
 import Auth from '../../utils/auth';
 
 const Nav = () => {
+
+  const { loading, data: userData } = useQuery(QUERY_ME);
+
+  if (loading) {
+    return null
+  }
+  console.log(userData);
+  const user = userData ? userData.me : {};
+
   const logout = event => {
     event.preventDefault();
     Auth.logout();
@@ -18,7 +31,7 @@ const Nav = () => {
         <nav className="text-center">
           {Auth.loggedIn() ? (
             <>
-              <Link to="/profile" className="btn btn-light py-1 mx-2">Profile</Link>
+              <Link to={`/profile/${user.username}`} className="btn btn-light py-1 mx-2">Profile</Link>
               <Link to="/dashboard" className="btn btn-light py-1 mx-2">Dashboard</Link>
               <a href="/" className="btn btn-light py-1 mx-2" onClick={logout}>
                 Logout
