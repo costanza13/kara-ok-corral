@@ -14,7 +14,7 @@ const Nav = () => {
     return null
   }
   console.log(userData);
-  const user = userData.me;
+  const user = userData ? userData.me : {};
 
   const logout = event => {
     event.preventDefault();
