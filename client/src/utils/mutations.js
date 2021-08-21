@@ -43,3 +43,26 @@ export const SAVE_PLAYLIST = gql`
     }
   }
 `;
+
+export const UPDATE_SONG = gql`
+mutation updateSong($playlistId: ID!, $songId: ID, $songData: SongInfo!) {
+ updateSong(playlistId: $playlistId, songId: $songId, song: $songData) {
+   _id
+   name
+   createdAt
+   username
+   members
+   visibility
+   songs {
+     _id
+     title
+     artist
+     lyricsUrl
+     videoUrl
+     createdAt
+     username
+   }
+ }
+}
+
+`;

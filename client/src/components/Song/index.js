@@ -1,11 +1,22 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { UPDATE_SONG } from '../../utils/mutations';
 import Accordion from "react-bootstrap/Accordion";
-import Collapse from 'react-bootstrap/esm/Collapse';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import EasyEdit from 'react-easy-edit';
 
 const Song = ({ song }) => {
-   const [open, setOpen] = useState(false);
-
+   
    const [editStatus, setEditStatus] = useState(false);
+
+   const [updateSong, {data}] = useMutation(UPDATE_SONG);
+
+   const save = (value) => {updateSong({
+      variables: { ...data, songs: {artist: value}}
+   })}
+   const cancel = () => {}
 
    return (
       <div>
@@ -28,36 +39,40 @@ const Song = ({ song }) => {
             </form>
          </div>)}
 
-         {/* <Accordion flush>
+         <Accordion flush>
             <Accordion.Item eventKey="0">
                <Accordion.Header>{song.title}</Accordion.Header>
                <Accordion.Body>
-                     <p className="song-artist">{song.artist}</p>
+                     <Row>
+                        <Col>
+                           <p>{song.artist}</p>
+                        </Col>
+                        <Col>
+                           <i className="far fa-edit edit-song" onClick={() => setEditStatus(true)}></i>
+                        </Col>
+                        <Col><i class="fas fa-trash-alt delete-song"></i></Col>
+                     </Row>
                      <p><a href={song.lyricsUrl} target="_blank" rel="noreferrer">lyrics</a>{' - '}
                      <a href={song.videoUrl} target="_blank" rel="noreferrer">video</a></p>
-                     <button className="btn btn-primary edit-song" onClick={() => setEditStatus(true)}>edit</button>
-                     <button className="btn btn-primary delete-song">delete</button>
+                     
                </Accordion.Body>
             </Accordion.Item>
-         </Accordion> */}
+         </Accordion>
 
-         <div className="song-title">
-            <p onClick={() => setOpen(!open)} aria-controls="song-info" aria-expanded={open}>
-               {song.title}
-               {!open ? <i className="fas fa-angle-double-down fa-sm"></i> : <i className="fas fa-angle-double-up fa-sm"></i>}
-            </p>
-         </div>
-         <Collapse in={open}>
-            <div id="song-info">
-               <p className="song-artist">by: {song.artist}</p>
-               <p><a href={song.lyricsUrl} target="_blank" rel="noreferrer">lyrics</a>{' - '}
-                  <a href={song.videoUrl} target="_blank" rel="noreferrer">video</a></p>
-               <button className="btn btn-primary edit-song" onClick={() => setEditStatus(true)}>edit</button>
-               <button className="btn btn-primary delete-song">delete</button>
-            </div>
-         </Collapse>
       </div>
    );
 };
 
 export default Song;
+
+{
+  /* <EasyEdit
+                        type="text"
+                        value={song.artist}
+                        onSave={save}
+                        onCancel={cancel}
+                        saveButtonLabel="Save Me"
+                        cancelButtonLabel="Cancel Me"
+                        attributes={{ name: "song-title", id: 1}}
+                     /> */
+}

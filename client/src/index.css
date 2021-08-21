@@ -40,31 +40,16 @@ h2 {
   margin: 20px;
 }
 
-/* song component */
-.song-title {
-  padding: 5px;
-  background-color: white;
+.accordion-button {
+  background-color: rgba(252, 243, 238, .3);
+  color: var(--dark);
 }
 
-.song-title:hover {
+.accordion-button:not(.collapsed) {
+  color: var(--light);
+  background-color: rgba(39, 12, 1, .7);
+}
+
+.delete-song:hover {
   color: var(--red);
-}
-
-.song-title p {
-  font-size: 18px;
-  margin-left: 15px;
-}
-
-.song-title i {
-  margin-left: 30px;
-  
-}
-
-#song-info {
-  background-color: white;
-  padding-left: 25px;
-}
-
-.song-link {
-
 }
