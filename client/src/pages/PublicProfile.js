@@ -45,7 +45,6 @@ const PublicProfile = props => {
                 <h2 className="bg-dark text-secondary p-3 display-inline-block">
                     Viewing {userParam ? `${user.username}'s` : 'your'} profile.
                 </h2>
-                <p>
                     <ul>
                         {user.playlists.map((playlist) => {
                             
@@ -59,7 +58,6 @@ const PublicProfile = props => {
                             );
                         })}
                 </ul>
-                </p>
                 {userParam && (
                     <button className="btn ml-auto" onClick={handleClick}>
                         Add Friend

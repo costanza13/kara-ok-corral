@@ -14,14 +14,12 @@ const Nav = () => {
     return null
   }
   console.log(userData);
-  const user = userData.me;
+  const user = userData ? userData.me : {};
 
   const logout = event => {
     event.preventDefault();
     Auth.logout();
   };
-
-
 
   return (
     <header className="mb-4 py-2 flex-row align-center">
