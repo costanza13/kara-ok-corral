@@ -12,14 +12,13 @@ import Spinner from "react-bootstrap/Spinner";
 const PlaylistPage = () => {
   const { playlistId } = useParams();
   console.log('playlistId', playlistId);
-  const { loading, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
+  const { loading, error, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
 
   const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
 
-  // const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+console.log('playlistId', playlistId);
   // if data isn't here yet, say so
-  if (loading) {
+  if (!playlistData && loading) {
     return (
       <div className="spinner">
         <Spinner animation="border" role="status">
@@ -27,8 +26,10 @@ const PlaylistPage = () => {
         </Spinner>
       </div>
     );
+  } else if (error) {
+    console.log('error', error);
   }
-  console.log(playlistData);
+  console.log('playlistData', playlistData);
   const playlist = playlistId !== "new" ? playlistData.playlist : { _id: null, username: currentUser.username };
   const isOwner = playlist.username === currentUser.username;
 

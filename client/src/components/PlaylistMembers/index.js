@@ -16,11 +16,7 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
     );
   }
 
-  console.log('ME', data.me);
-
-  const friends = data.me.friends.map(friend => friend.username);
-
-  console.log('MY FREINDS', friends);
+  const friends = canEdit && data ? data.me.friends.map(friend => friend.username) : [];
 
   const handleAddMember = (e) => {
     const newMember = e.target.value;
