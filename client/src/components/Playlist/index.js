@@ -23,7 +23,7 @@ const Playlist = ({ playlistId }) => {
       variables: { playlistId: playlist._id, playlist: { name, visibility, members: updatedMembers } }
     });
 
-    playlist = await updatedPlaylist.playlist;
+    playlist = await updatedPlaylist.data.updatePlaylist;
     console.log('updated playlist', playlist);
   }
 

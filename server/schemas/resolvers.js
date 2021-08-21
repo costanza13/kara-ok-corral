@@ -148,7 +148,8 @@ const resolvers = {
             { _id: playlistId },
             { ...playlist, username: context.user.username },
             { new: true, runValidators: true }
-          );
+          )
+            .populate('songs');
 
         // if this is a new playlist, and it was created successfully, add it to the user's list of playlists
         if (!playlistId && updatedPlaylist) {
