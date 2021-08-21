@@ -17,7 +17,7 @@ const Nav = () => {
         <nav className="text-center">
           {Auth.loggedIn() ? (
             <>
-              <Link to="/profile">Me</Link>
+              <Link to="/dashboard">Me</Link>
               <a href="/" onClick={logout}>
                 Logout
       </a>
