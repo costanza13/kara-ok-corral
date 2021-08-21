@@ -26,6 +26,7 @@ const Playlist = ({ playlistId }) => {
     playlist = await updatedPlaylist.data.updatePlaylist;
   }
 
+  console.log(playlistData);
   playlist = playlistData.playlist;
   const isOwner = playlist.username === currentUser.username;
   const isMember = playlist.members.indexOf(currentUser.Usename) > -1;

@@ -18,6 +18,7 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
 
   const handleAddMember = (e) => {
     const newMember = e.target.value;
+    e.target.value = '';
     const updatedMembers = [...members];
     if (newMember) {
       if (members.indexOf(newMember) === -1 && friends.indexOf(newMember) !== -1) {
@@ -30,7 +31,7 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
   }
 
   const handleRemoveMember = async (e) => {
-    const memberButton = e.target.closest('li');
+    const memberButton = e.target.closest('span');
     const removeUsername = memberButton.dataset.member;
 
     const updatedMembers = members.filter(member => member !== removeUsername);
@@ -47,9 +48,9 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
 
   if (members.length) {
     const memberButtons = members.map(member => {
-      return <li key={member} className="btn btn-outline-primary member-button" data-member={member}>{member} {removeMemberButton}</li>
+      return <span key={member} className="btn btn-primary m-1 member-button" data-member={member}>{member} {removeMemberButton}</span>
     });
-    partyMembers = <ul>{memberButtons}</ul>
+    partyMembers = memberButtons;
   }
 
   // build the "add a memnber" list
@@ -57,18 +58,18 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
   console.log('left to add', leftToAdd);
 
   return (
-    <>
-      {partyMembers}{' '}
+    <div className="btn-group my-2" role="group">
+      {partyMembers}
       {
         canEdit && leftToAdd.length
-          ? 
-          <select defaultValue='' onChange={handleAddMember} className="btn btn-outline-primary member-button">
-            <option value='' disabled={true}>add a friend</option>
-            {leftToAdd.map(friend => { return <option>{friend}</option> } )}
+          ?
+          <select defaultValue='' onChange={handleAddMember} className="btn btn-outline-primary mx-1 member-button">
+            <option key='default' value='' disabled={true}>add a friend</option>
+            {leftToAdd.map(friend => { return <option key={friend} value={friend}>{friend}</option> })}
           </select>
           : ''
       }
-    </>
+    </div>
   );
 };
 
