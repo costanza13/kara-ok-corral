@@ -44,12 +44,10 @@ const Dashboard = () => {
     <Container>
       <Row>
         <Col>
-          <h2 className="username">
-            <span className="user-icon">
-              <i class="fas fa-hat-cowboy fa-sm"></i>
-            </span>
-            {user.username}
-          </h2>
+         <span className="user-icon">
+              <i class="fas fa-hat-cowboy fa-lg"></i>
+          </span>
+          <h2 className="username">{user.username}</h2>
         </Col>
         <Col>
           <p
