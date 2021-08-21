@@ -39,7 +39,7 @@ export const SAVE_PLAYLIST = gql`
   }
 `;
 
-export const UPDATE_SONG = gql`
+export const SAVE_SONG = gql`
   mutation updateSong($playlistId: ID!, $songId: ID, $songData: SongInfo!) {
     updateSong(playlistId: $playlistId, songId: $songId, song: $songData) {
       _id

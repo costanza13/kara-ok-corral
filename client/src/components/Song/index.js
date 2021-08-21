@@ -7,12 +7,49 @@ import Row from "react-bootstrap/Row";
 const Song = ({ song, saveSong }) => {
   const [editStatus, setEditStatus] = useState(false);
 
+  const isAddForm = !song;
   if (!song) {
-    song = { title: '', artist: '', lyricsUrl: '', videoUrl: '' }
+    song = { title: '', artist: '', lyricsUrl: '', videoUrl: '' };
+  }
+
+  const [formState, setFormState] = useState({ ...song });
+
+  if (!song) {
     if (!editStatus) setEditStatus(true);
   }
+
   const viewHeaderText = song.title ? song.title : <em>add a song...</em>;
   const editHeaderText = song.title ? 'Edit Song Details' : <em>Add A Song...</em>;
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    switch (e.target.id) {
+      case 'songTitle':
+        setFormState({ ...formState, title: value });
+        break;
+      case 'songArtist':
+        setFormState({ ...formState, artist: value });
+        break;
+      case 'lyricsUrl':
+        setFormState({ ...formState, lyricsUrl: value });
+        break;
+      case 'videoUrl':
+        setFormState({ ...formState, videoUrl: value });
+        break;
+      default:
+      // do nothing
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    saveSong(formState);
+    if (isAddForm) {
+      setFormState({ title: '', artist: '', lyricsUrl: '', videoUrl: '' })
+    } else {
+      setEditStatus(false);
+    }
+  };
 
   return (
     <div>
@@ -24,18 +61,18 @@ const Song = ({ song, saveSong }) => {
               <div className="song-form">
                 <form>
                   <div className="mb-3">
-                    <input type="text" className="form-control" id="songTitle" value={song.title} placeholder='title' />
+                    <input type="text" className="form-control" id="songTitle" value={formState.title} placeholder='title' onChange={handleChange} />
                   </div>
                   <div className="mb-3">
-                    <input type="text" className="form-control" id="songArtist" value={song.artist} placeholder='artist' />
+                    <input type="text" className="form-control" id="songArtist" value={formState.artist} placeholder='artist' onChange={handleChange} />
                   </div>
                   <div className="mb-3">
-                    <input type="url" className="form-control" id="lyrics" value={song.lyricsUrl} placeholder='lyrics URL' />
+                    <input type="url" className="form-control" id="lyricsUrl" value={formState.lyricsUrl} placeholder='lyrics URL' onChange={handleChange} />
                   </div>
                   <div className="mb-3">
-                    <input type="url" className="form-control" id="youtube" value={song.videoUrl} placeholder='karaoke video URL' />
+                    <input type="url" className="form-control" id="videoUrl" value={formState.videoUrl} placeholder='karaoke video URL' onChange={handleChange} />
                   </div>
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
                     add song
                   </button>
                 </form>
