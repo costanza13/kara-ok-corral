@@ -1,29 +1,27 @@
 import { gql } from '@apollo/client';
 
 export const LOGIN_USER = gql`
-    mutation login($email: String!, $password: String!) {
-        login(email: $email, password: $password) {
-            token
-            user {
-               
-                username
-            }
-        }
+  mutation login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
+      user {               
+        username
+      }
     }
-`
+  }
+`;
 
 export const ADD_USER = gql`
-    mutation addUser($username: String!, $email: String!, $password: String!) {
-        addUser(username: $username, email: $email, password: $password) {
-            token
-            user {
-            
-                username
-                email
-            }
-        }
+  mutation addUser($username: String!, $email: String!, $password: String!) {
+    addUser(username: $username, email: $email, password: $password) {
+      token
+      user {
+        username
+        email
+      }
     }
-`    
+  }
+`;
 
 export const SAVE_PLAYLIST = gql`
   mutation updatePlaylist($playlistId: ID, $playlist: PlaylistInfo!) {
@@ -42,24 +40,23 @@ export const SAVE_PLAYLIST = gql`
 `;
 
 export const UPDATE_SONG = gql`
-mutation updateSong($playlistId: ID!, $songId: ID, $songData: SongInfo!) {
- updateSong(playlistId: $playlistId, songId: $songId, song: $songData) {
-   _id
-   name
-   createdAt
-   username
-   members
-   visibility
-   songs {
-     _id
-     title
-     artist
-     lyricsUrl
-     videoUrl
-     createdAt
-     username
-   }
- }
-}
-
+  mutation updateSong($playlistId: ID!, $songId: ID, $songData: SongInfo!) {
+    updateSong(playlistId: $playlistId, songId: $songId, song: $songData) {
+      _id
+      name
+      createdAt
+      username
+      members
+      visibility
+      songs {
+        _id
+        title
+        artist
+        lyricsUrl
+        videoUrl
+        createdAt
+        username
+      }
+    }
+  }
 `;

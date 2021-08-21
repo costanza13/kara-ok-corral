@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../../utils/queries';
-import { SAVE_PLAYLIST, UPDATE_SONG } from '../../utils/mutations';
+import { SAVE_PLAYLIST } from '../../utils/mutations';
 import Auth from '../../utils/auth';
 import Song from '../Song';
 import PlaylistMembers from '../PlaylistMembers';
@@ -31,7 +31,6 @@ const Playlist = ({ playlistId }) => {
   const isMember = playlist.members.indexOf(currentUser.Usename) > -1;
 
   console.log('orig playlist', playlist);
-
 
   return (
     <>
