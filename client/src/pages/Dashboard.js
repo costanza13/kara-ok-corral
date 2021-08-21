@@ -80,7 +80,7 @@ const Dashboard = () => {
       <Row xs={1} md={2}>
         <Col>
           <div className="playlist-list">
-            <h3>Your Playlists</h3>
+            <h3 className="playlist-header">Your Playlists</h3>
             <ul>
               {user.playlists.map((playlist) => {
                 return (
@@ -108,7 +108,7 @@ const Dashboard = () => {
         </Col>
         <Col>
           <div className="playlist-list">
-            <h3>Party Playlists</h3>
+            <h3 className="playlist-header">Party Playlists</h3>
             {user.partyPlaylists.map((playlist) => {
               return (
                 <li key={"li" + playlist._id}>

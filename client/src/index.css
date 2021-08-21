@@ -1,7 +1,7 @@
 :root {
   --dark: #140601;
   --light: #FBEDDA;
-  --red: #E59824;
+  --red: #e7414f;
 }
 
 a {
@@ -38,6 +38,10 @@ h2 {
 
 .spinner {
   margin: 20px;
+}
+
+li {
+  list-style: none;
 }
 
 /* song styles */
@@ -99,4 +103,16 @@ h2 {
 .fa-glass-cheers {
   color: var(--red);
   margin-left: 5px;
+}
+
+.playlist-list {
+  margin-top: 15px;
+  margin-left: 10px;
+}
+
+.playlist-header {
+  background-color: var(--red);
+  color: var(--light);
+  font-weight: bold;
+  padding: 10px;
 }
