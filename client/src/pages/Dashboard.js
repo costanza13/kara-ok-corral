@@ -88,7 +88,13 @@ const Dashboard = () => {
                     <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
                       {playlist.name}
                     </Link>
-                    {playlist.members.length ? " (party)" : ""}
+                    {playlist.members.length ? (
+                      <span>
+                        <i class="fas fa-glass-cheers fa-sm"></i>
+                      </span>
+                    ) : (
+                      ""
+                    )}
                   </li>
                 );
               })}
