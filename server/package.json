@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "seeds": "node config/seeds.js",
     "start": "node server.js",
     "watch": "nodemon server.js"
   },
