@@ -7,6 +7,7 @@ const Nav = () => {
     event.preventDefault();
     Auth.logout();
   };
+
   return (
     <header className="mb-4 py-2 flex-row align-center">
       <div className="container flex-row justify-space-between-lg justify-center align-center">
@@ -17,17 +18,18 @@ const Nav = () => {
         <nav className="text-center">
           {Auth.loggedIn() ? (
             <>
-              <Link to="/dashboard">Me</Link>
-              <a href="/" onClick={logout}>
+              <Link to="/profile" className="btn btn-light py-1 mx-2">Profile</Link>
+              <Link to="/dashboard" className="btn btn-light py-1 mx-2">Dashboard</Link>
+              <a href="/" className="btn btn-light py-1 mx-2" onClick={logout}>
                 Logout
-      </a>
+              </a>
             </>
           ) : (
-              <>
-                <Link to="/login">Login</Link>
-                <Link to="/signup">Signup</Link>
-              </>
-            )}
+            <>
+              <Link to="/login">Login</Link>
+              <Link to="/signup">Signup</Link>
+            </>
+          )}
         </nav>
       </div>
     </header>

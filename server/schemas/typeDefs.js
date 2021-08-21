@@ -85,7 +85,7 @@ type Mutation {
   addUser(username: String!, email: String!, password: String!): Auth
   addFriend(friendId: ID!): User
   removeFriend(friend: ID!): User
-  updatePlaylist(playlistId: ID, playlist: PlaylistInfo!): User
+  updatePlaylist(playlistId: ID, playlist: PlaylistInfo!): Playlist
   removePlaylist(playlistId: ID!): User
   updateSong(playlistId: ID!, songId: ID, song: SongInfo!): Playlist
   removeSong(playlistId: ID!, songId: ID!): Playlist

@@ -1,7 +1,7 @@
 :root {
   --dark: #270C01;
   --light: #FCF3EE;
-  --red: #B61624;
+  --red: #DA1B2B;
 }
 
 a {
@@ -36,6 +36,20 @@ h2 {
   font-weight: bold;
 }
 
-.song-accordion {
-  background-color: var(--light);
+.spinner {
+  margin: 20px;
+}
+
+.accordion-button {
+  background-color: rgba(252, 243, 238, .3);
+  color: var(--dark);
+}
+
+.accordion-button:not(.collapsed) {
+  color: var(--light);
+  background-color: rgba(39, 12, 1, .7);
+}
+
+.delete-song:hover {
+  color: var(--red);
 }

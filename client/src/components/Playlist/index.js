@@ -1,81 +1,79 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../../utils/queries';
-import { SAVE_PLAYLIST } from '../../utils/mutations';
+import { SAVE_PLAYLIST, SAVE_SONG } from '../../utils/mutations';
+import Auth from '../../utils/auth';
 import Song from '../Song';
-import Row from 'react-bootstrap/Row';
+import PlaylistMembers from '../PlaylistMembers';
+import EasyEdit, { Types } from "react-easy-edit";
+
 
 const Playlist = ({ playlistId }) => {
-  const [editMode, setEditMode] = useState(false);
   const { loading, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
   const [updatePlaylist] = useMutation(SAVE_PLAYLIST);
+  const [updateSong] = useMutation(SAVE_SONG);
+
+  const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
 
   if (loading) {
-    return '';
+    return null;
   }
 
   let playlist;
-
-  const handleAddMember = (e) => {
-    e.preventDefault();
-
-    console.log('hello');
-
-    if (!editMode) {
-      return setEditMode(true);
-    }
-
-  }
-
-  const handleRemoveMember = async (e) => {
-    const memberButton = e.target.closest('span');
-    const removeUsername = memberButton.dataset.member;
-
-    const members = playlist.members.filter(member => member !== removeUsername);
-
-    console.log(memberButton);
-    console.log(removeUsername);
-    console.log('members', members);
-
+  const updateMembers = async (updatedMembers) => {
     const { name, visibility } = playlist;
-
     const updatedPlaylist = await updatePlaylist({
-      variables: { playlistId: playlist._id, playlist: { name, visibility, members } }
+      variables: { playlistId: playlist._id, playlist: { name, visibility, members: updatedMembers } }
     });
 
-    playlist = updatedPlaylist.playlist;
+    playlist = updatedPlaylist.data.updatePlaylist;
   }
+
+  const saveSong = async (songData) => {
+    const { title, artist, lyricsUrl, videoUrl } = songData;
+    const updatedPlaylist = await updateSong({
+      variables: { playlistId, songId: songData._id, songData: { title, artist, lyricsUrl, videoUrl } }
+    });
+
+    playlist = updatedPlaylist.data.updatePlaylist;
+  }
+
+  const save = value => {};
+  const cancel = value => {};
 
   console.log(playlistData);
   playlist = playlistData.playlist;
+  const isOwner = playlist.username === currentUser.username;
+  const isMember = playlist.members.indexOf(currentUser.Usename) > -1;
 
-  const partyFlag = playlist.members.length ? ' (party)' : '';
-  let partyMembers;
-  const removeMemberButton = editMode ? <i className="fas fa-minus-circle" onClick={handleRemoveMember}></i> : '';
-
-  if (playlist.members.length) {
-    const memberButtons = playlist.members.map(member => {
-      console.log(member);
-      return <span key={member} className="btn btn-outline-primary" data-member={member}>{member} {removeMemberButton}</span>
-    });
-    if (memberButtons.length) {
-      partyMembers = <p>with: {memberButtons} <button type="button" className="btn btn-link" onClick={handleAddMember}><i className="fas fa-plus-circle"></i></button></p>
-    }
-
-  } else {
-    partyMembers = <p><button type="button" className="btn btn-link" onClick={handleAddMember}><i className="fas fa-plus-circle"></i></button>{!editMode ? ' Add members to make this a party list!' : ''}</p>
-  }
+  console.log('orig playlist', playlist);
 
   return (
-      <Row>
-        <h5>{playlist.name + partyFlag}</h5>
-        {partyMembers}
-        <div className="song-list">
-          {playlist.songs.map((song) => {
-            return <Song key={song._id} song={song}></Song>;
-          })}
-        </div>
-      </Row>
+    <>
+      <h5>{playlist.name}</h5>
+      <EasyEdit
+        type={Types.TEXT}
+        value={playlist.name}
+        onSave={save}
+        onCancel={cancel}
+        hideSaveButton={true}
+        hideCancelButton={true}
+        saveOnBlur={true}
+        attributes={{ className: 'playlist-title' }}
+      />
+
+      <PlaylistMembers members={playlist.members} canEdit={isOwner} updateMembers={updateMembers} />
+      <div className="song-list">
+        {playlist.songs.map((song) => {
+          return <Song key={song._id} song={song} saveSong={saveSong}></Song>;
+        })}
+        {
+          isMember || isOwner
+            ? <Song key={'newsong'} song={null} saveSong={saveSong}></Song>
+            : ''
+        }
+      </div>
+    </>
   );
 };
 

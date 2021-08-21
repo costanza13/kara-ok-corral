@@ -148,16 +148,18 @@ const resolvers = {
             { _id: playlistId },
             { ...playlist, username: context.user.username },
             { new: true, runValidators: true }
-          );
+          )
+            .populate('songs');
 
-        const updatedUser = await User.findByIdAndUpdate(
-          { _id: context.user._id },
-          { $addToSet: { playlists: updatedPlaylist._id } },
-          { new: true }
-        )
-          .populate('playlists');
+        // if this is a new playlist, and it was created successfully, add it to the user's list of playlists
+        if (!playlistId && updatedPlaylist) {
+          const updatedUser = await User.update(
+            { _id: context.user._id },
+            { $addToSet: { playlists: updatedPlaylist._id } }
+          )
+        }
 
-        return updatedUser;
+        return updatedPlaylist;
       }
 
       throw new AuthenticationError('You need to be logged in to manage playlists!');
