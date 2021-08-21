@@ -1,7 +1,7 @@
 :root {
   --dark: #270C01;
   --light: #FCF3EE;
-  --red: #B61624;
+  --red: #DA1B2B;
 }
 
 a {
@@ -36,6 +36,35 @@ h2 {
   font-weight: bold;
 }
 
-.song-accordion {
-  background-color: var(--light);
+.spinner {
+  margin: 20px;
+}
+
+/* song component */
+.song-title {
+  padding: 5px;
+  background-color: white;
+}
+
+.song-title:hover {
+  color: var(--red);
+}
+
+.song-title p {
+  font-size: 18px;
+  margin-left: 15px;
+}
+
+.song-title i {
+  margin-left: 30px;
+  
+}
+
+#song-info {
+  background-color: white;
+  padding-left: 25px;
+}
+
+.song-link {
+
 }
