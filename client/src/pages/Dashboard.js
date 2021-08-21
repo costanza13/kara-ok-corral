@@ -62,7 +62,7 @@ const Dashboard = () => {
             <ul>
               {user.playlists.map((playlist) => {
                 return (
-                  <li>
+                  <li key={'li' + playlist._id}>
                     <Link
                       key={playlist._id}
                       to={`/playlist/${playlist._id}`}
@@ -71,6 +71,12 @@ const Dashboard = () => {
                   </li>
                 );
               })}
+              <li key={'linew_playlist'}>
+                <Link
+                 key={'new_playlist'}
+                 to={'/playlist/new'}
+                 ><em>create a new playlist &raquo;</em></Link>
+              </li>
             </ul>
           </div>
         </Col>
