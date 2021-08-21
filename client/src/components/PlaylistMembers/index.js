@@ -5,14 +5,9 @@ import { QUERY_ME } from '../../utils/queries';
 const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
   const { loading, userData } = useQuery(QUERY_ME);
 
-  let friends = [];
-  if (userData) {
-    console.log('playlist user', userData);
-    friends = userData.me.friends;
-  } else if (loading) {
-    console.log('loading user data...');
-    return null;
-  }
+  // const getFriendsList = async () => {
+  //   const friends = await userData
+  // }
 
   const handleAddMember = (e) => {
     const newMember = e.target.value;
@@ -45,7 +40,6 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
 
   if (members.length) {
     const memberButtons = members.map(member => {
-      console.log(member);
       return <li key={member} className="btn btn-outline-primary member-button" data-member={member}>{member} {removeMemberButton}</li>
     });
     partyMembers = <ul>{memberButtons}</ul>

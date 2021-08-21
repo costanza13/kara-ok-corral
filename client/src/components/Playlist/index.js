@@ -18,18 +18,21 @@ const Playlist = ({ playlistId }) => {
 
   let playlist;
   const updateMembers = async (updatedMembers) => {
-    const { name, visibility } = playlist; 
+    const { name, visibility } = playlist;
     const updatedPlaylist = await updatePlaylist({
       variables: { playlistId: playlist._id, playlist: { name, visibility, members: updatedMembers } }
     });
 
-    playlist = updatedPlaylist.playlist;
+    playlist = await updatedPlaylist.playlist;
+    console.log('updated playlist', playlist);
   }
 
   console.log(playlistData);
   playlist = playlistData.playlist;
   const isOwner = playlist.username === currentUser.username;
   const isMember = playlist.members.indexOf(currentUser.Usename) > -1;
+
+  console.log('orig playlist', playlist);
 
   return (
     <>
@@ -40,6 +43,11 @@ const Playlist = ({ playlistId }) => {
         {playlist.songs.map((song) => {
           return <Song key={song._id} song={song}></Song>;
         })}
+        {
+          isMember || isOwner
+            ? 'you can add songs'
+            : ''
+        }
       </div>
     </>
   );
