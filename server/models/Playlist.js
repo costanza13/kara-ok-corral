@@ -19,7 +19,7 @@ const playlistSchema = new Schema({
   members: [String],
   visibility: {
     type: String,
-    enum: ['private', 'public', 'shared'],
+    enum: ['private', 'public', 'friends'],
     default: 'private'
   },
   songs: [{

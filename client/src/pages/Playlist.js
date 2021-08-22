@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../utils/queries';
 import Playlist from '../components/Playlist';
+import PerformanceVideo from '../components/PerformanceVideo';
 import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -11,13 +12,14 @@ import Spinner from "react-bootstrap/Spinner";
 // import Confetti from "react-confetti";
 
 const PlaylistPage = () => {
+  const [currentSong, setCurrentSong] = useState(null);
   const { playlistId } = useParams();
   console.log('playlistId', playlistId);
   const { loading, error, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
 
   const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
 
-console.log('playlistId', playlistId);
+  console.log('playlistId', playlistId);
   // if data isn't here yet, say so
   if (!playlistData && loading) {
     return (
@@ -52,12 +54,24 @@ console.log('playlistId', playlistId);
   const playlist = playlistId !== "new" ? playlistData.playlist : { _id: null, username: currentUser.username };
   const isOwner = playlist.username === currentUser.username;
 
+  if (!currentSong) setCurrentSong({ name: 'song-with-performance ' });
+  const performanceVideo = currentSong ?
+    <Row>
+      <Col>
+        <PerformanceVideo song={currentSong} />
+      </Col>
+    </Row>
+    :
+    '';
+
+
   return (
     <Container className="mt-4">
       {/* <Confetti confettiSource={(-10, 40, 1, 0)} /> */}
       <Row>
         <Playlist key={playlist._id} playlistId={playlist._id}></Playlist>
       </Row>
+      {performanceVideo}
     </Container>
   );
 };
