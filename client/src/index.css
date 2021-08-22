@@ -118,6 +118,7 @@ li {
   font-weight: bold;
   padding: 10px;
   margin-bottom: 0;
+  border-radius: 6px 6px 0 0;
 }
 
 .playlist-name a {
@@ -140,6 +141,17 @@ em {
   border-color: var(--light);
 }
 
+.list-group-flush>.list-group-item:last-child {
+  border-radius: 0 0 6px 6px;
+}
+
+/* playlist page styles */
+
+.member-text {
+  font-weight: 600;
+  color: var(--yellow);
+  font-size: 20px;
+}
 #footer {
   position: fixed;
   padding: 10px 10px 0px 10px;

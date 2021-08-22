@@ -55,18 +55,6 @@ console.log('playlistId', playlistId);
     <Container>
       <Row xs={1} md={2}>
         <Col>
-          <div className="breadcrumb">
-            {
-              isOwner
-                ? <Link to="/dashboard">&larr; dashboard</Link>
-                : <Link to="/">&larr; home</Link>
-            }
-          </div>
-        </Col>
-      </Row>
-      <Row xs={1} md={2}>
-        <Col>
-          <h3>Playlist:</h3>
           <Playlist
             key={playlist._id}
             playlistId={playlist._id}
