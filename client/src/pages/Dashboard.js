@@ -48,9 +48,6 @@ const Dashboard = () => {
     ...user.partyPlaylists
   ];
 
-  // const personalPlaylists = user.playlists;
-  // const partyPlaylists = user.partyPlaylists;
-
   function FriendsOffCanvas() {
     const [show, setShow] = useState(false);
 
@@ -73,7 +70,7 @@ const Dashboard = () => {
   }
 
   return (
-    <Container>
+    <Container className="mt-4">
       <Row>
         <div className="user-info">
           <span>
@@ -118,7 +115,7 @@ const Dashboard = () => {
               {partyPlaylists.map((playlist) => {
                 return (
                   <ListGroup.Item key={"li" + playlist._id} className="playlist-name">
-                    <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
+                    <Link key={playlist._id} to={`/party/${playlist._id}`}>
                       {playlist.name}
                     </Link>
                     <span>

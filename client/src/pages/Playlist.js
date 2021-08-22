@@ -53,7 +53,7 @@ console.log('playlistId', playlistId);
   const isOwner = playlist.username === currentUser.username;
 
   return (
-    <Container>
+    <Container className="mt-4">
       {/* <Confetti confettiSource={(-10, 40, 1, 0)} /> */}
       <Row>
         <Playlist key={playlist._id} playlistId={playlist._id}></Playlist>

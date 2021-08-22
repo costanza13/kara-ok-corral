@@ -16,7 +16,11 @@ const AppNavBar = () => {
     return null
   }
   console.log(userData);
-  const user = userData ? userData.me : {};
+  const user = userData ? userData.me : null;
+
+  if (!user && Auth.loggedIn()) {
+    Auth.logout();
+  }
 
   const logout = event => {
     event.preventDefault();
