@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
-import Playlist from '../components/Playlist';
 import FriendList from '../components/FriendList';
 import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
@@ -10,6 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
@@ -81,45 +81,46 @@ const Dashboard = () => {
         <Col>
           <div className="playlist-list">
             <h3 className="playlist-header">Your Playlists</h3>
-            <ul>
+            <ListGroup variant="flush">
+              <ListGroup.Item key={"linew_playlist"} className="playlist-name">
+                <Link key={"new_playlist"} to={"/playlist/new"}>
+                  <em>create a new playlist &raquo;</em>
+                </Link>
+              </ListGroup.Item>
               {user.playlists.map((playlist) => {
                 return (
-                  <li key={"li" + playlist._id} className="playlist-name">
+                  <ListGroup.Item key={"li" + playlist._id} className="playlist-name">
                     <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
                       {playlist.name}
                     </Link>
                     {playlist.members.length ? (
                       <span>
                         <i class="fas fa-glass-cheers fa-sm"></i>
+                        <em>&raquo;</em>
                       </span>
                     ) : (
-                      ""
+                      <em>&raquo;</em>
                     )}
-                  </li>
+                  </ListGroup.Item>
                 );
               })}
-              <li key={"linew_playlist"} className="playlist-name">
-                <Link key={"new_playlist"} to={"/playlist/new"}>
-                  <em>create a new playlist &raquo;</em>
-                </Link>
-              </li>
-            </ul>
+            </ListGroup>
           </div>
         </Col>
         <Col>
           <div className="playlist-list">
             <h3 className="playlist-header">Party Playlists</h3>
-            <ul>
+            <ListGroup variant="flush">
               {user.partyPlaylists.map((playlist) => {
                 return (
-                  <li key={"li" + playlist._id} className="playlist-name">
+                  <ListGroup.Item key={"li" + playlist._id} className="playlist-name">
                     <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
-                      {playlist.name}
+                      {playlist.name} <em>&raquo;</em>
                     </Link>
-                  </li>
+                  </ListGroup.Item>
                 );
               })}
-            </ul>
+            </ListGroup>
           </div>
         </Col>
       </Row>
