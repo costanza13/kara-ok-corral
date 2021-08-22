@@ -5,6 +5,7 @@ import Auth from '../../utils/auth';
 import Song from '../Song';
 import PlaylistMembers from '../PlaylistMembers';
 import EasyEdit, { Types } from "react-easy-edit";
+import Col from 'react-bootstrap/Col';
 
 
 const Playlist = ({ playlistId }) => {
@@ -67,29 +68,36 @@ const Playlist = ({ playlistId }) => {
 
   return (
     <>
-      <h2>{playlist.name}</h2>
-      <EasyEdit
-        type={Types.TEXT}
-        value={playlist.name}
-        onSave={save}
-        onCancel={cancel}
-        hideSaveButton={true}
-        hideCancelButton={true}
-        saveOnBlur={true}
-        attributes={{ className: 'playlist-title' }}
-      />
-
-      <PlaylistMembers members={playlist.members} canEdit={isOwner} updateMembers={updateMembers} />
-      <div className="song-list">
+      <Col>
+        <h2>{playlist.name}</h2>
+        <EasyEdit
+          type={Types.TEXT}
+          value={playlist.name}
+          onSave={save}
+          onCancel={cancel}
+          hideSaveButton={true}
+          hideCancelButton={true}
+          saveOnBlur={true}
+          attributes={{ className: "playlist-title" }}
+        />
+      </Col>
+      <Col>
+        <PlaylistMembers
+          members={playlist.members}
+          canEdit={isOwner}
+          updateMembers={updateMembers}
+        />
+      </Col>
+      <Col className="song-list">
         {playlist.songs.map((song) => {
           return <Song key={song._id} song={song} saveSong={saveSong}></Song>;
         })}
-        {
-          (isMember || isOwner) && playlistId
-            ? <Song key={'newsong'} song={null} saveSong={saveSong}></Song>
-            : ''
-        }
-      </div>
+        {(isMember || isOwner) && playlistId ? (
+          <Song key={"newsong"} song={null} saveSong={saveSong}></Song>
+        ) : (
+          ""
+        )}
+      </Col>
     </>
   );
 };

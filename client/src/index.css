@@ -160,3 +160,11 @@ em {
   /* Height of the footer*/ 
   height: 40px;
 }
+
+.member-button {
+  color: var(--red);
+  padding: 7px;
+  margin: 5px;
+  font-weight: 600;
+  border-radius: 20px;
+}
