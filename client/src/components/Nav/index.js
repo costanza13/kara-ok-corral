@@ -9,81 +9,81 @@ import { useQuery } from '@apollo/client';
 
 const AppNavBar = () => {
 
-   const { loading, data: userData } = useQuery(QUERY_ME);
-   const [showModal, setShowModal] = useState(false);
+  const { loading, data: userData } = useQuery(QUERY_ME);
+  const [showModal, setShowModal] = useState(false);
 
-   if (loading) {
-      return null
-   }
-   console.log(userData);
-   const user = userData ? userData.me : {};
+  if (loading) {
+    return null
+  }
+  console.log(userData);
+  const user = userData ? userData.me : {};
 
-   const logout = event => {
-      event.preventDefault();
-      Auth.logout();
-   };
+  const logout = event => {
+    event.preventDefault();
+    Auth.logout();
+  };
 
-   return (
-      <>
+  return (
+    <>
       <header className="mb-4 py-2 flex-row align-center">
-         <div className="container flex-row justify-space-between-lg justify-center align-center">
-            <Link to="/">
-               <h1>The Kara-OK-Corral</h1>
-            </Link>
+        <div className="container flex-row justify-space-between-lg justify-center align-center">
+          <Link to="/">
+            <h1>The Kara-OK-Corral</h1>
+          </Link>
 
-            <nav className="text-center">
+          <nav className="text-center">
 
-               {Auth.loggedIn() ? (
-                  <>
-                     <Link to={`/profile/${user.username}`} className="btn btn-light py-1 mx-2">Profile</Link>
-                     <Link to="/dashboard" className="btn btn-light py-1 mx-2">Dashboard</Link>
-                     <a href="/" className="btn btn-light py-1 mx-2" onClick={logout}>
-                        Logout
-                     </a>
-                  </>
-                  ) : (
-                        <Nav.Link onClick={() => setShowModal(true)}>Login/Sign Up</Nav.Link>
+            {Auth.loggedIn() ? (
+              <>
+                <Nav.Link to={`/profile/${user.username}`} className="btn btn-light py-1 mx-2 d-inline-block">Profile</Nav.Link>
+                <Nav.Link to="/dashboard" className="btn btn-light py-1 mx-2 d-inline-block">Dashboard</Nav.Link>
+                <a href="/" className="btn btn-light py-1 mx-2 d-inline-block" onClick={logout}>
+                  Logout
+                </a>
+              </>
+            ) : (
+              <Nav.Link onClick={() => setShowModal(true)} className="btn btn-light py-1 mx-2 d-inline-block">Login/Sign Up</Nav.Link>
 
-               )}
-            </nav>
-         </div>
+            )}
+          </nav>
+        </div>
       </header>
 
-         {/* set modal data up */}
-         <Modal
-            size='lg'
-            show={showModal}
-            onHide={() => setShowModal(false)}
-            aria-labelledby='signup-modal'>
-            {/* tab container to do either signup or login component */}
-            <Tab.Container defaultActiveKey='login'>
-               <Modal.Header closeButton>
-                  <Modal.Title id='signup-modal'>
-                     <Nav variant='pills'>
-                        <Nav.Item>
-                           <Nav.Link eventKey='login'>Login</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                           <Nav.Link eventKey='signup'>Sign Up</Nav.Link>
-                        </Nav.Item>
-                     </Nav>
-                  </Modal.Title>
-               </Modal.Header>
-               <Modal.Body>
-                  <Tab.Content>
-                     <Tab.Pane eventKey='login'>
-                        <LoginForm handleModalClose={() => setShowModal(false)} />
-                     </Tab.Pane>
-                     <Tab.Pane eventKey='signup'>
-                        <SignUpForm handleModalClose={() => setShowModal(false)} />
-                     </Tab.Pane>
-                  </Tab.Content>
-               </Modal.Body>
-            </Tab.Container>
-         </Modal>
-      </>
-   );
-         
+      {/* set modal data up */}
+      <Modal
+        size='lg'
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        aria-labelledby='signup-modal'>
+        {/* tab container to do either signup or login component */}
+        <Tab.Container defaultActiveKey='login'>
+          <Modal.Header closeButton>
+            <Modal.Title id='signup-modal'>
+              <Nav variant='pills'>
+                <Nav.Item>
+                  <Nav.Link eventKey='login'>Login</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey='signup'>Sign Up</Nav.Link>
+                </Nav.Item>
+              </Nav>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Tab.Content>
+              <Tab.Pane eventKey='login'>
+                <LoginForm handleModalClose={() => setShowModal(false)} />
+              </Tab.Pane>
+              <Tab.Pane eventKey='signup'>
+                <SignUpForm handleModalClose={() => setShowModal(false)} />
+              </Tab.Pane>
+            </Tab.Content>
+          </Modal.Body>
+        </Tab.Container>
+      </Modal>
+    </>
+  );
+
 };
-         
+
 export default AppNavBar;
