@@ -8,13 +8,13 @@ const Song = ({ song, canEdit, saveSong }) => {
   const [editStatus, setEditStatus] = useState(false);
 
   const isAddForm = !song;
-  if (!song) {
+  if (isAddForm) {
     song = { title: '', artist: '', lyricsUrl: '', videoUrl: '' };
   }
 
   const [formState, setFormState] = useState({ ...song });
 
-  if (!song) {
+  if (isAddForm) {
     if (!editStatus) setEditStatus(true);
   }
 

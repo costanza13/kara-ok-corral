@@ -87,3 +87,14 @@ export const QUERY_USER = gql`
     }
   }
 `;
+
+export const QUERY_STATS = gql`
+  query getStats {
+  stats {
+    userCount
+    performanceCount
+    playlistCount
+    songCount
+  }
+}
+`;
