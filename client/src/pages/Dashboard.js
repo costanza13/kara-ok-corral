@@ -95,7 +95,7 @@ const Dashboard = () => {
                     </Link>
                     {playlist.members.length ? (
                       <span>
-                        <i class="fas fa-glass-cheers fa-sm"></i>
+                        <i className="fas fa-glass-cheers fa-sm"></i>
                         <em>&raquo;</em>
                       </span>
                     ) : (

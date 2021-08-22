@@ -82,7 +82,8 @@ const Playlist = ({ playlistId }) => {
       <PlaylistMembers members={playlist.members} canEdit={isOwner} updateMembers={updateMembers} />
       <div className="song-list">
         {playlist.songs.map((song) => {
-          return <Song key={song._id} song={song} saveSong={saveSong}></Song>;
+          const canEdit = currentUser.username === song.username;
+          return <Song key={song._id} song={song} canEdit={canEdit} saveSong={saveSong}></Song>;
         })}
         {
           (isMember || isOwner) && playlistId
