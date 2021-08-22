@@ -27,9 +27,27 @@ console.log('playlistId', playlistId);
       </div>
     );
   } else if (error) {
-    console.log('error', error);
+    if (error.toString().indexOf('NOT FOUND:') > -1) {
+      return (
+        <>
+          <h1 className='display-2'>Not Found!</h1>
+          <h2>We could not find the playlist you're looking for.</h2>
+        </>
+      )
+    }
+    if (error.message.indexOf('NOT AUTHORIZED:') > -1) {
+      return (
+        <>
+          <h1 className='display-2'>Not AUTHORIZED!</h1>
+          <h2>{
+            Auth.loggedIn()
+              ? 'You do not have permission to view this playlist.'
+              : 'You might need to be logged in to view this playlist.'
+          }</h2>
+        </>
+      )
+    }
   }
-  console.log('playlistData', playlistData);
   const playlist = playlistId !== "new" ? playlistData.playlist : { _id: null, username: currentUser.username };
   const isOwner = playlist.username === currentUser.username;
 

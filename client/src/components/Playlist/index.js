@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../../utils/queries';
 import { SAVE_PLAYLIST, SAVE_SONG } from '../../utils/mutations';
@@ -62,7 +61,7 @@ const Playlist = ({ playlistId }) => {
   playlist = playlistId ? playlistData.playlist : { username: currentUser.username, name: 'Give us a name, eh?', visibility: 'private', members: [], songs: [] };
 
   const isOwner = playlist.username === currentUser.username;
-  const isMember = playlist.members.indexOf(currentUser.Usename) > -1;
+  const isMember = playlist.members.indexOf(currentUser.username) > -1;
 
   console.log('orig playlist', playlist);
 

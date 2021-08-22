@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
-import Playlist from '../components/Playlist';
 import FriendList from '../components/FriendList';
 import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
