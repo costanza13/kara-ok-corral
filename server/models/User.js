@@ -30,7 +30,7 @@ const userSchema = new Schema(
       ref: 'Playlist'
     }],
     friends: [{
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: 'User'
     }]
   },
