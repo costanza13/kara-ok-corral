@@ -92,6 +92,7 @@ export const QUERY_USERS = gql`
   query getUsers {
  
   users {
+    _id
     username
     
   }

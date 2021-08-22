@@ -36,8 +36,8 @@ const PublicProfile = props => {
     // }
     const handleInputOnChange = e => {
         setValue(e.target.value) 
-        const usernames = usersData.users.map(user => user.username)
-        const searcher = new fuzzySearch({source: usernames});
+        // const usernames = usersData.users.map(user => user.username)
+        const searcher = new fuzzySearch({source: usersData.users, keys:["username"]});
         setFuzzyValue(searcher.search(e.target.value))
     }
 
@@ -80,8 +80,8 @@ const PublicProfile = props => {
                         <input value={value} onChange={handleInputOnChange} type="text" />
                          
                         {(fuzzyValue.length > 0 && <div>
-                        {fuzzyValue.map(user => <button className="btn ml-auto" onClick={() => handleClick(user)}>
-                         Add {user}
+                        {fuzzyValue.map(user => <button className="btn ml-auto" onClick={() => handleClick(user._id)}>
+                         Add {user.username}
                      </button>)}
                         </div>)} 
                         
