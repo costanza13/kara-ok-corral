@@ -10,6 +10,7 @@ import Nav from './components/Nav';
 import Login from './components/LoginForm';
 import Signup from './components/SignupForm';
 import PublicProfile from './pages/PublicProfile';
+import Footer from './components/Footer';
 
 
 const httpLink = createHttpLink({
@@ -37,6 +38,7 @@ function App() {
       <Router>
         <>
           <Nav />
+       
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/dashboard" component={Dashboard} />
@@ -47,9 +49,13 @@ function App() {
             <Route path="/profile/:username" component={PublicProfile} />
             <Route render={() => <h1 className='display-2'>Wrong page!</h1>} />
           </Switch>
+        
         </>
       </Router>
+      <Footer />
+    
     </ApolloProvider>
+    
   );
 }
 
