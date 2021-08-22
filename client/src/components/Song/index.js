@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-
+import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/button';
+import Collapse from 'react-bootstrap/Collapse';
 
 const Song = ({ song, canEdit, saveSong }) => {
+  const [open, setOpen] = useState(false);
   const [editStatus, setEditStatus] = useState(false);
 
   const isAddForm = !song;
@@ -20,8 +23,8 @@ const Song = ({ song, canEdit, saveSong }) => {
 
   const viewHeaderText = song.title ? (
     <Row>
-      <Col xs={10}>
-        <span>{song.title}</span> // <span>{song.artist}</span>
+      <Col xs={9}>
+        <span>{song.title}</span> <br></br> <span>{song.artist}</span>
         <br></br>
         <span>
           <a href={song.lyricsUrl} target="_blank" rel="noreferrer">
@@ -35,7 +38,7 @@ const Song = ({ song, canEdit, saveSong }) => {
           </a>
         </span>
       </Col>
-      <Col xs={2} onClick={() => setEditStatus(true)}>
+      <Col xs={{span: 1, offset: 1}} onClick={() => setEditStatus(true)} className="d-flex justify-content-start">
         <span className="edit-song">
           <i
             className="far fa-edit mx-1"
@@ -79,56 +82,116 @@ const Song = ({ song, canEdit, saveSong }) => {
     }
   };
 
-  return (
-    <div>
-      {editStatus ?
-        (<Accordion flush>
-          <Accordion.Item eventKey="0">
-            <Accordion.Header>{editHeaderText}</Accordion.Header>
-            <Accordion.Body>
-              <div className="song-form">
-                <form>
-                  <div className="mb-3">
-                    <input type="text" className="form-control" id="songTitle" value={formState.title} placeholder='title' onChange={handleChange} />
-                  </div>
-                  <div className="mb-3">
-                    <input type="text" className="form-control" id="songArtist" value={formState.artist} placeholder='artist' onChange={handleChange} />
-                  </div>
-                  <div className="mb-3">
-                    <input type="url" className="form-control" id="lyricsUrl" value={formState.lyricsUrl} placeholder='lyrics URL' onChange={handleChange} />
-                  </div>
-                  <div className="mb-3">
-                    <input type="url" className="form-control" id="videoUrl" value={formState.videoUrl} placeholder='karaoke video URL' onChange={handleChange} />
-                  </div>
-                  <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
-                    add song
-                  </button>
-                </form>
+  function EditCollapse() {
+    return (
+      <>
+        <Button
+          onClick={() => setOpen(!open)}
+          aria-controls="editSong-collapse-text"
+          aria-expanded={open}
+        >
+          edit
+        </Button>
+        <Collapse
+          in={open}
+        >
+          <div className="song-form">
+            <form onKeyUp={() => setOpen(!open)}>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  id={song.title}
+                  value={formState.title}
+                  placeholder="title"
+                  onChange={handleChange}
+                />
               </div>
-            </Accordion.Body>
-          </Accordion.Item>
-        </Accordion>)
-        :
-        (<Accordion flush>
-          <Accordion.Item eventKey="0">
-            <Accordion.Header>{viewHeaderText}</Accordion.Header>
-            <Accordion.Body>
-              <Row>
-                {
-                  canEdit
-                    ? <Col>
-                      <i className="fas fa-trash-alt delete-song mx-1"></i>
-                    </Col>
-                    : ''
-                }
-              </Row>
-            </Accordion.Body>
-          </Accordion.Item>
-        </Accordion>)
-      }
-    </div>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  id={song.artist}
+                  value={formState.artist}
+                  placeholder="artist"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="url"
+                  className="form-control"
+                  id={song.lyricsUrl}
+                  value={formState.lyricsUrl}
+                  placeholder="lyrics URL"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="mb-3">
+                <input
+                  type="url"
+                  className="form-control"
+                  id={song.videoUrl}
+                  value={formState.videoUrl}
+                  placeholder="karaoke video URL"
+                  onChange={handleChange}
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                onClick={handleSubmit}
+              >
+                update
+              </button>
+            </form>
+          </div>
+        </Collapse>
+      </>
+    );
+  }
+
+  return (
+    <ListGroup>
+      <ListGroup.Item>
+        {song.title ? (
+          <Row>
+            <Col xs={12}>
+              <span>{song.title}</span> <br></br> <span>{song.artist}</span>
+              <br></br>
+              <span>
+                <a href={song.lyricsUrl} target="_blank" rel="noreferrer">
+                  lyrics
+                </a>{" "}
+              </span>
+              //{" "}
+              <span>
+                <a href={song.videoUrl} target="_blank" rel="noreferrer">
+                  video
+                </a>
+              </span>
+            </Col>
+            <Col xs={12}>
+              <EditCollapse />
+            </Col>
+          </Row>
+        ) : (
+          <em>add a song...</em>
+        )}
+      </ListGroup.Item>
+    </ListGroup>
   );
 };
+
+// {
+//   canEdit ? (
+//     <Col>
+//       <i className="fas fa-trash-alt delete-song mx-1"></i>
+//     </Col>
+//   ) : (
+//     ""
+//   );
+// }
 
 export default Song;
 
