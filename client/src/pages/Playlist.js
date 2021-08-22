@@ -40,7 +40,7 @@ console.log('playlistId', playlistId);
         <>
           <h1 className='display-2'>Not AUTHORIZED!</h1>
           <h2>{
-            Auth.loggedIn
+            Auth.loggedIn()
               ? 'You do not have permission to view this playlist.'
               : 'You might need to be logged in to view this playlist.'
           }</h2>

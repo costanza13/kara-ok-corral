@@ -57,7 +57,6 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
 
   // build the "add a memnber" list
   const leftToAdd = friends.filter(friend => members.indexOf(friend) === -1);
-  console.log('left to add', leftToAdd);
 
   return (
     <div className="btn-group my-2 d-inline-block" role="group">

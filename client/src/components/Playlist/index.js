@@ -61,7 +61,7 @@ const Playlist = ({ playlistId }) => {
   playlist = playlistId ? playlistData.playlist : { username: currentUser.username, name: 'Give us a name, eh?', visibility: 'private', members: [], songs: [] };
 
   const isOwner = playlist.username === currentUser.username;
-  const isMember = playlist.members.indexOf(currentUser.Usename) > -1;
+  const isMember = playlist.members.indexOf(currentUser.username) > -1;
 
   console.log('orig playlist', playlist);
 
