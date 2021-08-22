@@ -61,17 +61,38 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
 
   return (
     <div className="btn-group my-2 d-inline-block" role="group">
-      {members.length === 0 && canEdit ? <span className='h-100 align-middle'>Add your friends to make this a party list!</span> : members.length !== 0 ? <span className='d-inline-block h-100 align-middle'>Members: </span> : ''}
+      {members.length === 0 && canEdit ? (
+        <span className="h-100 align-middle member-text">
+          Add your friends to make this a party list!
+        </span>
+      ) : members.length !== 0 ? (
+        <span className="d-inline-block h-100 align-middle member-text">
+          Members {" "}
+        </span>
+      ) : (
+        ""
+      )}
       {partyMembers}
-      {
-        canEdit && leftToAdd.length
-          ?
-          <select defaultValue='' onChange={handleAddMember} className="btn btn-outline-primary mx-1 member-button">
-            <option key='default' value='' disabled={true}>add a friend</option>
-            {leftToAdd.map(friend => { return <option key={friend} value={friend}>{friend}</option> })}
-          </select>
-          : ''
-      }
+      {canEdit && leftToAdd.length ? (
+        <select
+          defaultValue=""
+          onChange={handleAddMember}
+          className="btn btn-outline-primary mx-1 member-button"
+        >
+          <option key="default" value="" disabled={true}>
+            add a friend
+          </option>
+          {leftToAdd.map((friend) => {
+            return (
+              <option key={friend} value={friend}>
+                {friend}
+              </option>
+            );
+          })}
+        </select>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

@@ -68,7 +68,7 @@ const Playlist = ({ playlistId }) => {
 
   return (
     <>
-      <h5>{playlist.name}</h5>
+      <h2>{playlist.name}</h2>
       <EasyEdit
         type={Types.TEXT}
         value={playlist.name}
