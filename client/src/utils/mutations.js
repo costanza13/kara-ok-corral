@@ -24,21 +24,20 @@ export const ADD_USER = gql`
 `;
 
 export const SAVE_PLAYLIST = gql`
-  mutation updatePlaylist($playlistId: ID, $playlist: PlaylistInfo!) {
-    updatePlaylist(playlistId: $playlistId, playlist: $playlist) {
+mutation updatePlaylist($playlistId: ID, $playlist: PlaylistInfo!) {
+  updatePlaylist(playlistId: $playlistId, playlist: $playlist) {
+    _id
+    name
+    members
+    visibility
+    songs {
       _id
-      name
-      members
-      visibility
-      songs {
-        _id
-        title
-        artist
-      }
+      title
+      artist
     }
   }
+}
 `;
-
 export const SAVE_SONG = gql`
   mutation updateSong($playlistId: ID!, $songId: ID, $songData: SongInfo!) {
     updateSong(playlistId: $playlistId, songId: $songId, song: $songData) {
@@ -59,18 +58,19 @@ export const SAVE_SONG = gql`
       }
     }
   }
+  
 `;
 
 export const ADD_FRIEND = gql`
-  mutation addFriend($friendId: ID!) {
-    addFriend(friendId: $friendId) {
-      
+  mutation addFriend($username: String!) {
+    addFriend(friendUsername: $username) {
+     
       username
       friends {
-    
-      username
+       
+        username
+      }
     }
   }
- }
  
 `;

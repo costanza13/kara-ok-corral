@@ -36,16 +36,17 @@ const PublicProfile = props => {
     // }
     const handleInputOnChange = e => {
         setValue(e.target.value) 
-        // const usernames = usersData.users.map(user => user.username)
-        console.log(usersData)
+        //console.log(usersData)
+        const usernames = usersData.users.map(user => user.username)
+
         const searcher = new fuzzySearch({source: usersData.users, keys:["username"]});
         setFuzzyValue(searcher.search(e.target.value))
     }
 
-    const handleClick = async (userid) => {
+    const handleClick = async (username) => {
         try {
             await addFriend({
-                variables: { friendId: userid}
+                variables: {username}
             });
         } catch (e) {
             console.error(e);
@@ -81,7 +82,7 @@ const PublicProfile = props => {
                         <input value={value} onChange={handleInputOnChange} type="text" />
                          
                         {(fuzzyValue.length > 0 && <div>
-                        {fuzzyValue.map(user => <button className="btn ml-auto" onClick={() => handleClick(user._id)}>
+                        {fuzzyValue.map(user => <button className="btn ml-auto" onClick={() => handleClick(user.username)}>
                          Add {user.username}
                      </button>)}
                         </div>)} 

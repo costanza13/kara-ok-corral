@@ -176,3 +176,32 @@ em {
   border-color: var(--turq);
   color: var(--yellow);
 }
+
+.jumbo {
+  /* Photo by Alena Darmel from Pexels */
+  padding-top: 0px;
+  margin-top: 0px;
+  align-items: center;
+  text-align: center;
+  height: 500px;
+  background-image: url('../src/assets/pexels-alena-darmel-7715793.jpg');
+  background-repeat: norepeat, repeat;
+  background-position: relative;
+  background-size: cover;
+  font-weight: bold;
+  }
+
+  .jumbo-text {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  color: #FBEDDA;
+  }
+
+  .jumbo-span {
+  color: #E59824;
+  }

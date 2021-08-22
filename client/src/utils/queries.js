@@ -92,9 +92,14 @@ export const QUERY_USERS = gql`
   query getUsers {
  
   users {
-    _id
+    
     username
     
   }
  }
+ `;
+export const QUERY_STATS = gql`
+  query stats {
+    SiteStats
+  }
 `;

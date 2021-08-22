@@ -28,6 +28,7 @@ type PlaylistName {
 }
 
 type UserBasic {
+ 
   username: String
   playlists: [PlaylistName]
   playlistCount: Int
@@ -84,7 +85,7 @@ type Mutation {
   login(email: String!, password: String!): Auth
   addUser(username: String!, email: String!, password: String!): Auth
   addFriend(friendUsername: String!): User
-  removeFriend(friend: ID!): User
+  removeFriend(friendUsername: String!): User
   updatePlaylist(playlistId: ID, playlist: PlaylistInfo!): Playlist
   removePlaylist(playlistId: ID!): User
   updateSong(playlistId: ID!, songId: ID, song: SongInfo!): Playlist

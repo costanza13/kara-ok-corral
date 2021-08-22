@@ -128,26 +128,33 @@ const resolvers = {
     },
     addFriend: async (parent, { friendUsername }, context) => {
       if (context.user) {
-        const updatedUser = await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $addToSet: { friends: friendUsername } },
-          { new: true }
-        )
-          .populate('friends');
+        const friend = await User.findOne({ username: friendUsername });
+
+        const updatedUser = friend
+          ? await User.findOneAndUpdate(
+            { _id: context.user._id },
+            { $addToSet: { friends: friend._id } },
+            { new: true }
+          ).populate('friends')
+          : await User.findOne({ _id: context.user._id })
+            .populate('friends');
 
         return updatedUser;
       }
 
       throw new AuthenticationError('You need to be logged in to add friends!');
     },
-    removeFriend: async (parent, { friendId }, context) => {
+    removeFriend: async (parent, { friendUsername }, context) => {
       if (context.user) {
-        const updatedUser = await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $pull: { friends: friendId } },
-          { new: true }
-        )
-          .populate('friends');
+        const friend = await User.findOne({ username: friendUsername });
+        const updatedUser = friend
+          ? await User.findOneAndUpdate(
+            { _id: context.user._id },
+            { $pull: { friends: friend._id } },
+            { new: true }
+          ).populate('friends')
+          : await User.findOne({ _id: context.user._id })
+            .populate('friends');
 
         return updatedUser;
       }

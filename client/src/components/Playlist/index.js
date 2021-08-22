@@ -94,7 +94,7 @@ const Playlist = ({ playlistId }) => {
           return <Song key={song._id} song={song} canEdit={canEdit} saveSong={saveSong}></Song>;
         })}
         {(isMember || isOwner) && playlistId ? (
-          <Song key={"newsong"} song={null} saveSong={saveSong}></Song>
+          <Song key={"newsong"} song={null} canEdit={true} saveSong={saveSong}></Song>
         ) : (
           ""
         )}
