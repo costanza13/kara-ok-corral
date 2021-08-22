@@ -144,6 +144,7 @@ em {
 
 .list-group-flush>.list-group-item:last-child {
   border-radius: 0 0 6px 6px;
+  box-shadow: 15px 18px 15px -15px rgba(39, 12, 1, .4);
 }
 
 /* playlist page styles */
