@@ -3,6 +3,19 @@ const { gql } = require('apollo-server-express');
 
 // create our typeDefs
 const typeDefs = gql`
+type Reaction {
+  reactionId: ID
+  username: String
+  reactionBody: String
+  createdAt: String
+}
+
+type Performance {
+  _id: ID
+  performanceUrl: String
+  reactions: [Reaction]
+}
+
 type Song {
   _id: ID
   title: String
@@ -11,6 +24,7 @@ type Song {
   videoUrl: String
   createdAt: String
   username: String
+  performance: Performance
 }
 
 type Playlist {
@@ -41,6 +55,7 @@ type User {
   playlistCount: Int
   playlists: [Playlist]
   partyPlaylists: [Playlist]
+  performances: [Performance]
 }
 
 type Auth {
@@ -78,6 +93,7 @@ type Query {
   playlist(_id: ID!): Playlist
   songs: [Song]
   song(_id: ID!): Song
+  publicPerformances(username: String): [Song]
 }
 
 type Mutation {
