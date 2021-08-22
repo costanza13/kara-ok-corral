@@ -53,7 +53,7 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
       return (
         <span
           key={member}
-          className="btn btn-outline-warning member-button"
+          className="btn member-button"
           data-member={member}
         >
           {member} {removeMemberButton}
@@ -80,27 +80,30 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
         ""
       )}
       <div className="party-members">
-        {partyMembers}
-        {canEdit && leftToAdd.length ? (
-          <select
-            defaultValue=""
-            onChange={handleAddMember}
-            className="btn btn-outline-warning member-button add-member-button"
-          >
-            <option key="default" value="" disabled={true}>
-              add a friend
-            </option>
-            {leftToAdd.map((friend) => {
-              return (
-                <option key={friend} value={friend}>
-                  {friend}
-                </option>
-              );
-            })}
-          </select>
-        ) : (
-          ""
-        )}
+       
+          {canEdit && leftToAdd.length ? (
+            <select
+              defaultValue=""
+              onChange={handleAddMember}
+              className="btn btn-outline add-member-button"
+            >
+              <option key="default" value="" disabled={true}>
+                add a friend
+              </option>
+              {leftToAdd.map((friend) => {
+                return (
+                  <option key={friend} value={friend}>
+                    {friend}
+                  </option>
+                );
+              })}
+            </select>
+          ) : (
+            ""
+          )}
+
+          {partyMembers}
+        
       </div>
     </div>
   );

@@ -28,6 +28,15 @@ header {
   background-color: var(--dark);
 }
 
+#footer {
+  position: fixed;
+  padding: 10px 10px 0px 10px;
+  bottom: 0;
+  width: 100%;
+  /* Height of the footer*/ 
+  height: 40px;
+}
+
 h1 {
   font-family: becker-gothics-concave, serif;
   font-style: normal;
@@ -51,15 +60,30 @@ li {
 .accordion-button {
   background-color: rgba(252, 243, 238, .3);
   color: var(--dark);
+  
 }
 
 .accordion-button:not(.collapsed) {
-  color: var(--light);
-  background-color: rgba(39, 12, 1, .7);
+  background-color: rgba(252, 243, 238, .3);
+  color: var(--dark);
+  
 }
+
+.accordion-button:not(.collapsed)::after {
+  background-image: none;
+}
+
+.accordion-button::after {
+  background-image: none;
+}
+
 
 .delete-song:hover {
   color: var(--yellow);
+}
+
+.edit-song {
+  padding-left: 40px;
 }
 
 /* dashboard styles */
@@ -87,6 +111,7 @@ li {
   color: var(--yellow);
   font-size: 15px;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .friends-toggle:hover {
@@ -144,37 +169,47 @@ em {
 
 .list-group-flush>.list-group-item:last-child {
   border-radius: 0 0 6px 6px;
+  box-shadow: 15px 18px 15px -15px rgba(39, 12, 1, .4);
 }
 
-/* playlist page styles */
+/* playlist page styles, member styles */
+.btn-group {
+  display: flex;
+}
+
+.party-members {
+  padding: 5px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--yellow);
+}
 
 .member-text {
   font-weight: 600;
   color: var(--yellow);
   font-size: 20px;
 }
-#footer {
-  position: fixed;
-  padding: 10px 10px 0px 10px;
-  bottom: 0;
-  width: 100%;
-  /* Height of the footer*/ 
-  height: 40px;
-}
-
-.member-button {
-  color: var(--turq);
-  border-color: var(--yellow);
-  border-width: 2px;
-  padding: 7px;
-  margin: 5px;
-  font-weight: 600;
-  border-radius: 20px;
-}
 
 .add-member-button {
-  border-color: var(--turq);
+  border-color: none;
   color: var(--yellow);
+  border-radius: 50px;
+  padding: 4px;
+  margin-left: 5px;
+  background-color: var(--xtra-light);
+  box-shadow: 6px 6px 6px 0 rgba(39, 12, 1, .1);
+} 
+
+.member-button {
+  border-radius: 50px;
+  padding: 3px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: rgba(229, 152, 36, .8);
+  margin: 6px 5px 6px 6px;
+  border-color: none;
+  color: var(--xtra-light);
+  box-shadow: 6px 6px 6px 1px rgba(39, 12, 1, .2);
+  font-weight: bold;
 }
 
 /* JUMBOTRON STYLES */
