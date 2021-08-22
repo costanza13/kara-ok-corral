@@ -89,7 +89,12 @@ export const QUERY_USER = gql`
 `;
 
 export const QUERY_STATS = gql`
-  query stats {
-    SiteStats
+  query getStats {
+  stats {
+    userCount
+    performanceCount
+    playlistCount
+    songCount
   }
+}
 `;
