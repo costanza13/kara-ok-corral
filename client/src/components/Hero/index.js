@@ -16,8 +16,8 @@ const Hero = () => {
     }, []);
 
     return (
-        <div class="hero">
-            <h2 class="hero">Your karaoke <span class="hero" ref={textRef}></span> roundup</h2>
+        <div className="hero">
+            <h2 className="hero">Your karaoke <span className="hero" ref={textRef}></span> roundup</h2>
         </div>
     );
 }
