@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
+import fuzzySearch from 'fz-search';
 
 import { useQuery, useMutation } from '@apollo/client';
-import { QUERY_USER } from '../utils/queries';
+import { QUERY_USER, QUERY_USERS} from '../utils/queries';
 import { ADD_FRIEND } from '../utils/mutations';
 import Auth from '../utils/auth';
 
@@ -17,6 +17,12 @@ const PublicProfile = props => {
         variables: { username: userParam }
     });
 
+    const [value, setValue] = useState("");
+    const [fuzzyValue, setFuzzyValue] = useState("");
+
+    const { loading: queryUsersLoading, data: usersData} = useQuery(QUERY_USERS);
+    console.log(usersData);
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -28,11 +34,17 @@ const PublicProfile = props => {
     // ) {
     //     return "Welcome to your public profile page!"
     // }
+    const handleInputOnChange = e => {
+        setValue(e.target.value) 
+        const usernames = usersData.users.map(user => user.username)
+        const searcher = new fuzzySearch({source: usernames});
+        setFuzzyValue(searcher.search(e.target.value))
+    }
 
-    const handleClick = async () => {
+    const handleClick = async (userid) => {
         try {
             await addFriend({
-                variables: { id: user._id }
+                variables: { friendId: userid}
             });
         } catch (e) {
             console.error(e);
@@ -59,9 +71,21 @@ const PublicProfile = props => {
                         })}
                 </ul>
                 {userParam && (
-                    <button className="btn ml-auto" onClick={handleClick}>
-                        Add Friend
-                    </button>
+                    // <button className="btn ml-auto" onClick={handleClick}>
+                    //     Add Friend
+                    // </button>
+
+                    <div> 
+                        <p>You currently have x friends</p> 
+                        <input value={value} onChange={handleInputOnChange} type="text" />
+                         
+                        {(fuzzyValue.length > 0 && <div>
+                        {fuzzyValue.map(user => <button className="btn ml-auto" onClick={() => handleClick(user)}>
+                         Add {user}
+                     </button>)}
+                        </div>)} 
+                        
+                    </div>
                 )}
             </div>
 

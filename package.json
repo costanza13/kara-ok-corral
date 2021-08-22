@@ -22,5 +22,8 @@
   "homepage": "https://github.com/costanza13/kara-ok-corral#readme",
   "devDependencies": {
     "concurrently": "^6.2.1"
+  },
+  "dependencies": {
+    "fz-search": "^1.0.0"
   }
 }
