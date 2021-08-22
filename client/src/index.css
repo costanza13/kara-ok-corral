@@ -64,8 +64,8 @@ li {
 }
 
 .accordion-button:not(.collapsed) {
-  color: var(--xtra-light);
-  background-color: var(--red);
+  background-color: rgba(252, 243, 238, .3);
+  color: var(--dark);
   
 }
 
