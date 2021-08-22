@@ -4,7 +4,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
 
-const Song = ({ song, saveSong }) => {
+const Song = ({ song, canEdit, saveSong }) => {
   const [editStatus, setEditStatus] = useState(false);
 
   const isAddForm = !song;
@@ -89,15 +89,17 @@ const Song = ({ song, saveSong }) => {
                 <Col>
                   <p>{song.artist}</p>
                 </Col>
-                <Col>
-                  <i
-                    className="far fa-edit edit-song"
-                    onClick={() => setEditStatus(true)}
-                  ></i>
-                </Col>
-                <Col>
-                  <i className="fas fa-trash-alt delete-song"></i>
-                </Col>
+                {
+                  canEdit
+                    ? <Col className="text-end">
+                      <i
+                        className="far fa-edit edit-song mx-1"
+                        onClick={() => setEditStatus(true)}
+                      ></i>
+                      <i className="fas fa-trash-alt delete-song mx-1"></i>
+                    </Col>
+                    : ''
+                }
               </Row>
               <p>
                 <a href={song.lyricsUrl} target="_blank" rel="noreferrer">

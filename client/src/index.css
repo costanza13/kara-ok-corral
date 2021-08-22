@@ -4,6 +4,7 @@
   --yellow: #E59824;
   --xtra-light: #fffbf5;
   --red: #e7414f;
+  --turq: #19adb5;
 }
 
 a {
@@ -118,6 +119,7 @@ li {
   font-weight: bold;
   padding: 10px;
   margin-bottom: 0;
+  border-radius: 6px 6px 0 0;
 }
 
 .playlist-name a {
@@ -140,6 +142,17 @@ em {
   border-color: var(--light);
 }
 
+.list-group-flush>.list-group-item:last-child {
+  border-radius: 0 0 6px 6px;
+}
+
+/* playlist page styles */
+
+.member-text {
+  font-weight: 600;
+  color: var(--yellow);
+  font-size: 20px;
+}
 #footer {
   position: fixed;
   padding: 10px 10px 0px 10px;
@@ -147,4 +160,19 @@ em {
   width: 100%;
   /* Height of the footer*/ 
   height: 40px;
+}
+
+.member-button {
+  color: var(--turq);
+  border-color: var(--yellow);
+  border-width: 2px;
+  padding: 7px;
+  margin: 5px;
+  font-weight: 600;
+  border-radius: 20px;
+}
+
+.add-member-button {
+  border-color: var(--turq);
+  color: var(--yellow);
 }

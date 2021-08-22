@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../../utils/queries';
 import { SAVE_PLAYLIST, SAVE_SONG } from '../../utils/mutations';
@@ -6,6 +5,7 @@ import Auth from '../../utils/auth';
 import Song from '../Song';
 import PlaylistMembers from '../PlaylistMembers';
 import EasyEdit, { Types } from "react-easy-edit";
+import Col from 'react-bootstrap/Col';
 
 
 const Playlist = ({ playlistId }) => {
@@ -62,35 +62,43 @@ const Playlist = ({ playlistId }) => {
   playlist = playlistId ? playlistData.playlist : { username: currentUser.username, name: 'Give us a name, eh?', visibility: 'private', members: [], songs: [] };
 
   const isOwner = playlist.username === currentUser.username;
-  const isMember = playlist.members.indexOf(currentUser.Usename) > -1;
+  const isMember = playlist.members.indexOf(currentUser.username) > -1;
 
   console.log('orig playlist', playlist);
 
   return (
     <>
-      <h5>{playlist.name}</h5>
-      <EasyEdit
-        type={Types.TEXT}
-        value={playlist.name}
-        onSave={save}
-        onCancel={cancel}
-        hideSaveButton={true}
-        hideCancelButton={true}
-        saveOnBlur={true}
-        attributes={{ className: 'playlist-title' }}
-      />
-
-      <PlaylistMembers members={playlist.members} canEdit={isOwner} updateMembers={updateMembers} />
-      <div className="song-list">
+      <Col xs={12} md={12}>
+        <h2>{playlist.name}</h2>
+        <EasyEdit
+          type={Types.TEXT}
+          value={playlist.name}
+          onSave={save}
+          onCancel={cancel}
+          hideSaveButton={true}
+          hideCancelButton={true}
+          saveOnBlur={true}
+          attributes={{ className: "playlist-title" }}
+        />
+      </Col>
+      <Col xs={12} md={6}>
+        <PlaylistMembers
+          members={playlist.members}
+          canEdit={isOwner}
+          updateMembers={updateMembers}
+        />
+      </Col>
+      <Col xs={12} md={6} className="song-list">
         {playlist.songs.map((song) => {
-          return <Song key={song._id} song={song} saveSong={saveSong}></Song>;
+          const canEdit = currentUser.username === song.username;
+          return <Song key={song._id} song={song} canEdit={canEdit} saveSong={saveSong}></Song>;
         })}
-        {
-          (isMember || isOwner) && playlistId
-            ? <Song key={'newsong'} song={null} saveSong={saveSong}></Song>
-            : ''
-        }
-      </div>
+        {(isMember || isOwner) && playlistId ? (
+          <Song key={"newsong"} song={null} saveSong={saveSong}></Song>
+        ) : (
+          ""
+        )}
+      </Col>
     </>
   );
 };

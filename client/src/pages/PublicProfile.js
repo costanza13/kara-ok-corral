@@ -37,6 +37,7 @@ const PublicProfile = props => {
     const handleInputOnChange = e => {
         setValue(e.target.value) 
         // const usernames = usersData.users.map(user => user.username)
+        console.log(usersData)
         const searcher = new fuzzySearch({source: usersData.users, keys:["username"]});
         setFuzzyValue(searcher.search(e.target.value))
     }
