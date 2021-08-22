@@ -1,11 +1,10 @@
 import React from 'react';
+import PlaylistPage from './Playlist';
 
 const Party = () => {
   return (
-    <div>
-      Party
-    </div>
-  )
+    <PlaylistPage />
+  );
 }
 
 export default Party;

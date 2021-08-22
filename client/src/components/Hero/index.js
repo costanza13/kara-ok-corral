@@ -22,7 +22,7 @@ function Hero() {
         <Jumbotron>
             <Container fluid>
                 <div className="jumbo-text">
-                <h2 className="display-3">Your karaoke <span className = "jumbo-span" ref={textRef}></span> roundup</h2>
+                <h2 className="display-3">Home to your karaoke <span className = "jumbo-span" ref={textRef}></span> roundup</h2>
                 </div>
             </Container>
         </Jumbotron>
