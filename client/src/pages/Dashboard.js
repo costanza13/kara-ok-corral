@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
-import Playlist from '../components/Playlist';
-import FriendsList from '../components/FriendList';
+import FriendList from '../components/FriendList';
 import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -50,7 +49,7 @@ const Dashboard = () => {
           <p onClick={() => setOpen(!open)} aria-controls="friends-list" aria-expanded={open}>Friends: {user.friendCount}</p>
           <Collapse in={open}>
             <div id="friends-list">
-              <FriendsList friends={user.friends} />
+              <FriendList friends={user.friends} />
             </div>
           </Collapse>
         </Col>
@@ -73,9 +72,9 @@ const Dashboard = () => {
               })}
               <li key={'linew_playlist'}>
                 <Link
-                 key={'new_playlist'}
-                 to={'/playlist/new'}
-                 ><em>create a new playlist &raquo;</em></Link>
+                  key={'new_playlist'}
+                  to={'/playlist/new'}
+                ><em>create a new playlist &raquo;</em></Link>
               </li>
             </ul>
           </div>
@@ -85,10 +84,13 @@ const Dashboard = () => {
             <h3>Party Playlists</h3>
             {user.partyPlaylists.map((playlist) => {
               return (
-                <Playlist
-                  key={playlist._id}
-                  playlistId={playlist._id}
-                ></Playlist>
+                <li key={'li' + playlist._id}>
+                  <Link
+                    key={playlist._id}
+                    to={`/playlist/${playlist._id}`}
+                  >{playlist.name}</Link>
+                  {playlist.members.length ? ' (party)' : ''}
+                </li>
               );
             })}
           </div>

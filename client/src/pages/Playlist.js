@@ -12,12 +12,11 @@ import Spinner from "react-bootstrap/Spinner";
 const PlaylistPage = () => {
   const { playlistId } = useParams();
   console.log('playlistId', playlistId);
-  const { loading, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
+  const { loading, error, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
 
   const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
 
-  // const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+  console.log('playlistId', playlistId);
   // if data isn't here yet, say so
   if (loading) {
     return (
@@ -27,8 +26,28 @@ const PlaylistPage = () => {
         </Spinner>
       </div>
     );
+  } else if (error) {
+    if (error.toString().indexOf('NOT FOUND:') > -1) {
+      return (
+        <>
+          <h1 className='display-2'>Not Found!</h1>
+          <h2>We could not find the playlist you're looking for.</h2>
+        </>
+      )
+    }
+    if (error.message.indexOf('NOT AUTHORIZED:') > -1) {
+      return (
+        <>
+          <h1 className='display-2'>Not AUTHORIZED!</h1>
+          <h2>{
+            Auth.loggedIn
+              ? 'You do not have permission to view this playlist.'
+              : 'You might need to be logged in to view this playlist.'
+          }</h2>
+        </>
+      )
+    }
   }
-  console.log(playlistData);
   const playlist = playlistId !== "new" ? playlistData.playlist : { _id: null, username: currentUser.username };
   const isOwner = playlist.username === currentUser.username;
 

@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../../utils/queries';
 import { SAVE_PLAYLIST, SAVE_SONG } from '../../utils/mutations';

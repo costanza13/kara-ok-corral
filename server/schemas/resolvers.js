@@ -64,15 +64,24 @@ const resolvers = {
       throw new AuthenticationError('Not logged in');
     },
     playlist: async (parent, { _id }, context) => {
-      const playlist = await Playlist.findOne({
-        _id,
-        $or: [
-          { visibility: 'public' },
-          { username: context.user.username },
-          { members: { $in: [context.user.username] } }
-        ]
-      })
+      const playlist = await Playlist.findOne({ _id })
         .populate('songs');
+      if (!playlist) {
+        // not found, so return a 404
+        throw new ApolloError('NOT FOUND: The requested document was not found.', 'NOT_FOUND', {});
+      } else {
+        const { username, visibility, members } = playlist;
+        // check that the user has access
+        if (visibility === 'private') {
+          if (typeof context.user === 'undefined') {
+            throw new ApolloError('NOT AUTHORIZED: You are not authorized to view this document.', 'NOT_AUTHORIZED', {});
+          }
+          if (username !== context.user.username &&
+            members.indexOf(context.user.username) < 0) {
+            throw new ApolloError('NOT AUTHORIZED: You are not authorized to view this document.', 'NOT_AUTHORIZED', {});
+          }
+        }
+      }
       return playlist;
     },
     songs: async () => {
