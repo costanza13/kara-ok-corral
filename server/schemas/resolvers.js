@@ -2,6 +2,7 @@ const { AuthenticationError } = require('apollo-server-express');
 const { User, Playlist, Song } = require('../models');
 const { signToken } = require('../utils/auth');
 
+const { ApolloError } = require('apollo-server-errors');
 
 const resolvers = {
   Query: {

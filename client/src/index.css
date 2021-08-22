@@ -1,16 +1,18 @@
 :root {
-  --dark: #270C01;
-  --light: #FCF3EE;
-  --red: #DA1B2B;
+  --dark: #140601;
+  --light: #FBEDDA;
+  --yellow: #E59824;
+  --xtra-light: #fffbf5;
+  --red: #e7414f;
 }
 
 a {
   text-decoration: none;
-  color: var(--red);
+  color: var(--yellow);
 }
 
 a:hover {
-  color: var(--light);
+  color: var(--red);
 }
 
 body {
@@ -40,6 +42,11 @@ h2 {
   margin: 20px;
 }
 
+li {
+  list-style: none;
+}
+
+/* song styles */
 .accordion-button {
   background-color: rgba(252, 243, 238, .3);
   color: var(--dark);
@@ -51,5 +58,93 @@ h2 {
 }
 
 .delete-song:hover {
-  color: var(--red);
+  color: var(--yellow);
+}
+
+/* dashboard styles */
+.user-info {
+  display: flex;
+}
+
+.username {
+  text-align: left;
+}
+
+.user-icon {
+  margin-right: 10px;
+  color: var(--yellow);
+  padding: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-radius: 100%;
+  border: 1px solid var(--yellow);
+  background-color: rgba(39, 12, 1, .9);
+}
+
+.friends-toggle {
+  font-weight: 800;
+  color: var(--yellow);
+  font-size: 15px;
+  text-decoration: underline;
+}
+
+.friends-toggle:hover {
+  font-style: italic;
+}
+
+.offcanvas {
+  max-width: 50%;
+  max-height: 50%;
+  margin-top: 105px;
+  background-color: var(--light);
+  color: var(--dark);
+  border-style: none;
+  box-shadow: -10px 11px 6px -5px rgba(39, 12, 1, .3);
+}
+
+.fa-glass-cheers {
+  color: var(--yellow);
+  margin-left: 5px;
+}
+
+.playlist-list {
+  margin-top: 15px;
+  margin-left: 10px;
+}
+
+.playlist-header {
+  background-color: var(--yellow);
+  color: var(--xtra-light);
+  font-weight: bold;
+  padding: 10px;
+  margin-bottom: 0;
+}
+
+.playlist-name a {
+  font-size: 18px;
+  color: var(--dark);
+}
+
+.playlist-name a:hover {
+  font-size: 19px;
+  font-style: italic;
+  color: #e7414f;
+}
+
+em {
+  margin-left: 5px;
+}
+
+.list-group-item {
+  background-color: var(--xtra-light);
+  border-color: var(--light);
+}
+
+#footer {
+  position: fixed;
+  padding: 10px 10px 0px 10px;
+  bottom: 0;
+  width: 100%;
+  /* Height of the footer*/ 
+  height: 40px;
 }

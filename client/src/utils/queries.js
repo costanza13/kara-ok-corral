@@ -69,3 +69,21 @@ export const QUERY_PLAYLIST = gql`
     }
   }
 `;
+
+export const QUERY_USER = gql`
+  query user($username: String!) {
+    user(username: $username) {
+      username
+      email
+      friends {
+        username
+      }
+      friendCount
+      playlists {
+        _id
+        name
+        visibility
+      }
+    }
+  }
+`;

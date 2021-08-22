@@ -16,9 +16,9 @@ const PlaylistPage = () => {
 
   const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
 
-  console.log('playlistId', playlistId);
+console.log('playlistId', playlistId);
   // if data isn't here yet, say so
-  if (loading) {
+  if (!playlistData && loading) {
     return (
       <div className="spinner">
         <Spinner animation="border" role="status">
