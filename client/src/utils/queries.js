@@ -90,11 +90,8 @@ export const QUERY_USER = gql`
 
 export const QUERY_USERS = gql`
   query getUsers {
- 
-  users {
-    
-    username
-    
+  users {  
+    username  
   }
  }
  `;

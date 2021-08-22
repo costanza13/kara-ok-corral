@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-import { QUERY_ME } from '../utils/queries';
+import fuzzySearch from 'fz-search';
+import { useQuery, useMutation } from '@apollo/client';
+import { QUERY_ME, QUERY_USER, QUERY_USERS } from '../utils/queries';
 import FriendList from '../components/FriendList';
+import { ADD_FRIEND } from '../utils/mutations';
 import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -13,8 +16,17 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
+  const { username: userParam } = useParams();
 
-  const { loading, data: userData } = useQuery(QUERY_ME);
+  const [addFriend] = useMutation(ADD_FRIEND);
+
+  // const { loading, data: userData } = useQuery(QUERY_ME);
+  const { loading, data:userData } = useQuery(QUERY_ME, QUERY_USER, {
+     variables: { username: userParam }
+  });
+  const [value, setValue] = useState("");
+  const [fuzzyValue, setFuzzyValue] = useState("");
+  const { loading: queryUsersLoading, data: usersData} = useQuery(QUERY_USERS);
 
   const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -53,6 +65,23 @@ const Dashboard = () => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const handleInputOnChange = e => {
+      setValue(e.target.value) 
+      //console.log(usersData)
+      const usernames = usersData.users.map(user => user.username)
+
+      const searcher = new fuzzySearch({source: usersData.users, keys:["username"]});
+      setFuzzyValue(searcher.search(e.target.value))
+  }
+  const handleClick = async (username) => {
+    try {
+        await addFriend({
+            variables: {username}
+        });
+    } catch (e) {
+        console.error(e);
+    }
+};
 
     return (
       <>
@@ -63,6 +92,17 @@ const Dashboard = () => {
           </Offcanvas.Header>
           <Offcanvas.Body>
             <FriendList friends={user.friends} />
+              <button className="btn ml-auto" onClick={handleClick}>
+                Add Friend
+              </button>
+           
+            <input value={value} onChange={handleInputOnChange} type="text" />
+                         
+              {(fuzzyValue.length > 0 && <div>
+                  {fuzzyValue.map(user => <button className="btn ml-auto" onClick={() => handleClick(user.username)}>
+                      {user.username}
+                  </button>)} </div>
+                         )}
           </Offcanvas.Body>
         </Offcanvas>
       </>
