@@ -62,11 +62,13 @@ export const SAVE_SONG = gql`
 `;
 
 export const ADD_FRIEND = gql`
-  mutation addFriend($username: String!) {
-    addFriend(friendUsername: $username) {
+  mutation addFriend($id: ID!) {
+    addFriend(friendId: $id) {
+      _id
       username
       friendCount
       friends {
+        _id
         username
       }
     }

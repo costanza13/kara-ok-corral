@@ -83,7 +83,7 @@ type Query {
 type Mutation {
   login(email: String!, password: String!): Auth
   addUser(username: String!, email: String!, password: String!): Auth
-  addFriend(friendUsername: String!): User
+  addFriend(friendId: ID!): User
   removeFriend(friend: ID!): User
   updatePlaylist(playlistId: ID, playlist: PlaylistInfo!): Playlist
   removePlaylist(playlistId: ID!): User
