@@ -179,7 +179,8 @@ em {
 
 .jumbo {
   /* Photo by Alena Darmel from Pexels */
-  padding: 0px;
+  padding-top: 0px;
+  margin-top: 0px;
   align-items: center;
   text-align: center;
   height: 500px;
