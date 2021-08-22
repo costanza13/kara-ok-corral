@@ -37,6 +37,28 @@ h2 {
   font-weight: bold;
 }
 
+/* .hero {
+  height: 800px;
+  width:100%;
+  justify-content: center;
+  align-items: center;
+  /* Photo by Alena Darmel from Pexels */
+  /* background-image: url(./assets/pexels-alena-darmel-7715793.jpg); */
+/* } */
+
+.ityped-cursor {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+ 50% {
+     opacity: 1;
+ }
+  100% {
+      opacity: 0;
+  }
+}
+
 .spinner {
   margin: 20px;
 }
