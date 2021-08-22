@@ -35,8 +35,8 @@ const AppNavBar = () => {
 
             {Auth.loggedIn() ? (
               <>
-                <Nav.Link to={`/profile/${user.username}`} className="btn btn-light py-1 mx-2 d-inline-block">Profile</Nav.Link>
-                <Nav.Link to="/dashboard" className="btn btn-light py-1 mx-2 d-inline-block">Dashboard</Nav.Link>
+                <Link to={`/profile/${user.username}`} className="btn btn-light py-1 mx-2 d-inline-block">Profile</Link>
+                <Link to="/dashboard" className="btn btn-light py-1 mx-2 d-inline-block">Dashboard</Link>
                 <a href="/" className="btn btn-light py-1 mx-2 d-inline-block" onClick={logout}>
                   Logout
                 </a>
