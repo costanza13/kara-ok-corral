@@ -8,6 +8,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from 'react-bootstrap/Col';
 import Spinner from "react-bootstrap/Spinner";
+// import Confetti from "react-confetti";
 
 const PlaylistPage = () => {
   const { playlistId } = useParams();
@@ -53,13 +54,9 @@ console.log('playlistId', playlistId);
 
   return (
     <Container>
-      <Row xs={1} md={2}>
-        <Col>
-          <Playlist
-            key={playlist._id}
-            playlistId={playlist._id}
-          ></Playlist>
-        </Col>
+      {/* <Confetti confettiSource={(-10, 40, 1, 0)} /> */}
+      <Row>
+        <Playlist key={playlist._id} playlistId={playlist._id}></Playlist>
       </Row>
     </Container>
   );

@@ -46,11 +46,19 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
   }
 
   let partyMembers = '';
-  const removeMemberButton = canEdit ? <i className="fas fa-minus-circle" onClick={handleRemoveMember}></i> : '';
+  const removeMemberButton = canEdit ? <i className="fas fa-minus-circle fa-xs" onClick={handleRemoveMember}></i> : '';
 
   if (members.length) {
     const memberButtons = members.map(member => {
-      return <span key={member} className="btn btn-primary m-1 member-button" data-member={member}>{member} {removeMemberButton}</span>
+      return (
+        <span
+          key={member}
+          className="btn btn-outline-warning member-button"
+          data-member={member}
+        >
+          {member} {removeMemberButton}
+        </span>
+      );
     });
     partyMembers = memberButtons;
   }
@@ -66,32 +74,34 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
         </span>
       ) : members.length !== 0 ? (
         <span className="d-inline-block h-100 align-middle member-text">
-          Members {" "}
+          Members{" "}
         </span>
       ) : (
         ""
       )}
-      {partyMembers}
-      {canEdit && leftToAdd.length ? (
-        <select
-          defaultValue=""
-          onChange={handleAddMember}
-          className="btn btn-outline-primary mx-1 member-button"
-        >
-          <option key="default" value="" disabled={true}>
-            add a friend
-          </option>
-          {leftToAdd.map((friend) => {
-            return (
-              <option key={friend} value={friend}>
-                {friend}
-              </option>
-            );
-          })}
-        </select>
-      ) : (
-        ""
-      )}
+      <div className="party-members">
+        {partyMembers}
+        {canEdit && leftToAdd.length ? (
+          <select
+            defaultValue=""
+            onChange={handleAddMember}
+            className="btn btn-outline-warning member-button add-member"
+          >
+            <option key="default" value="" disabled={true}>
+              add a friend
+            </option>
+            {leftToAdd.map((friend) => {
+              return (
+                <option key={friend} value={friend}>
+                  {friend}
+                </option>
+              );
+            })}
+          </select>
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 };
