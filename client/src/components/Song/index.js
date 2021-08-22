@@ -18,7 +18,35 @@ const Song = ({ song, canEdit, saveSong }) => {
     if (!editStatus) setEditStatus(true);
   }
 
-  const viewHeaderText = song.title ? song.title : <em>add a song...</em>;
+  const viewHeaderText = song.title ? (
+    <Row>
+      <Col xs={10}>
+        <span>{song.title}</span> // <span>{song.artist}</span>
+        <br></br>
+        <span>
+          <a href={song.lyricsUrl} target="_blank" rel="noreferrer">
+            lyrics
+          </a>{" "}
+        </span>
+        //{" "}
+        <span>
+          <a href={song.videoUrl} target="_blank" rel="noreferrer">
+            video
+          </a>
+        </span>
+      </Col>
+      <Col xs={2} onClick={() => setEditStatus(true)}>
+        <span className="edit-song">
+          <i
+            className="far fa-edit mx-1"
+            onClick={() => setEditStatus(true)}
+          ></i>
+        </span>
+      </Col>
+    </Row>
+  ) : (
+    <em>add a song...</em>
+  );
   const editHeaderText = song.title ? 'Edit Song Details' : <em>Add A Song...</em>;
 
   const handleChange = (e) => {
@@ -86,30 +114,14 @@ const Song = ({ song, canEdit, saveSong }) => {
             <Accordion.Header>{viewHeaderText}</Accordion.Header>
             <Accordion.Body>
               <Row>
-                <Col>
-                  <p>{song.artist}</p>
-                </Col>
                 {
                   canEdit
-                    ? <Col className="text-end">
-                      <i
-                        className="far fa-edit edit-song mx-1"
-                        onClick={() => setEditStatus(true)}
-                      ></i>
+                    ? <Col>
                       <i className="fas fa-trash-alt delete-song mx-1"></i>
                     </Col>
                     : ''
                 }
               </Row>
-              <p>
-                <a href={song.lyricsUrl} target="_blank" rel="noreferrer">
-                  lyrics
-                </a>
-                {" - "}
-                <a href={song.videoUrl} target="_blank" rel="noreferrer">
-                  video
-                </a>
-              </p>
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>)

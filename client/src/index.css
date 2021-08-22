@@ -60,15 +60,30 @@ li {
 .accordion-button {
   background-color: rgba(252, 243, 238, .3);
   color: var(--dark);
+  
 }
 
 .accordion-button:not(.collapsed) {
-  color: var(--light);
-  background-color: rgba(39, 12, 1, .7);
+  color: var(--xtra-light);
+  background-color: var(--red);
+  
 }
+
+.accordion-button:not(.collapsed)::after {
+  background-image: none;
+}
+
+.accordion-button::after {
+  background-image: none;
+}
+
 
 .delete-song:hover {
   color: var(--yellow);
+}
+
+.edit-song {
+  padding-left: 40px;
 }
 
 /* dashboard styles */
