@@ -85,7 +85,7 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
           <select
             defaultValue=""
             onChange={handleAddMember}
-            className="btn btn-outline-warning member-button add-member"
+            className="btn btn-outline-warning member-button add-member-button"
           >
             <option key="default" value="" disabled={true}>
               add a friend

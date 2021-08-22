@@ -4,6 +4,7 @@
   --yellow: #E59824;
   --xtra-light: #fffbf5;
   --red: #e7414f;
+  --turq: #19adb5;
 }
 
 a {
@@ -162,9 +163,16 @@ em {
 }
 
 .member-button {
-  color: var(--red);
+  color: var(--turq);
+  border-color: var(--yellow);
+  border-width: 2px;
   padding: 7px;
   margin: 5px;
   font-weight: 600;
   border-radius: 20px;
+}
+
+.add-member-button {
+  border-color: var(--turq);
+  color: var(--yellow);
 }
