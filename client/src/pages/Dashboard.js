@@ -65,6 +65,7 @@ const Dashboard = () => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
     const handleInputOnChange = e => {
       setValue(e.target.value) 
       //console.log(usersData)
@@ -81,7 +82,9 @@ const Dashboard = () => {
     } catch (e) {
         console.error(e);
     }
-};
+  };
+
+  
 
     return (
       <>
@@ -102,7 +105,9 @@ const Dashboard = () => {
                   {fuzzyValue.map(user => <button className="btn ml-auto" onClick={() => handleClick(user.username)}>
                       {user.username}
                   </button>)} </div>
-                         )}
+              )}
+
+           
           </Offcanvas.Body>
         </Offcanvas>
       </>
