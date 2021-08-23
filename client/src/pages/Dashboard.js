@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import fuzzySearch from 'fz-search';
 import { useQuery, useMutation } from '@apollo/client';
-import { QUERY_ME, QUERY_USER, QUERY_USERS } from '../utils/queries';
+import { QUERY_ME, QUERY_USER} from '../utils/queries';
 import FriendList from '../components/FriendList';
-import { ADD_FRIEND, REMOVE_FRIEND} from '../utils/mutations';
+import { REMOVE_FRIEND} from '../utils/mutations';
 import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -18,17 +17,12 @@ const Dashboard = () => {
   const [open, setOpen] = useState(false);
   const { username: userParam } = useParams();
 
-  const [addFriend] = useMutation(ADD_FRIEND);
-  const [removeFriend] = useMutation(REMOVE_FRIEND);
+  const [removeFriend, {data: removeFriendData, loading2}] = useMutation(REMOVE_FRIEND);
 
-  // const { loading, data: userData } = useQuery(QUERY_ME);
   const { loading, data: userData } = useQuery(QUERY_ME, QUERY_USER, {
     variables: { username: userParam }
   });
-  const [value, setValue] = useState("");
-  const [fuzzyValue, setFuzzyValue] = useState("");
-  const { loading: queryUsersLoading, data: usersData } = useQuery(QUERY_USERS);
-
+  
   const token = Auth.loggedIn() ? Auth.getToken() : null;
 
   if (!token) {
@@ -67,26 +61,7 @@ const Dashboard = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const handleInputOnChange = e => {
-      setValue(e.target.value)
-      //console.log(usersData)
-      const usernames = usersData.users.map(user => user.username)
-
-      const searcher = new fuzzySearch({ source: usersData.users, keys: ["username"] });
-      setFuzzyValue(searcher.search(e.target.value))
-    }
-
-    const handleClick = async (username) => {
-      try {
-        await addFriend({
-          variables: { username }
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    const handleClickRemove = async (username) => {
+    const handleRemoveFriend = async (username) => {
       try {
         await removeFriend({
           variables: { username }
@@ -96,7 +71,6 @@ const Dashboard = () => {
       }
     };
 
-
     return (
       <>
         <p className="me-2 friends-toggle" variant="primary" onClick={handleShow}>Friends: {user.friendCount}</p>
@@ -105,21 +79,7 @@ const Dashboard = () => {
             <Offcanvas.Title>You have {user.friendCount} {user.friendCount === 1 ? 'friend' : 'friends'}</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <FriendList friends={user.friends} friendCount={user.friendCount} username={user.username} />
-            <button className="btn ml-auto" onClick={handleClick}>
-              Add Friend
-              </button>
-
-            <input value={value} onChange={handleInputOnChange} type="text" />
-
-            {(fuzzyValue.length > 0 && <div>
-               {fuzzyValue.map(user => <button className="btn ml-auto" onClick={() => handleClick(user.username)} >
-                {user.username} <i className="fas fa-minus-circle fa-xs" onClick={handleClickRemove}></i>
-              
-                </button>)} 
-                </div>
-            )}
-
+            <FriendList friends={user.friends} friendCount={user.friendCount} username={user.username} handleRemoveFriend={handleRemoveFriend} />
           </Offcanvas.Body>
         </Offcanvas>
       </>

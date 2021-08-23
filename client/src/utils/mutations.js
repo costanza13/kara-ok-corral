@@ -66,9 +66,22 @@ export const ADD_FRIEND = gql`
     addFriend(friendUsername: $username) {
      
       username
+      email
+      friendCount
+      playlists {
+        _id
+        name
+        visibility
+        members
+      }
+      partyPlaylists {
+        _id
+        name
+        members
+      }
       friends {
-       
         username
+      
       }
     }
   } 
@@ -78,10 +91,23 @@ export const REMOVE_FRIEND = gql`
   mutation removeFriend($username: String!) {
     removeFriend(friendUsername: $username) {
      
-      username
-      friends {
-       
         username
+        email
+        friendCount
+        playlists {
+          _id
+          name
+          visibility
+          members
+        }
+        partyPlaylists {
+          _id
+          name
+          members
+        }
+        friends {
+          username
+        
       }
     }
   } 
