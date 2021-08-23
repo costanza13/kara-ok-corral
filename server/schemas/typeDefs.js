@@ -50,6 +50,7 @@ type UserBasic {
 }
 
 type User {
+  _id: ID
   username: String
   email: String
   friendCount: Int
@@ -86,6 +87,12 @@ input SongInfo {
   performanceUrl: String
 }
 
+input PerformanceInfo {
+  username: String
+  url: String
+  visibility: String
+}
+
 type Query {
   me: User
   users: [UserBasic]
@@ -109,6 +116,8 @@ type Mutation {
   removePlaylist(playlistId: ID!): User
   updateSong(playlistId: ID!, songId: ID, song: SongInfo!): Playlist
   removeSong(playlistId: ID!, songId: ID!): Playlist
+  updatePerformance(performanceId: ID!, performanceInfo: PerformanceInfo!): Performance
+  removePerformance(performanceId: ID!): Song
 }
 `;
 
