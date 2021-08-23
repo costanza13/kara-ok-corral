@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Accordion from "react-bootstrap/Accordion";
+import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -34,15 +34,37 @@ const Song = ({ song, canEdit, saveSong }) => {
     }
   };
 
-  const EditCollapse =
+  const SongCollapse = (
     <>
-      <Button
-        onClick={() => setOpen(!open)}
-        aria-controls="editSong-collapse-text"
-        aria-expanded={open}
-      >
-        edit
-      </Button>
+      <Collapse in={!open}>
+            <Row>
+            <Col xs={12}>
+                {song.title && song.artist ? (<p className="song-content">
+                  <span className="song-title">{song.title}</span>{" "}
+                  <br></br>
+                  <span className="song-artist">by {song.artist}</span>
+                </p>) : ('')}
+            </Col>
+            <Col xs={12} md={12} lg={{span: 9, offset: 3}}>
+                  {song.lyricsUrl ? (<span><a href={song.lyricsUrl} target="_blank" rel="noreferrer" className="song-btn">lyrics</a></span>) : ('')}
+                  {song.videoUrl ? (<span><a href={song.videoUrl} target="_blank" rel="noreferrer" className="song-btn">video</a></span>) : ('')}
+                
+                  <span
+                    onClick={() => setOpen(!open)}
+                    aria-controls="editSong-collapse-text"
+                    aria-expanded={open}
+                    className="song-btn"
+                  >
+                    <i class="far fa-edit fa-md"></i>
+                  </span>
+            </Col>
+          </Row>
+          </Collapse>
+    </>
+  )
+
+  const EditCollapse = (
+    <>
       <Collapse in={open}>
         <div className="song-form">
           <form>
@@ -52,7 +74,7 @@ const Song = ({ song, canEdit, saveSong }) => {
                 className="form-control"
                 value={{ ...formState }.title}
                 placeholder="title"
-                onChange={(e) => handleChange(e, 'title')}
+                onChange={(e) => handleChange(e, "title")}
               />
             </div>
             <div className="mb-3">
@@ -61,7 +83,7 @@ const Song = ({ song, canEdit, saveSong }) => {
                 className="form-control"
                 value={{ ...formState }.artist}
                 placeholder="artist"
-                onChange={(e) => handleChange(e, 'artist')}
+                onChange={(e) => handleChange(e, "artist")}
               />
             </div>
             <div className="mb-3">
@@ -70,7 +92,7 @@ const Song = ({ song, canEdit, saveSong }) => {
                 className="form-control"
                 value={{ ...formState }.lyricsUrl}
                 placeholder="lyrics URL"
-                onChange={(e) => handleChange(e, 'lyricsUrl')}
+                onChange={(e) => handleChange(e, "lyricsUrl")}
               />
             </div>
             <div className="mb-3">
@@ -79,7 +101,7 @@ const Song = ({ song, canEdit, saveSong }) => {
                 className="form-control"
                 value={formState.videoUrl}
                 placeholder="karaoke video URL"
-                onChange={(e) => handleChange(e, 'videoUrl')}
+                onChange={(e) => handleChange(e, "videoUrl")}
               />
             </div>
             <button
@@ -89,39 +111,26 @@ const Song = ({ song, canEdit, saveSong }) => {
             >
               update
             </button>
+            <button
+              onClick={handleSubmit}
+              className="song-btn"
+            >
+              cancel
+            </button>
           </form>
         </div>
       </Collapse>
     </>
+  );
 
   return (
     <ListGroup>
-      {song.title ? (
         <ListGroup.Item>
-          <Row>
-            <Col xs={12}>
-              <span>{song.title}</span> <br></br> <span>{song.artist}</span>
-              <br></br>
-              <span>
-                <a href={song.lyricsUrl} target="_blank" rel="noreferrer">
-                  lyrics
-                </a>{" "}
-              </span>
-              //{" "}
-              <span>
-                <a href={song.videoUrl} target="_blank" rel="noreferrer">
-                  video
-                </a>
-              </span>
-            </Col>
-            {canEdit ? (<Col xs={12}>{EditCollapse}</Col>) : ('')}
-          </Row>
+          <Container>
+            {SongCollapse}
+            {canEdit ? (<span>{EditCollapse}</span>) : ("")}
+          </Container>
         </ListGroup.Item>
-      ) : (
-        <ListGroup.Item>
-          <em>add a song...</em>
-        </ListGroup.Item>
-      )}
     </ListGroup>
   );
 };
