@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../utils/queries';
 import Playlist from '../components/Playlist';
-
+import EmbeddedVideo from '../components/EmbeddedVideo';
 import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -12,7 +12,7 @@ import Spinner from "react-bootstrap/Spinner";
 // import Confetti from "react-confetti";
 
 const PlaylistPage = () => {
-  const [currentVideo, setVideo] = useState(null);
+  const [currentVideo, setCurrentVideo] = useState(null);
   const { playlistId } = useParams();
   console.log('playlistId', playlistId);
   const { loading, error, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
@@ -54,7 +54,11 @@ const PlaylistPage = () => {
   const playlist = playlistId !== "new" ? playlistData.playlist : { _id: null, username: currentUser.username };
   const isOwner = playlist.username === currentUser.username;
 
- 
+  const setVideo = (video) => {
+    setCurrentVideo({ ...video });
+    console.log('dick', currentVideo);
+  };
+
 
   return (
     <>
@@ -65,7 +69,10 @@ const PlaylistPage = () => {
         </Row>
         <Row>
           <Col>
-           
+            {currentVideo ?
+              <EmbeddedVideo title={currentVideo.title} artist={currentVideo.artist} url={currentVideo.videoUrl} />
+              :
+              ''}
           </Col>
         </Row>
       </Container>

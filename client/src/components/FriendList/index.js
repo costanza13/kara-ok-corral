@@ -1,12 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
-import { REMOVE_FRIEND} from '../../utils/mutations';
+import { useMutation, useQuery } from '@apollo/client';
+import { ADD_FRIEND, REMOVE_FRIEND} from '../../utils/mutations';
 import FriendSearch from '../FriendSearch';
+import { QUERY_USERS } from '../../utils/queries';
+
 
 
 const FriendList = ({ friendCount, username, friends, handleRemoveFriend }) => {
   const [removeFriend] = useMutation(REMOVE_FRIEND);
+  const [addFriend] = useMutation(ADD_FRIEND);
+  const { loading: queryUsersLoading, data: usersData } = useQuery(QUERY_USERS);
  
   if (!friends || !friends.length) {
     return <p className="bg-dark text-light p-3">{username}, make some friends!</p>;
@@ -14,6 +18,18 @@ const FriendList = ({ friendCount, username, friends, handleRemoveFriend }) => {
 
   const handleClickRemove = async (username) => {
     handleRemoveFriend(username)
+  };
+
+  const handleClick = async (username) => {
+    
+    try {
+      await addFriend({
+        variables: { username }
+      });
+      
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -24,7 +40,7 @@ const FriendList = ({ friendCount, username, friends, handleRemoveFriend }) => {
           <i className="fas fa-minus-circle fa-xs" onClick={() => handleClickRemove(friend.username)} ></i>
         </button>      
       ))}
-      <FriendSearch />
+      <FriendSearch handleClick={handleClick} />
     </div>
   );
 };
