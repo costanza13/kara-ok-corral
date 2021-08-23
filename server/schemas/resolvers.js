@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Playlist, Song } = require('../models');
+const { User, Playlist, Song, Performance } = require('../models');
 const { signToken } = require('../utils/auth');
 
 const { ApolloError } = require('apollo-server-errors');
@@ -52,20 +52,35 @@ const resolvers = {
         filter.username = username;
       }
       const playlists = await Playlist.find(filter)
-        .populate('songs');
+        .populate({
+          path: 'songs',
+          populate: {
+            path: 'performance'
+          }
+        });
       return playlists;
     },
     partyPlaylists: async (parent, { }, context) => {
       if (context.user) {
         const playlists = await Playlist.find({ members: { $in: [context.user.username] } })
-          .populate('songs');
+          .populate({
+            path: 'songs',
+            populate: {
+              path: 'performance'
+            }
+          });
         return playlists;
       }
       throw new AuthenticationError('Not logged in');
     },
     playlist: async (parent, { _id }, context) => {
       const playlist = await Playlist.findOne({ _id })
-        .populate('songs');
+        .populate({
+          path: 'songs',
+          populate: {
+            path: 'performance'
+          }
+        });
       if (!playlist) {
         // not found, so return a 404
         throw new ApolloError('NOT FOUND: The requested document was not found.', 'NOT_FOUND', {});
@@ -93,7 +108,21 @@ const resolvers = {
       return song;
     },
     publicPerformances: async (parent, { username }) => {
-      return [];
+      const userFilter = username ? { username } : {};
+      const performances = await Performance.find({ ...userFilter, visibility: 'public' }).populate('reactions');
+      return performances;
+    },
+    performance: async (parent, { _id }) => {
+      const performance = await Performance.findOne({ _id });
+
+      if (performance.visibility === 'public' ||
+        (context.user && performance.username === context.user.username)) {
+        return performance;
+      } else if (performance.visibility === 'friends') {
+        // get the owner's friend list and see if the current logged in user is a friend
+        return performance;
+      }
+      throw new ApolloError('NOT AUTHORIZED: You are not authorized to view this document.', 'NOT_AUTHORIZED', {});
     }
   },
 
@@ -178,7 +207,12 @@ const resolvers = {
             { ...playlist, username: context.user.username },
             { new: true, runValidators: true }
           )
-            .populate('songs');
+            .populate({
+              path: 'songs',
+              populate: {
+                path: 'performance'
+              }
+            });
 
         // if this is a new playlist, and it was created successfully, add it to the user's list of playlists
         if (!playlistId && updatedPlaylist) {
@@ -211,11 +245,29 @@ const resolvers = {
     },
     updateSong: async (parent, { playlistId, songId, song }, context) => {
       if (context.user) {
+
+        const { title, artist, videoUrl, lyricsUrl, performanceUrl } = song;
+
+        // check if there's a performanceUrl
+        let updatedPerf;
+        if (performanceUrl) {
+          updatedPerf = await Performance.findOneAndUpdate(
+            { url: performanceUrl, username: context.user.username },
+            { url: performanceUrl, username: context.user.username, visibility: 'private' },
+            {
+              new: true,
+              upsert: true // Make this update into an upsert
+            });
+        }
+
+        const songUpdate = { title, artist, videoUrl, lyricsUrl };
+        if (updatedPerf) songUpdate.performance = updatedPerf._id;
+
         const updatedSong = !songId
-          ? await Song.create({ ...song, username: context.user.username })
+          ? await Song.create({ ...songUpdate, username: context.user.username })
           : await Song.findOneAndUpdate(
             { _id: songId, username: context.user.username },
-            { ...song },
+            songUpdate,
             { new: true }
           );
 
@@ -232,7 +284,12 @@ const resolvers = {
             { $addToSet: { songs: updatedSong._id } },
             { new: true }
           )
-            .populate('songs');
+            .populate({
+              path: 'songs',
+              populate: {
+                path: 'performance'
+              }
+            });
 
         return updatedPlaylist;
       }
@@ -249,7 +306,12 @@ const resolvers = {
             { $pull: { songs: songId } },
             { new: true }
           )
-            .populate('songs')
+            .populate({
+              path: 'songs',
+              populate: {
+                path: 'performance'
+              }
+            })
           : null;
 
         return updatedPlaylist;

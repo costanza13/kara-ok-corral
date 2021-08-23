@@ -104,6 +104,16 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
                 onChange={(e) => handleChange(e, "videoUrl")}
               />
             </div>
+            <div className="mb-3">
+              <em>Perform this song? Add your video here!</em>
+              <input
+                type="url"
+                className="form-control"
+                value={formState.performanceUrl}
+                placeholder="performance video URL"
+                onChange={(e) => handleChange(e, "performanceUrl")}
+              />
+            </div>
             <button
               type="submit"
               className="song-btn"

@@ -40,9 +40,7 @@ const performanceSchema = new Schema({
     enum: ['private', 'public', 'friends'],
     default: 'private'
   },
-  reactions: {
-    type: Number,
-  },
+  reactions: [reactionSchema],
   createdAt: {
     type: Date,
     default: Date.now,

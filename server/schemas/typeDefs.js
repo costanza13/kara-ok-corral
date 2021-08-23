@@ -12,7 +12,8 @@ type Reaction {
 
 type Performance {
   _id: ID
-  performanceUrl: String
+  url: String
+  username: String
   reactions: [Reaction]
 }
 
@@ -82,6 +83,7 @@ input SongInfo {
   artist: String!
   lyricsUrl: String
   videoUrl: String
+  performanceUrl: String
 }
 
 type Query {
@@ -94,7 +96,8 @@ type Query {
   playlist(_id: ID!): Playlist
   songs: [Song]
   song(_id: ID!): Song
-  publicPerformances(username: String): [Song]
+  publicPerformances(username: String): [Performance]
+  performance(_id: ID!): Performance
 }
 
 type Mutation {
