@@ -63,7 +63,7 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
     partyMembers = memberButtons;
   }
 
-  // build the "add a memnber" list
+  // build the "add a member" list
   const leftToAdd = friends.filter(friend => members.indexOf(friend) === -1);
 
   return (

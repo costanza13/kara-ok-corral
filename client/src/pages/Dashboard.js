@@ -65,6 +65,7 @@ const Dashboard = () => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
     const handleInputOnChange = e => {
       setValue(e.target.value) 
       //console.log(usersData)
@@ -81,20 +82,22 @@ const Dashboard = () => {
     } catch (e) {
         console.error(e);
     }
-};
+  };
+
+  
 
     return (
       <>
         <p className="me-2 friends-toggle" variant="primary" onClick={handleShow}>Friends: {user.friendCount}</p>
         <Offcanvas show={show} onHide={handleClose} placement="end" scroll={true} backdrop={false}>
           <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Your Friends:</Offcanvas.Title>
+            <Offcanvas.Title>You have {user.friendCount} {user.friendCount === 1 ? 'friend' : 'friends'}</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body>
-            <FriendList friends={user.friends} />
-              <button className="btn ml-auto" onClick={handleClick}>
+            <FriendList friends={user.friends} friendCount = {user.friendCount} username = {user.username}/>
+            <button className="btn ml-auto" onClick={handleClick}>
                 Add Friend
-              </button>
+              </button> 
            
             <input value={value} onChange={handleInputOnChange} type="text" />
                          
@@ -102,7 +105,9 @@ const Dashboard = () => {
                   {fuzzyValue.map(user => <button className="btn ml-auto" onClick={() => handleClick(user.username)}>
                       {user.username}
                   </button>)} </div>
-                         )}
+              )}
+
+           
           </Offcanvas.Body>
         </Offcanvas>
       </>

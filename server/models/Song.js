@@ -1,32 +1,6 @@
 const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
-const performanceSchema = new Schema({
-  // set custom id to avoid confusion with parent Song _id
-  performanceId: {
-    type: Schema.Types.ObjectId,
-    default: () => new Schema.Types.ObjectId()
-  },
-  url: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  averageRating: {
-    type: Number,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    get: createdAtVal => dateFormat(createdAtVal)
-  }
-},
-{
-  toJSON: {
-    getters: true
-  }
-});
-
 const songSchema = new Schema({
   username: {
     type: String,
@@ -53,7 +27,10 @@ const songSchema = new Schema({
   videoUrl: {
     type: String
   },
-  performance: performanceSchema
+  performance: {
+    type: Schema.Types.ObjectId,
+    ref: 'Performance'
+  }
 });
 
 const Song = model('Song', songSchema);

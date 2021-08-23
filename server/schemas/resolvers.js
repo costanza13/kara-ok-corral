@@ -92,6 +92,9 @@ const resolvers = {
     song: async (parent, { _id }) => {
       const song = await Song.findOne({ _id });
       return song;
+    },
+    publicPerformances: async(parent, { username }) => {
+      return [];
     }
   },
 
