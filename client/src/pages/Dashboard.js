@@ -14,29 +14,11 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 const Dashboard = () => {
-  const [friends, setFriends] = useState({});
+  const [friendCount, setFriendCount] = useState(-1);
   const [show, setShowFriends] = useState(false);
   const { loading, data: userData } = useQuery(QUERY_ME);
-  const [removeFriend, { loading: updating, data: removeFriendData }] = useMutation(REMOVE_FRIEND);
 
   let user;
-
-  const handleRemoveFriend = async (username) => {
-    try {
-      const updatedUser = await removeFriend({
-        variables: { username }
-      });
-
-      console.log('JUST UPDATED', updatedUser);
-      user = { ...updatedUser.data.removeFriend };
-      console.log(user);
-      if (user.friendCount !== friends.friendCount) {
-        setFriends({ friendCount: user.friendCount, friends: [...user.friends] });
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -50,7 +32,7 @@ const Dashboard = () => {
   }
 
   // if data isn't here yet, say so
-  if (loading || updating) {
+  if (loading) {
     user = null;
     return (
       <div className="spinner">
@@ -61,13 +43,11 @@ const Dashboard = () => {
     );
   }
 
-  console.log('rfd', removeFriendData);
-  user = removeFriendData ? removeFriendData.removeFriend : userData.me;
+  user = userData.me;
   console.log(userData);
-  if (friends.friendCount !== user.friendCount) {
-    setFriends({ friendCount: user.friendCount, friends: [...user.friends] });
+  if (friendCount === -1) {
+    setFriendCount(user.friendCount);
   }
-  console.log(friends);
 
   // rearrange the user's playlists to list all personal playlists together and
   // all party playlists together, regardless of who owns them
@@ -84,13 +64,13 @@ const Dashboard = () => {
 
   const friendsOffCanvas =
     <>
-      <p className="me-2 friends-toggle" variant="primary" onClick={handleShow}>Friends: {friends.friendCount}</p>
+      <p className="me-2 friends-toggle" variant="primary" onClick={handleShow}>Friends: {friendCount}</p>
       <Offcanvas show={show} onHide={handleClose} placement="end" scroll={true} backdrop={false}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>You have {friends.friendCount} {friends.friendCount === 1 ? 'friend' : 'friends'}</Offcanvas.Title>
+          <Offcanvas.Title>You have {friendCount} {friendCount === 1 ? 'friend' : 'friends'}</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <FriendList friends={friends.friends} friendCount={friends.friendCount} username={user.username} handleRemoveFriend={handleRemoveFriend} />
+          <FriendList friends={user.friends} friendCount={friendCount} username={user.username} setFriendCount={setFriendCount} />
         </Offcanvas.Body>
       </Offcanvas>
     </>
