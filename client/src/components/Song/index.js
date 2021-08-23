@@ -106,19 +106,19 @@ const Song = ({ song, canEdit, saveSong }) => {
             </div>
             <button
               type="submit"
-              className="btn btn-primary"
+              className="song-btn"
               onClick={handleSubmit}
             >
               update
             </button>
-            <button
-              onClick={() => setOpen(open)}
+            <span
+              onClick={() => setOpen(!open)}
               aria-controls="song-collapse-text"
-              aria-expanded={!open}
+              aria-expanded={open}
               className="song-btn"
             >
               cancel
-            </button>
+            </span>
           </form>
         </div>
       </Collapse>
