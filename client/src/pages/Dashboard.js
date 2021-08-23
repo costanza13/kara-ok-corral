@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { QUERY_ME, QUERY_USER} from '../utils/queries';
+import { QUERY_ME, QUERY_USER } from '../utils/queries';
 import FriendList from '../components/FriendList';
-import { REMOVE_FRIEND} from '../utils/mutations';
+import { REMOVE_FRIEND } from '../utils/mutations';
 import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -14,16 +14,28 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 const Dashboard = () => {
-  const [open, setOpen] = useState(false);
-  const { username: userParam } = useParams();
-  const [show, setShow] = useState(false);
+  const [friends, setFriends] = useState({});
+  const [show, setShowFriends] = useState(false);
+  const { loading, data: userData } = useQuery(QUERY_ME);
+  const [removeFriend] = useMutation(REMOVE_FRIEND);
 
-  const [removeFriend, {data: removeFriendData, loading2}] = useMutation(REMOVE_FRIEND);
-
-  const { loading, data: userData } = useQuery(QUERY_ME, QUERY_USER, {
-    variables: { username: userParam }
-  });
+  let user;
   
+  const handleRemoveFriend = async (username) => {
+    try {
+      const updatedUser = await removeFriend({
+        variables: { username }
+      });
+
+      console.log('JUST UPDATED', updatedUser);
+      user = { ...updatedUser.data.removeFriend };
+      setFriends({ friendCount: user.friendCount, friends: [...user.friends] });
+
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const token = Auth.loggedIn() ? Auth.getToken() : null;
 
   if (!token) {
@@ -45,47 +57,39 @@ const Dashboard = () => {
       </div>
     );
   }
+
+  user = !user ? { ...userData.me } : user;
   console.log(userData);
-  const user = userData.me;
+  if (friends.friendCount !== user.friendCount) {
+    setFriends({ friendCount: user.friendCount, friends: [...user.friends] });
+  }
+  console.log(friends);
 
   // rearrange the user's playlists to list all personal playlists together and
   // all party playlists together, regardless of who owns them
+  // these don't need to be updated when a friend is add or removed
   const personalPlaylists = user.playlists.filter(playlist => playlist.members.length === 0);
   const partyPlaylists = [
     ...user.playlists.filter(playlist => playlist.members.length > 0),
     ...user.partyPlaylists
   ];
 
-  function FriendsOffCanvas() {
-    
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+  const handleClose = () => setShowFriends(false);
+  const handleShow = () => setShowFriends(true);
 
-    const handleRemoveFriend = async (username) => {
-      try {
-        await removeFriend({
-          variables: { username }
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    return (
-      <>
-        <p className="me-2 friends-toggle" variant="primary" onClick={handleShow}>Friends: {user.friendCount}</p>
-        <Offcanvas show={show} onHide={handleClose} placement="end" scroll={true} backdrop={false}>
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title>You have {user.friendCount} {user.friendCount === 1 ? 'friend' : 'friends'}</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            <FriendList friends={user.friends} friendCount={user.friendCount} username={user.username} handleRemoveFriend={handleRemoveFriend} />
-          </Offcanvas.Body>
-        </Offcanvas>
-      </>
-    );
-  }
+  const friendsOffCanvas =
+    <>
+      <p className="me-2 friends-toggle" variant="primary" onClick={handleShow}>Friends: {friends.friendCount}</p>
+      <Offcanvas show={show} onHide={handleClose} placement="end" scroll={true} backdrop={false}>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>You have {friends.friendCount} {friends.friendCount === 1 ? 'friend' : 'friends'}</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <FriendList friends={friends.friends} friendCount={friends.friendCount} username={user.username} handleRemoveFriend={handleRemoveFriend} />
+        </Offcanvas.Body>
+      </Offcanvas>
+    </>
 
   return (
     <Container className="mt-4">
@@ -98,7 +102,7 @@ const Dashboard = () => {
             {user.username}
             <br></br>
             <span className="friend-count">
-              <FriendsOffCanvas />
+              {friendsOffCanvas}
             </span>
           </h2>
         </div>
