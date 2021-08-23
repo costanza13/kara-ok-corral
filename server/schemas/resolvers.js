@@ -1,4 +1,4 @@
-const { AuthenticationError } = require('apollo-server-express');
+const { AuthenticationError, UserInputError, ForbiddenError } = require('apollo-server-express');
 const { User, Playlist, Song, Performance } = require('../models');
 const { signToken } = require('../utils/auth');
 
@@ -40,10 +40,10 @@ const resolvers = {
     },
     stats: async (parent) => {
       return {
-        userCount: 34,
-        songCount: 287,
-        performanceCount: 19,
-        playlistCount: 8
+        userCount: await User.countDocuments(),
+        songCount: await Song.countDocuments(),
+        performanceCount: await Performance.countDocuments(),
+        playlistCount: await Playlist.countDocuments()
       };
     },
     publicPlaylists: async (parent, { username }) => {
@@ -82,18 +82,17 @@ const resolvers = {
           }
         });
       if (!playlist) {
-        // not found, so return a 404
-        throw new ApolloError('NOT FOUND: The requested document was not found.', 'NOT_FOUND', {});
+        throw new UserInputError('NOT FOUND: The requested playlist was not found.');
       } else {
         const { username, visibility, members } = playlist;
         // check that the user has access
         if (visibility === 'private') {
           if (typeof context.user === 'undefined') {
-            throw new ApolloError('NOT AUTHORIZED: You are not authorized to view this document.', 'NOT_AUTHORIZED', {});
+            throw new ForbiddenError('FORBIDDEN: You are not authorized to view this document.');
           }
           if (username !== context.user.username &&
             members.indexOf(context.user.username) < 0) {
-            throw new ApolloError('NOT AUTHORIZED: You are not authorized to view this document.', 'NOT_AUTHORIZED', {});
+            throw new ForbiddenError('FORBIDDEN: You are not authorized to view this document.');
           }
         }
       }
@@ -112,17 +111,27 @@ const resolvers = {
       const performances = await Performance.find({ ...userFilter, visibility: 'public' }).populate('reactions');
       return performances;
     },
-    performance: async (parent, { _id }) => {
+    performance: async (parent, { _id }, context) => {
       const performance = await Performance.findOne({ _id });
 
-      if (performance.visibility === 'public' ||
-        (context.user && performance.username === context.user.username)) {
-        return performance;
-      } else if (performance.visibility === 'friends') {
-        // get the owner's friend list and see if the current logged in user is a friend
-        return performance;
+      if (performance) {
+        if (performance.visibility === 'public' ||
+          (context.user && performance.username === context.user.username)) {
+          return performance;
+        } else if (performance.visibility === 'friends') {
+          if (context.user) {
+            // get the owner's friend list and see if the current logged in user is a friend
+            const performer = await User.findOne({ username: performance.username, friends: { $in: [context.user._id] } });
+            console.log(performance, context.user._id, performer);
+            if (performer) {
+              return performance;
+            }
+          }
+        }
+      } else {
+        throw new UserInputError('NOT FOUND: The requested performance was not found.');
       }
-      throw new ApolloError('NOT AUTHORIZED: You are not authorized to view this document.', 'NOT_AUTHORIZED', {});
+      throw new ForbiddenError('FORBIDDEN: You are not authorized to view this document.');
     }
   },
 
@@ -176,7 +185,7 @@ const resolvers = {
         return updatedUser;
       }
 
-      throw new AuthenticationError('You need to be logged in to add friends!');
+      throw new ForbiddenError('FORBIDDEN: You must be logged in to add friends!');
     },
     removeFriend: async (parent, { friendUsername }, context) => {
       if (context.user) {
@@ -196,7 +205,7 @@ const resolvers = {
         return updatedUser;
       }
 
-      throw new AuthenticationError('You need to be logged in to add friends!');
+      throw new ForbiddenError('FORBIDDEN: You must be logged in to manage friends!');
     },
     updatePlaylist: async (parent, { playlistId, playlist }, context) => {
       if (context.user) {
@@ -215,17 +224,20 @@ const resolvers = {
             });
 
         // if this is a new playlist, and it was created successfully, add it to the user's list of playlists
-        if (!playlistId && updatedPlaylist) {
-          const updatedUser = await User.update(
-            { _id: context.user._id },
-            { $addToSet: { playlists: updatedPlaylist._id } }
-          )
+        if (updatedPlaylist) {
+          if (!playlistId) {
+            const updatedUser = await User.update(
+              { _id: context.user._id },
+              { $addToSet: { playlists: updatedPlaylist._id } }
+            )
+          }
+          return updatedPlaylist;
         }
 
-        return updatedPlaylist;
+        throw new UserInputError('NOT FOUND: The requested playlist was not found.');
       }
 
-      throw new AuthenticationError('You need to be logged in to manage playlists!');
+      throw new ForbiddenError('FORBIDDEN: You must be logged in to manage playlists!');
     },
     removePlaylist: async (parent, { playlistId }, context) => {
       if (context.user) {
@@ -241,11 +253,10 @@ const resolvers = {
         return updatedUser;
       }
 
-      throw new AuthenticationError('You need to be logged in to manage playlists!');
+      throw new ForbiddenError('FORBIDDEN: You must be logged in to manage playlists!');
     },
     updateSong: async (parent, { playlistId, songId, song }, context) => {
       if (context.user) {
-
         const { title, artist, videoUrl, lyricsUrl, performanceUrl } = song;
 
         // check if there's a performanceUrl
@@ -294,7 +305,7 @@ const resolvers = {
         return updatedPlaylist;
       }
 
-      throw new AuthenticationError('You need to be logged in to edit songs and playlists!');
+      throw new ForbiddenError('FORBIDDEN: You must be logged in to edit songs and playlists!');
     },
     removeSong: async (parent, { playlistId, songId }, context) => {
       if (context.user) {
@@ -317,7 +328,46 @@ const resolvers = {
         return updatedPlaylist;
       }
 
-      throw new AuthenticationError('You need to be logged in to manage playlists!');
+      throw new ForbiddenError('FORBIDDEN: You must be logged in to manage playlists!');
+    },
+    updatePerformance: async (parent, { performanceId, performanceInfo }, context) => {
+      if (context.user) {
+        if (performanceInfo.url && performanceInfo.url.trim() === '') {
+          throw new UserInputError('BAD REQUEST: Performance URL cannot be blank.');
+        }
+        const performance = await Performance.findOneAndUpdate(
+          { _id: performanceId, username: context.user.username },
+          { ...performanceInfo },
+          { new: true }
+        );
+
+        if (performance) {
+          return performance;
+        }
+        throw new UserInputError('NOT FOUND: The requested performance was not found.');
+      }
+      throw new ForbiddenError('FORBIDDEN: You must be logged in to manage performances.');
+    },
+    removePerformance: async (parent, { performanceId }, context) => {
+      if (context.user) {
+        const removedPerformance = await Performance.findOneAndDelete(
+          { _id: performanceId, username: context.user.username }
+        );
+
+        if (removedPerformance) {
+          const updatedSong = removedPerformance
+            ? await Song.findOneAndUpdate(
+              { performance: performanceId },
+              { performance: null },
+              { new: true }
+            )
+            : null;
+
+          return updatedSong;
+        }
+        throw new UserInputError('NOT FOUND: The requested performance was not found.');
+      }
+      throw new ForbiddenError('FORBIDDEN: You must be logged in to manage performances.');
     }
   }
 };

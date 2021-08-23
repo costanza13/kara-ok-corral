@@ -15,10 +15,10 @@ const AppNavBar = () => {
   if (loading) {
     return null
   }
-  console.log(userData);
+
   const user = userData ? userData.me : null;
 
-  if (!user && Auth.loggedIn()) {
+  if ((!user && Auth.loggedIn()) || (!!user && !Auth.loggedIn())) {
     Auth.logout();
   }
 
