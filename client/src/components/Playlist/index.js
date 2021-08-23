@@ -81,14 +81,14 @@ const Playlist = ({ playlistId }) => {
           attributes={{ className: "playlist-title" }}
         />
       </Col>
-      <Col xs={12} md={6}>
+      <Col xs={12} md={12} lg={3}>
         <PlaylistMembers
           members={playlist.members}
           canEdit={isOwner}
           updateMembers={updateMembers}
         />
       </Col>
-      <Col xs={12} md={6} className="song-list">
+      <Col xs={12} md={12} lg={9} className="song-list">
         {playlist.songs.map((song) => {
           const canEdit = currentUser.username === song.username;
           return <Song key={song._id} song={song} canEdit={canEdit} saveSong={saveSong}></Song>;
