@@ -96,8 +96,8 @@ const Song = ({ song, canEdit, saveSong }) => {
 
   return (
     <ListGroup>
-      <ListGroup.Item>
-        {song.title ? (
+      {song.title ? (
+        <ListGroup.Item>
           <Row>
             <Col xs={12}>
               <span>{song.title}</span> <br></br> <span>{song.artist}</span>
@@ -114,27 +114,17 @@ const Song = ({ song, canEdit, saveSong }) => {
                 </a>
               </span>
             </Col>
-            <Col xs={12}>
-              {EditCollapse}
-            </Col>
+            {canEdit ? (<Col xs={12}>{EditCollapse}</Col>) : ('')}
           </Row>
-        ) : (
+        </ListGroup.Item>
+      ) : (
+        <ListGroup.Item>
           <em>add a song...</em>
-        )}
-      </ListGroup.Item>
+        </ListGroup.Item>
+      )}
     </ListGroup>
   );
 };
-
-// {
-//   canEdit ? (
-//     <Col>
-//       <i className="fas fa-trash-alt delete-song mx-1"></i>
-//     </Col>
-//   ) : (
-//     ""
-//   );
-// }
 
 export default Song;
 
