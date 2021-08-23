@@ -112,7 +112,9 @@ const Song = ({ song, canEdit, saveSong }) => {
               update
             </button>
             <button
-              onClick={handleSubmit}
+              onClick={() => setOpen(open)}
+              aria-controls="song-collapse-text"
+              aria-expanded={!open}
               className="song-btn"
             >
               cancel
