@@ -15,7 +15,7 @@ const Stats = props => {
     console.log(data);
     return (
         <div className="stats-bar">
-            <h2 className="stats-h2">In the Corral <i class="fas fa-hat-cowboy"></i>
+            <h2 className="stats-h2">In the Corral <i className="fas fa-hat-cowboy"></i>
             </h2>
             <div className="stats-padding">
                 <Container>
@@ -31,7 +31,7 @@ const Stats = props => {
                 <Container>
                     <Row>
                         <Col>
-                            <h2 className="stats-h2">Join Us <i class="fas fa-microphone-alt"></i>
+                            <h2 className="stats-h2">Join Us <i className="fas fa-microphone-alt"></i>
                             </h2>
                             <p>You’re ready to perform your next karaoke hit and win your next karaoke battle. But with so many sing-worthy songs,<br />  sifting through options can feel like the wild-wild-west.</p>
                             <p>Introducing <span className="stats-span">The Kara-OK-Corral</span>. This app lets you build personal and shared song lists, link to karaoke videos,<br /> and react to friends' performances. Now you and your posse can bring a full song arsenal to your next karaoke showdown.<br /> The Kara-OK-Corral is home to your karaoke roundup.</p>

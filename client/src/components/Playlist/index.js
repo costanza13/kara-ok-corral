@@ -8,7 +8,7 @@ import EasyEdit, { Types } from "react-easy-edit";
 import Col from 'react-bootstrap/Col';
 
 
-const Playlist = ({ playlistId }) => {
+const Playlist = ({ playlistId, setVideo }) => {
   const { loading, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
   const [updatePlaylist] = useMutation(SAVE_PLAYLIST);
   const [updateSong] = useMutation(SAVE_SONG);
@@ -91,7 +91,7 @@ const Playlist = ({ playlistId }) => {
       <Col xs={12} md={12} lg={9} className="song-list">
         {playlist.songs.map((song) => {
           const canEdit = currentUser.username === song.username;
-          return <Song key={song._id} song={song} canEdit={canEdit} saveSong={saveSong}></Song>;
+          return <Song key={song._id} song={song} canEdit={canEdit} saveSong={saveSong} setVideo={setVideo}></Song>;
         })}
         {(isMember || isOwner) && playlistId ? (
           <Song key={"newsong"} song={null} canEdit={true} saveSong={saveSong}></Song>

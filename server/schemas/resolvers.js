@@ -10,7 +10,6 @@ const resolvers = {
       if (context.user) {
         const userData = await User.findOne({ username: context.user.username })
           .select('-__v -password')
-          .populate('thoughts')
           .populate('friends')
           .populate('playlists');
 
@@ -93,7 +92,7 @@ const resolvers = {
       const song = await Song.findOne({ _id });
       return song;
     },
-    publicPerformances: async(parent, { username }) => {
+    publicPerformances: async (parent, { username }) => {
       return [];
     }
   },
@@ -138,9 +137,12 @@ const resolvers = {
             { _id: context.user._id },
             { $addToSet: { friends: friend._id } },
             { new: true }
-          ).populate('friends')
+          )
+            .populate('friends')
+            .populate('playlists')
           : await User.findOne({ _id: context.user._id })
-            .populate('friends');
+            .populate('friends')
+            .populate('playlists');
 
         return updatedUser;
       }
@@ -155,9 +157,12 @@ const resolvers = {
             { _id: context.user._id },
             { $pull: { friends: friend._id } },
             { new: true }
-          ).populate('friends')
+          )
+            .populate('friends')
+            .populate('playlists')
           : await User.findOne({ _id: context.user._id })
-            .populate('friends');
+            .populate('friends')
+            .populate('playlists');
 
         return updatedUser;
       }

@@ -6,7 +6,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/button';
 import Collapse from 'react-bootstrap/Collapse';
 
-const Song = ({ song, canEdit, saveSong }) => {
+const Song = ({ song, canEdit, saveSong, setVideo }) => {
   const [open, setOpen] = useState(false);
 
   const isAddForm = !song;
@@ -127,13 +127,47 @@ const Song = ({ song, canEdit, saveSong }) => {
 
   return (
     <ListGroup>
+      {song.title ? (
+        <ListGroup.Item>
+          <Row>
+            <Col xs={12}>
+              <span>{song.title}</span> <br></br> <span>{song.artist}</span>
+              <br></br>
+              <span>
+                <a href={song.lyricsUrl} target="_blank" rel="noreferrer">
+                  lyrics
+                </a>{" "}
+              </span>
+              //{" "}
+              <span>
+                <a href={song.videoUrl} target="_blank" rel="noreferrer">
+                  video
+                </a>
+                <span onClick={() => setVideo({ title: song.title, artist: song.artist, url: song.videoUrl })}> &gt; </span>
+              </span>
+              {
+                song.performance
+                  ? < span >
+                    <a href={song.performance.url} target="_blank" rel="noreferrer">
+                      performance
+                    </a>
+                  </span>
+                  : ''
+              }
+            </Col>
+            {canEdit ? (<Col xs={12}>{EditCollapse}</Col>) : ('')}
+          </Row>
+        </ListGroup.Item>
+      ) : (
         <ListGroup.Item>
           <Container>
             {SongCollapse}
             {canEdit ? (<span>{EditCollapse}</span>) : ("")}
           </Container>
         </ListGroup.Item>
-    </ListGroup>
+      )
+      }
+    </ListGroup >
   );
 };
 
