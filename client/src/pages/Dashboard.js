@@ -16,6 +16,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
   const { username: userParam } = useParams();
+  const [show, setShow] = useState(false);
 
   const [removeFriend, {data: removeFriendData, loading2}] = useMutation(REMOVE_FRIEND);
 
@@ -56,7 +57,7 @@ const Dashboard = () => {
   ];
 
   function FriendsOffCanvas() {
-    const [show, setShow] = useState(false);
+    
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);

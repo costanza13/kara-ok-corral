@@ -4,7 +4,7 @@
   --yellow: #E59824;
   --xtra-light: #fffbf5;
   --red: #e7414f;
-  --turq: #19adb5;
+  --turq: #107c8a;
 }
 
 a {
@@ -22,19 +22,55 @@ body {
   font-style: normal;
   background-color: var(--light);
   color: var(--dark);
+  margin-bottom: 70px;
 }
 
 header {
   background-color: var(--dark);
+  padding: 10px;
 }
 
-#footer {
+.nav-item, .nav-link {
+  margin: 10px;
+  margin-bottom: 5px;
+  border: 2px solid var(--yellow);
+  border-radius: 50px;
+  padding: 3px;
+  padding-right: 15px;
+  padding-left: 15px;
+  color: var(--yellow);
+  font-weight: 600;
+}
+
+.nav-link span {
+  margin: 20px;
+}
+
+.nav-item:hover a:hover {
+  color: var(--light);
+  border-color: var(--light);
+}
+
+.modal-title .nav-link {
+  border: none;
+}
+
+.nav-link:focus, .nav-link:hover {
+  background-color: var(--yellow);
+  color: var(--dark);
+}
+
+.footer {
   position: fixed;
   padding: 10px 10px 0px 10px;
   bottom: 0;
   width: 100%;
   /* Height of the footer*/ 
   height: 40px;
+  background-color: var(--dark);
+  color: var(--yellow);
+  font-weight: 600;
+  text-align: center;
 }
 
 h1 {
@@ -57,34 +93,34 @@ li {
 }
 
 /* song styles */
-.accordion-button {
-  background-color: rgba(252, 243, 238, .3);
-  color: var(--dark);
-  
+.song-content {
+  text-align: center;
 }
 
-.accordion-button:not(.collapsed) {
-  background-color: rgba(252, 243, 238, .3);
-  color: var(--dark);
-  
+.song-title {
+  font-weight: bold;
+  font-size: 18px;
 }
 
-.accordion-button:not(.collapsed)::after {
-  background-image: none;
-}
-
-.accordion-button::after {
-  background-image: none;
-}
-
-
-.delete-song:hover {
+.song-artist {
   color: var(--yellow);
 }
 
-.edit-song {
-  padding-left: 40px;
+.song-btn {
+  background-color: var(--light);
+  border: none;
+  border-radius: 50px;
+  padding: 5px;
+  padding-left: 25px;
+  padding-right: 25px;
+  margin: 3px;
+  box-shadow: 3px 3px 3px 0 rgba(39, 12, 1, .1);
 }
+
+.fa-edit {
+  color: var(--dark);
+}
+
 
 /* dashboard styles */
 .user-info {
@@ -120,9 +156,9 @@ li {
 
 .offcanvas {
   max-width: 50%;
-  max-height: 50%;
+  max-height: 60%;
   margin-top: 105px;
-  background-color: var(--light);
+  background-color: var(--turq);
   color: var(--dark);
   border-style: none;
   box-shadow: -10px 11px 6px -5px rgba(39, 12, 1, .3);
@@ -165,6 +201,8 @@ em {
 .list-group-item {
   background-color: var(--xtra-light);
   border-color: var(--light);
+  padding-bottom: 20px;
+  padding-top: 15px;
 }
 
 .list-group-flush>.list-group-item:last-child {
@@ -181,6 +219,13 @@ em {
   padding: 5px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--yellow);
+}
+
+@media only screen and (min-width: 780px) {
+  .party-members {
+    border-bottom: none;
+  }
+
 }
 
 .member-text {
@@ -271,4 +316,31 @@ em {
 }
 .stats-padding {
   padding-bottom: 40px;
+}
+
+.modal-header, .modal-body {
+  background-color: var(--xtra-light);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--yellow);
+  border-radius: 20px 20px 0 0;
+}
+
+.modal-body {
+  border-radius: 0 0 20px 20px;
+}
+
+.btn-success {
+  margin-top: 20px;
+  width: 100%;
+  background-color: var(--yellow);
+  border: none;
+  border-radius: 50px;
+}
+
+.btn-success.disabled, .btn-success:disabled {
+  color: var(--red);
+  background-color: var(--xtra-light);
+  border: 1px solid var(--red);
 }
