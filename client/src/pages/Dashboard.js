@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery, useMutation, ApolloCache } from '@apollo/client';
 import { QUERY_ME, QUERY_USER } from '../utils/queries';
 import FriendList from '../components/FriendList';
 import { REMOVE_FRIEND } from '../utils/mutations';
@@ -17,10 +17,10 @@ const Dashboard = () => {
   const [friends, setFriends] = useState({});
   const [show, setShowFriends] = useState(false);
   const { loading, data: userData } = useQuery(QUERY_ME);
-  const [removeFriend] = useMutation(REMOVE_FRIEND);
+  const [removeFriend, { loading: updating, data: removeFriendData }] = useMutation(REMOVE_FRIEND);
 
   let user;
-  
+
   const handleRemoveFriend = async (username) => {
     try {
       const updatedUser = await removeFriend({
@@ -29,8 +29,10 @@ const Dashboard = () => {
 
       console.log('JUST UPDATED', updatedUser);
       user = { ...updatedUser.data.removeFriend };
-      setFriends({ friendCount: user.friendCount, friends: [...user.friends] });
-
+      console.log(user);
+      if (user.friendCount !== friends.friendCount) {
+        setFriends({ friendCount: user.friendCount, friends: [...user.friends] });
+      }
     } catch (e) {
       console.error(e);
     }
@@ -48,7 +50,8 @@ const Dashboard = () => {
   }
 
   // if data isn't here yet, say so
-  if (loading) {
+  if (loading || updating) {
+    user = null;
     return (
       <div className="spinner">
         <Spinner animation="border" role="status">
@@ -58,7 +61,8 @@ const Dashboard = () => {
     );
   }
 
-  user = !user ? { ...userData.me } : user;
+  console.log('rfd', removeFriendData);
+  user = removeFriendData ? removeFriendData.removeFriend : userData.me;
   console.log(userData);
   if (friends.friendCount !== user.friendCount) {
     setFriends({ friendCount: user.friendCount, friends: [...user.friends] });
