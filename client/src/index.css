@@ -4,7 +4,7 @@
   --yellow: #E59824;
   --xtra-light: #fffbf5;
   --red: #e7414f;
-  --turq: #19adb5;
+  --turq: #107c8a;
 }
 
 a {
@@ -156,9 +156,9 @@ li {
 
 .offcanvas {
   max-width: 50%;
-  max-height: 50%;
+  max-height: 60%;
   margin-top: 105px;
-  background-color: var(--light);
+  background-color: var(--turq);
   color: var(--dark);
   border-style: none;
   box-shadow: -10px 11px 6px -5px rgba(39, 12, 1, .3);
@@ -316,4 +316,31 @@ em {
 }
 .stats-padding {
   padding-bottom: 40px;
+}
+
+.modal-header, .modal-body {
+  background-color: var(--xtra-light);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--yellow);
+  border-radius: 20px 20px 0 0;
+}
+
+.modal-body {
+  border-radius: 0 0 20px 20px;
+}
+
+.btn-success {
+  margin-top: 20px;
+  width: 100%;
+  background-color: var(--yellow);
+  border: none;
+  border-radius: 50px;
+}
+
+.btn-success.disabled, .btn-success:disabled {
+  color: var(--red);
+  background-color: var(--xtra-light);
+  border: 1px solid var(--red);
 }

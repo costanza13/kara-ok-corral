@@ -19,6 +19,7 @@ const Dashboard = () => {
   const { username: userParam } = useParams();
 
   const [addFriend] = useMutation(ADD_FRIEND);
+  const [show, setShow] = useState(false);
 
   // const { loading, data: userData } = useQuery(QUERY_ME);
   const { loading, data:userData } = useQuery(QUERY_ME, QUERY_USER, {
@@ -61,7 +62,7 @@ const Dashboard = () => {
   ];
 
   function FriendsOffCanvas() {
-    const [show, setShow] = useState(false);
+    
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -106,8 +107,6 @@ const Dashboard = () => {
                       {user.username}
                   </button>)} </div>
               )}
-
-           
           </Offcanvas.Body>
         </Offcanvas>
       </>
