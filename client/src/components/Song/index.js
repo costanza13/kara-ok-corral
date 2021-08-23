@@ -37,29 +37,29 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
   const SongCollapse = (
     <>
       <Collapse in={!open}>
-            <Row>
-            <Col xs={12}>
-                {song.title && song.artist ? (<p className="song-content">
-                  <span className="song-title">{song.title}</span>{" "}
-                  <br></br>
-                  <span className="song-artist">by {song.artist}</span>
-                </p>) : ('')}
-            </Col>
-            <Col xs={12} md={12} lg={{span: 9, offset: 3}}>
-                  {song.lyricsUrl ? (<span><a href={song.lyricsUrl} target="_blank" rel="noreferrer" className="song-btn">lyrics</a></span>) : ('')}
-                  {song.videoUrl ? (<span><a href={song.videoUrl} target="_blank" rel="noreferrer" className="song-btn">video</a></span>) : ('')}
-                
-                  <span
-                    onClick={() => setOpen(!open)}
-                    aria-controls="editSong-collapse-text"
-                    aria-expanded={open}
-                    className="song-btn"
-                  >
-                    <i class="far fa-edit fa-md"></i>
-                  </span>
-            </Col>
-          </Row>
-          </Collapse>
+        <Row>
+          <Col xs={12}>
+            {song.title && song.artist ? (<p className="song-content">
+              <span className="song-title">{song.title}</span>{" "}
+              <br></br>
+              <span className="song-artist">by {song.artist}</span>
+            </p>) : ('')}
+          </Col>
+          <Col xs={12} md={12} lg={{ span: 9, offset: 3 }}>
+            {song.lyricsUrl ? (<span><a href={song.lyricsUrl} target="_blank" rel="noreferrer" className="song-btn">lyrics</a></span>) : ('')}
+            {song.videoUrl ? (<span><a href={song.videoUrl} target="_blank" rel="noreferrer" className="song-btn">video</a></span>) : ('')}
+
+            <span
+              onClick={() => setOpen(!open)}
+              aria-controls="editSong-collapse-text"
+              aria-expanded={open}
+              className="song-btn"
+            >
+              <i className="far fa-edit fa-md"></i>
+            </span>
+          </Col>
+        </Row>
+      </Collapse>
     </>
   )
 
@@ -125,6 +125,8 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
     </>
   );
 
+  const videoDetails = { title: song.title, artist: song.artist, videoUrl: song.videoUrl };
+
   return (
     <ListGroup>
       {song.title ? (
@@ -143,17 +145,25 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
                 <a href={song.videoUrl} target="_blank" rel="noreferrer">
                   video
                 </a>
-                <span onClick={() => setVideo({ title: song.title, artist: song.artist, url: song.videoUrl })}> &gt; </span>
+                <span onClick={() => setVideo({ ...videoDetails })}> &gt; </span>
               </span>
               {
                 song.performance
-                  ? < span >
+                  ? <span>
                     <a href={song.performance.url} target="_blank" rel="noreferrer">
                       performance
                     </a>
                   </span>
                   : ''
               }
+              <span
+                onClick={() => setOpen(!open)}
+                aria-controls="editSong-collapse-text"
+                aria-expanded={open}
+                className="song-btn"
+              >
+                <i className="far fa-edit fa-md"></i>
+              </span>
             </Col>
             {canEdit ? (<Col xs={12}>{EditCollapse}</Col>) : ('')}
           </Row>
