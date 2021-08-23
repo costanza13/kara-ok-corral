@@ -4,7 +4,7 @@ const { gql } = require('apollo-server-express');
 // create our typeDefs
 const typeDefs = gql`
 type Reaction {
-  reactionId: ID
+  _id: ID
   username: String
   reactionBody: String
   createdAt: String
@@ -118,6 +118,7 @@ type Mutation {
   removeSong(playlistId: ID!, songId: ID!): Playlist
   updatePerformance(performanceId: ID!, performanceInfo: PerformanceInfo!): Performance
   removePerformance(performanceId: ID!): Song
+  addReaction(performanceId: ID!, reactionBody: String!): Performance
 }
 `;
 

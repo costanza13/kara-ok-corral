@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useMutation, useQuery } from '@apollo/client';
-import { ADD_FRIEND, REMOVE_FRIEND} from '../../utils/mutations';
 import FriendSearch from '../FriendSearch';
+import { useQuery, useMutation } from '@apollo/client';
+import { ADD_FRIEND } from '../../utils/mutations';
 import { QUERY_USERS } from '../../utils/queries';
 
 
-
 const FriendList = ({ friendCount, username, friends, handleRemoveFriend }) => {
-  const [removeFriend] = useMutation(REMOVE_FRIEND);
+
   const [addFriend] = useMutation(ADD_FRIEND);
   const { loading: queryUsersLoading, data: usersData } = useQuery(QUERY_USERS);
  
@@ -21,13 +20,10 @@ const FriendList = ({ friendCount, username, friends, handleRemoveFriend }) => {
   };
 
   const handleClick = async (username) => {
-    
     try {
       await addFriend({
         variables: { username }
-      });
-     
-      
+      });    
     } catch (e) {
       console.error(e);
     }
@@ -35,8 +31,8 @@ const FriendList = ({ friendCount, username, friends, handleRemoveFriend }) => {
 
   return (
     <div>
-      {friends.map(friend => (
-        <button className="btn w-100 display-block mb-2" key={friend._id}>
+      {friends.map((friend, index) => (
+        <button className="btn w-100 display-block mb-2" key={`friend${index}`}>
           <Link to={`/profile/${friend.username}`}>{friend.username} </Link>  
           <i className="fas fa-minus-circle fa-xs" onClick={() => handleClickRemove(friend.username)} ></i>
         </button>      
