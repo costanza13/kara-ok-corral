@@ -108,7 +108,11 @@ const resolvers = {
     },
     publicPerformances: async (parent, { username }) => {
       const userFilter = username ? { username } : {};
-      const performances = await Performance.find({ ...userFilter, visibility: 'public' }).populate('reactions');
+      const performances = await Performance
+      .find({ ...userFilter, visibility: 'public' })
+      .sort('-createAt')
+      .populate('reactions')
+      .limit(10);
       return performances;
     },
     performance: async (parent, { _id }, context) => {
@@ -122,7 +126,6 @@ const resolvers = {
           if (context.user) {
             // get the owner's friend list and see if the current logged in user is a friend
             const performer = await User.findOne({ username: performance.username, friends: { $in: [context.user._id] } });
-            console.log(performance, context.user._id, performer);
             if (performer) {
               return performance;
             }
@@ -259,20 +262,30 @@ const resolvers = {
       if (context.user) {
         const { title, artist, videoUrl, lyricsUrl, performanceUrl } = song;
 
-        // check if there's a performanceUrl
-        let updatedPerf;
+        let newPerf;
         if (performanceUrl) {
-          updatedPerf = await Performance.findOneAndUpdate(
-            { url: performanceUrl, username: context.user.username },
-            { url: performanceUrl, username: context.user.username, visibility: 'private' },
-            {
-              new: true,
-              upsert: true // Make this update into an upsert
-            });
+          // check if the song already has a performance
+          const songToUpdate = songId
+            ? await Song.findOne({ _id: songId })
+            : null;
+
+          // if the song already exists, check if it has a performance
+          if (songToUpdate && songToUpdate.performance) {
+            // if so, update the url
+            const updatedPerformance = await Performance.updateOne(
+              { _id: songToUpdate.performance },
+              { url: performanceUrl }
+            );
+          } else {
+            // otherwise, create the performance
+            newPerf = await Performance.create(
+              { url: performanceUrl, username: context.user.username, visibility: 'private' });
+          }
         }
 
         const songUpdate = { title, artist, videoUrl, lyricsUrl };
-        if (updatedPerf) songUpdate.performance = updatedPerf._id;
+        // if a new performance was added, include it in the song update
+        if (newPerf) songUpdate.performance = newPerf._id;
 
         const updatedSong = !songId
           ? await Song.create({ ...songUpdate, username: context.user.username })
@@ -368,6 +381,35 @@ const resolvers = {
         throw new UserInputError('NOT FOUND: The requested performance was not found.');
       }
       throw new ForbiddenError('FORBIDDEN: You must be logged in to manage performances.');
+    },
+    addReaction: async (parent, { performanceId, reactionBody }, context) => {
+      if (context.user) {
+        // user can add reactions if the performance is public, if the user is the owner, or if it's shared with friends and the user is a friend
+        // so first fetch the performance
+        const performance = await Performance.findOne({ _id: performanceId });
+
+        let canAdd = false;
+        if (performance) {
+          if (performance.visibility === 'public' ||
+            (context.user && performance.username === context.user.username)) {
+            canAdd = true;
+          } else if (performance.visibility === 'friends') {
+            // get the owner's friend list and see if the current logged in user is a friend
+            const performer = await User.findOne({ username: performance.username, friends: { $in: [context.user._id] } });
+            canAdd = !!performer;
+          }
+          if (canAdd) {
+            const updatedPerformance = await Performance.findOneAndUpdate(
+              { _id: performance._id },
+              { $push: { reactions: { username: context.user.username, reactionBody } } },
+              { new: true, runValidators: true }
+            );
+            return updatedPerformance;
+          }
+        }
+        throw new UserInputError('NOT FOUND: The requested performance was not found.');
+      }
+      throw new ForbiddenError('FORBIDDEN: You must be logged in to add reactions.');
     }
   }
 };

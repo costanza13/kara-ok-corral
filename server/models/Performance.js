@@ -2,11 +2,6 @@ const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
 const reactionSchema = new Schema({
-  // set custom id to avoid confusion with parent Performance _id
-  reactionId: {
-    type: Schema.Types.ObjectId,
-    default: () => new Schema.Types.ObjectId()
-  },
   username: {
     type: String,
     required: true,
@@ -21,8 +16,12 @@ const reactionSchema = new Schema({
     default: Date.now,
     get: createdAtVal => dateFormat(createdAtVal)
   }
-});
-
+},
+  {
+    toJSON: {
+      getters: true
+    }
+  });
 
 const performanceSchema = new Schema({
   username: {
@@ -46,6 +45,15 @@ const performanceSchema = new Schema({
     default: Date.now,
     get: createdAtVal => dateFormat(createdAtVal)
   }
+},
+  {
+    toJSON: {
+      getters: true
+    }
+  });
+
+performanceSchema.virtual('reactionCount').get(function () {
+  return this.reactions.length;
 });
 
 const Performance = model('Performance', performanceSchema);
