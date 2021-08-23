@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { ADD_FRIEND, REMOVE_FRIEND} from '../../utils/mutations';
@@ -26,6 +26,7 @@ const FriendList = ({ friendCount, username, friends, handleRemoveFriend }) => {
       await addFriend({
         variables: { username }
       });
+     
       
     } catch (e) {
       console.error(e);
