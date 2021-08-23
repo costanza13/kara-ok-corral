@@ -58,13 +58,11 @@ export const SAVE_SONG = gql`
       }
     }
   }
-  
 `;
 
 export const ADD_FRIEND = gql`
   mutation addFriend($username: String!) {
     addFriend(friendUsername: $username) {
-     
       username
       email
       friendCount
@@ -81,7 +79,6 @@ export const ADD_FRIEND = gql`
       }
       friends {
         username
-      
       }
     }
   } 
@@ -90,24 +87,22 @@ export const ADD_FRIEND = gql`
 export const REMOVE_FRIEND = gql`
   mutation removeFriend($username: String!) {
     removeFriend(friendUsername: $username) {
-     
-        username
-        email
-        friendCount
-        playlists {
-          _id
-          name
-          visibility
-          members
-        }
-        partyPlaylists {
-          _id
-          name
-          members
-        }
-        friends {
-          username
-        
+      username
+      email
+      friendCount
+      playlists {
+        _id
+        name
+        visibility
+        members
+      }
+      partyPlaylists {
+        _id
+        name
+        members
+      }
+      friends {
+        username        
       }
     }
   } 
