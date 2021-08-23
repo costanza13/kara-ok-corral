@@ -1,28 +1,35 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client'
+import { REMOVE_FRIEND } from '../../utils/mutations';
 import { Link } from 'react-router-dom';
 import FriendSearch from '../FriendSearch';
-import { useQuery, useMutation } from '@apollo/client';
 import { ADD_FRIEND } from '../../utils/mutations';
-import { QUERY_USERS } from '../../utils/queries';
 
-
-const FriendList = ({ friendCount, username, friends, handleRemoveFriend }) => {
-
+const FriendList = ({ username, friends, setFriendCount }) => {
   const [addFriend] = useMutation(ADD_FRIEND);
-  const { loading: queryUsersLoading, data: usersData } = useQuery(QUERY_USERS);
- 
-  const [localFriends, setLocalFriends] = useState([...friends]);
+  const [removeFriend, { loading: removing, data: removeData }] = useMutation(REMOVE_FRIEND);
+
+  let localFriends;
+
+  if (removing) {
+    return <span>Removing...</span>;
+  }
 
   if (!friends || !friends.length) {
     return <p className="bg-dark text-light p-3">{username}, make some friends!</p>;
   }
 
-  const handleClickRemove = (removeUsername) => {
-    console.log(localFriends);
-    const newFriends = localFriends.filter(username => username !== removeUsername);
-    setLocalFriends(newFriends);
-    console.log(localFriends);
-    handleRemoveFriend(removeUsername)
+  const handleClickRemove = async (removeUsername) => {
+    try {
+      const updatedUser = await removeFriend({
+        variables: { username: removeUsername }
+      });
+
+      console.log('JUST UPDATED', updatedUser);
+      setFriendCount(updatedUser.data.removeFriend.friendCount);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const handleClick = async (username) => {
@@ -34,6 +41,8 @@ const FriendList = ({ friendCount, username, friends, handleRemoveFriend }) => {
       console.error(e);
     }
   };
+  console.log('rd', removeData);
+  localFriends = removeData ? removeData.removeFriend.friends : friends;
 
   return (
     <div>
