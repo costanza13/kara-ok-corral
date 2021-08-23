@@ -26,6 +26,37 @@ body {
 
 header {
   background-color: var(--dark);
+  padding: 10px;
+}
+
+.nav-item, .nav-link {
+  margin: 10px;
+  margin-bottom: 5px;
+  border: 2px solid var(--yellow);
+  border-radius: 50px;
+  padding: 3px;
+  padding-right: 15px;
+  padding-left: 15px;
+  color: var(--yellow);
+  font-weight: 600;
+}
+
+.nav-link span {
+  margin: 20px;
+}
+
+.nav-item:hover a:hover {
+  color: var(--light);
+  border-color: var(--light);
+}
+
+.modal-title .nav-link {
+  border: none;
+}
+
+.nav-link:focus, .nav-link:hover {
+  background-color: var(--yellow);
+  color: var(--dark);
 }
 
 #footer {
@@ -60,7 +91,6 @@ li {
 .accordion-button {
   background-color: rgba(252, 243, 238, .3);
   color: var(--dark);
-  
 }
 
 .accordion-button:not(.collapsed) {
@@ -77,13 +107,12 @@ li {
   background-image: none;
 }
 
+.accordion-header, .accordion-body {
+  border-bottom: 2px solid var(--light);
+}
 
 .delete-song:hover {
   color: var(--yellow);
-}
-
-.edit-song {
-  padding-left: 40px;
 }
 
 /* dashboard styles */
@@ -181,6 +210,14 @@ em {
   padding: 5px;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--yellow);
+}
+
+@media only screen and (min-width: 780px) {
+  .party-members {
+    border-bottom: none;
+    border-right: 1px solid var(--yellow);
+  }
+
 }
 
 .member-text {
