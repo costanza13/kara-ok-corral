@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../utils/queries';
 import Playlist from '../components/Playlist';
-import PerformanceVideo from '../components/EmbeddedVideo';
+
 import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -54,11 +54,7 @@ const PlaylistPage = () => {
   const playlist = playlistId !== "new" ? playlistData.playlist : { _id: null, username: currentUser.username };
   const isOwner = playlist.username === currentUser.username;
 
-  const performanceVideo = currentVideo ?
-    <PerformanceVideo videoUrl={currentVideo} />
-    :
-    '';
-
+ 
 
   return (
     <>
@@ -69,7 +65,7 @@ const PlaylistPage = () => {
         </Row>
         <Row>
           <Col>
-            {performanceVideo}
+           
           </Col>
         </Row>
       </Container>
