@@ -8,7 +8,6 @@ import Collapse from 'react-bootstrap/Collapse';
 
 const Song = ({ song, canEdit, saveSong }) => {
   const [open, setOpen] = useState(false);
-  const [editStatus, setEditStatus] = useState(false);
 
   const isAddForm = !song;
   if (isAddForm) {
@@ -17,59 +16,12 @@ const Song = ({ song, canEdit, saveSong }) => {
 
   const [formState, setFormState] = useState({ ...song });
 
-  if (isAddForm) {
-    if (!editStatus) setEditStatus(true);
-  }
-
-  const viewHeaderText = song.title ? (
-    <Row>
-      <Col xs={9}>
-        <span>{song.title}</span> <br></br> <span>{song.artist}</span>
-        <br></br>
-        <span>
-          <a href={song.lyricsUrl} target="_blank" rel="noreferrer">
-            lyrics
-          </a>{" "}
-        </span>
-        //{" "}
-        <span>
-          <a href={song.videoUrl} target="_blank" rel="noreferrer">
-            video
-          </a>
-        </span>
-      </Col>
-      <Col xs={{span: 1, offset: 1}} onClick={() => setEditStatus(true)} className="d-flex justify-content-start">
-        <span className="edit-song">
-          <i
-            className="far fa-edit mx-1"
-            onClick={() => setEditStatus(true)}
-          ></i>
-        </span>
-      </Col>
-    </Row>
-  ) : (
-    <em>add a song...</em>
-  );
-  const editHeaderText = song.title ? 'Edit Song Details' : <em>Add A Song...</em>;
-
-  const handleChange = (e) => {
+  const handleChange = (e, field) => {
+    e.preventDefault();
     const value = e.target.value;
-    switch (e.target.id) {
-      case 'songTitle':
-        setFormState({ ...formState, title: value });
-        break;
-      case 'songArtist':
-        setFormState({ ...formState, artist: value });
-        break;
-      case 'lyricsUrl':
-        setFormState({ ...formState, lyricsUrl: value });
-        break;
-      case 'videoUrl':
-        setFormState({ ...formState, videoUrl: value });
-        break;
-      default:
-      // do nothing
-    }
+    const newState = { ...formState };
+    newState[field] = value;
+    setFormState(newState);
   };
 
   const handleSubmit = (e) => {
@@ -78,78 +30,69 @@ const Song = ({ song, canEdit, saveSong }) => {
     if (isAddForm) {
       setFormState({ title: '', artist: '', lyricsUrl: '', videoUrl: '' })
     } else {
-      setEditStatus(false);
+      setOpen(false);
     }
   };
 
-  function EditCollapse() {
-    return (
-      <>
-        <Button
-          onClick={() => setOpen(!open)}
-          aria-controls="editSong-collapse-text"
-          aria-expanded={open}
-        >
-          edit
-        </Button>
-        <Collapse
-          in={open}
-        >
-          <div className="song-form">
-            <form onKeyUp={() => setOpen(!open)}>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  id={song.title}
-                  value={formState.title}
-                  placeholder="title"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  id={song.artist}
-                  value={formState.artist}
-                  placeholder="artist"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="url"
-                  className="form-control"
-                  id={song.lyricsUrl}
-                  value={formState.lyricsUrl}
-                  placeholder="lyrics URL"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="url"
-                  className="form-control"
-                  id={song.videoUrl}
-                  value={formState.videoUrl}
-                  placeholder="karaoke video URL"
-                  onChange={handleChange}
-                />
-              </div>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                onClick={handleSubmit}
-              >
-                update
-              </button>
-            </form>
-          </div>
-        </Collapse>
-      </>
-    );
-  }
+  const EditCollapse =
+    <>
+      <Button
+        onClick={() => setOpen(!open)}
+        aria-controls="editSong-collapse-text"
+        aria-expanded={open}
+      >
+        edit
+      </Button>
+      <Collapse in={open}>
+        <div className="song-form">
+          <form>
+            <div className="mb-3">
+              <input
+                type="text"
+                className="form-control"
+                value={{ ...formState }.title}
+                placeholder="title"
+                onChange={(e) => handleChange(e, 'title')}
+              />
+            </div>
+            <div className="mb-3">
+              <input
+                type="text"
+                className="form-control"
+                value={{ ...formState }.artist}
+                placeholder="artist"
+                onChange={(e) => handleChange(e, 'artist')}
+              />
+            </div>
+            <div className="mb-3">
+              <input
+                type="url"
+                className="form-control"
+                value={{ ...formState }.lyricsUrl}
+                placeholder="lyrics URL"
+                onChange={(e) => handleChange(e, 'lyricsUrl')}
+              />
+            </div>
+            <div className="mb-3">
+              <input
+                type="url"
+                className="form-control"
+                value={formState.videoUrl}
+                placeholder="karaoke video URL"
+                onChange={(e) => handleChange(e, 'videoUrl')}
+              />
+            </div>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={handleSubmit}
+            >
+              update
+            </button>
+          </form>
+        </div>
+      </Collapse>
+    </>
 
   return (
     <ListGroup>
@@ -172,7 +115,7 @@ const Song = ({ song, canEdit, saveSong }) => {
               </span>
             </Col>
             <Col xs={12}>
-              <EditCollapse />
+              {EditCollapse}
             </Col>
           </Row>
         ) : (
