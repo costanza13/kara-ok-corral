@@ -4,7 +4,6 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Link } from "react-router-dom";
-import Button from 'react-bootstrap/button';
 import Collapse from 'react-bootstrap/Collapse';
 import './Song.css';
 
@@ -166,7 +165,7 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
                   ? <>
                     <span className="spacer">{'//'}</span>
                     <span>
-                      <Link to={`/performance/${performance._id}`}>
+                      <Link to={`/performance/${song.performance._id}`}>
                         performance <i className="fas fa-music"></i>
                       </Link>
                     </span>
