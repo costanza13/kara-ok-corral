@@ -85,7 +85,7 @@ const Dashboard = () => {
           <h2 className="username">
             {user.username}
             <br></br>
-            <span className="friend-count">
+            <span>
               {friendsOffCanvas}
             </span>
           </h2>

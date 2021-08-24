@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import FriendList from '../components/FriendList';
+import { Container, Row, Col } from 'react-bootstrap';
 
 
 import { useQuery, useMutation } from '@apollo/client';
@@ -41,34 +42,7 @@ const PublicProfile = props => {
   };
 
   return (
-    <div>
-      <div className="flex-row mb-3">
-        <h2 className="bg-dark text-secondary p-3 display-inline-block">
-          Viewing {userParam ? `${user.username}'s` : 'your'} profile
-        </h2>
-        <h3>{user.username} has {user.friendCount} {user.friendCount === 1 ? 'friend' : 'friends'}</h3>
-        <ul>
-          {user.playlists.map((playlist) => {
-
-            return (
-
-              <li key={'li' + playlist._id}>
-                <Link
-                  key={playlist._id}
-                  to={`/playlist/${playlist._id}`}
-                >{playlist.name}</Link>
-              </li>
-            );
-          })}
-        </ul>
-        {userParam && (
-          <button className="btn ml-auto" onClick={handleClick}>
-            Add Friend
-          </button>
-        )}
-      </div>
-
-    </div>
+    <div></div>
   );
 };
 
