@@ -6,27 +6,36 @@ import FriendSearch from '../FriendSearch';
 import { ADD_FRIEND } from '../../utils/mutations';
 
 const FriendList = ({ username, friends, setFriendCount }) => {
-  
 
-  const [removeFriend, { loading: removing, data: removeData }] = useMutation(REMOVE_FRIEND);
-  const [addFriend, { loading: adding, data: addData }] = useMutation(ADD_FRIEND);
+  const [addFriend] = useMutation(ADD_FRIEND, {
+    update(cache, {data: { addFriend }}) {
+      cache.modify({
+        fields: {
+          me(existingMeData) {
+            return addFriend
+          }
+        }
+      })
+    }
+  });
  
-  let localFriends;
-
-  if (removing) {
-    return <span>Removing...</span>;
-  }
-
-  if (adding) {
-    return <span>...Adding</span>
-  }
+  const [removeFriend] = useMutation(REMOVE_FRIEND, {
+    update(cache, {data: { removeFriend }}) {
+      cache.modify({
+        fields: {
+          me(existingMeData) {
+            return removeFriend
+          }
+        }
+      })
+    }
+  });
 
   const handleClickRemove = async (removeUsername) => {
     try {
       const updatedUser = await removeFriend({
         variables: { username: removeUsername }
       });
-
       console.log('JUST UPDATED', updatedUser);
       setFriendCount(updatedUser.data.removeFriend.friendCount);
     } catch (e) {
@@ -37,34 +46,28 @@ const FriendList = ({ username, friends, setFriendCount }) => {
   const handleClickAdd = async (addUsername) => {
     try {
       const updatedUser = await addFriend({
-        variables: { username: addUsername }
-      });   
-      setFriendCount(updatedUser.data.addFriend.friendCount);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+       variables: { username: addUsername }
+      });
+      console.log("updated user:");
+       console.log(updatedUser);
+       setFriendCount(updatedUser.data.addFriend.friendCount);
+     } catch (e) {
+       console.error(e);
+     }
+   };
 
   if (!friends || !friends.length) {
     return (
-    <>  
-    <p className="bg-dark text-light p-3">{username}, make some friends!</p>
-    <FriendSearch handleClick={handleClickAdd} />
-   </>
-    )}
-
-  console.log('rd', removeData);
-  console.log('ad', addData);
-  
-  //localFriends = removeData ? removeData.removeFriend.friends : friends && addData ? addData.addFriend.friends : friends;
-  
-  console.log('friends', friends)
-
-  localFriends = removeData ? removeData.removeFriend.friends : addData ? addData.addFriend.friends : friends;
+      <>
+        <p className="bg-dark text-light p-3">{username}, make some friends!</p>
+        <FriendSearch handleClick={handleClickAdd} />
+      </>
+    )
+  }
 
   return (
-    <div> 
-        {localFriends.map((friend, index) => (
+    <div>
+      {friends.map((friend, index) => (
         <button className="btn w-100 display-block mb-2" key={`friend${index}`}>
           <Link to={`/profile/${friend.username}`}>{friend.username} </Link>
           <i className="fas fa-minus-circle fa-xs friend-delete" onClick={() => handleClickRemove(friend.username)} ></i>
