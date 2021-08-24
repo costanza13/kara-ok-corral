@@ -23,7 +23,7 @@ const handleInputOnChange = e => {
 
   return (
     <>
-      <button className="add-friend-btn" onClick={handleClick}>
+      <button className="add-friend-btn">
         <i class="fas fa-user-plus fa-sm"></i>
       </button>
       <input

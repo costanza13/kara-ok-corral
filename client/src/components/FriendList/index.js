@@ -21,11 +21,6 @@ const FriendList = ({ username, friends, setFriendCount }) => {
     return <span>...Adding</span>
   }
 
-  // if (!friends || !friends.length) {
-  //   return <p className="bg-dark text-light p-3">{username}, make some friends!</p>;
-   
-  // }
-
   const handleClickRemove = async (removeUsername) => {
     try {
       const updatedUser = await removeFriend({
@@ -50,19 +45,25 @@ const FriendList = ({ username, friends, setFriendCount }) => {
     }
   };
 
+  if (!friends || !friends.length) {
+    return (
+    <>  
+    <p className="bg-dark text-light p-3">{username}, make some friends!</p>
+    <FriendSearch handleClick={handleClickAdd} />
+   </>
+    )}
+
   console.log('rd', removeData);
   console.log('ad', addData);
   
-          
-
   //localFriends = removeData ? removeData.removeFriend.friends : friends && addData ? addData.addFriend.friends : friends;
-  console.log('friends', localFriends)
+  
+  console.log('friends', friends)
 
   localFriends = removeData ? removeData.removeFriend.friends : addData ? addData.addFriend.friends : friends;
 
   return (
-    <div>
-       <p className="bg-dark text-light p-3">{username}, make some friends!</p>
+    <div> 
         {localFriends.map((friend, index) => (
         <button className="btn w-100 display-block mb-2" key={`friend${index}`}>
           <Link to={`/profile/${friend.username}`}>{friend.username} </Link>
