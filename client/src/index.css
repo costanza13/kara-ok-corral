@@ -432,7 +432,57 @@ em {
 
 .friend-count {
   color: var(--red);
-  font-size: 20px;
-  
-  
+  font-size: 20px; 
+}
+
+.reaction-section {
+  text-align: center;
+}
+
+.reactions {
+  display: inline-block;
+  width: auto;
+  min-width: 80%;
+}
+
+.reaction {
+  background-color: white;
+  border-radius: 10px;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.reaction-body {
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.reaction-byline {
+  text-align: right;
+  font-size: smaller;
+  font-style: italic;
+  padding-right: 0.5rem;
+}
+
+.reaction-form {
+  align-items: center;
+  background-color: white;
+  border: solid 1px brown;
+  border-radius: 10px;
+  display: flex;
+  padding: 0.2rem;
+  margin: 1rem 0;
+}
+
+#reaction-text-input {
+  border-color: var(--turq);
+  border-radius: 5px;
+  flex-grow: 1;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  resize: none;
+}
+
+.reaction-submit {
+  color: var(--yellow);
 }

@@ -37,7 +37,7 @@ const AppNavBar = () => {
           {Auth.loggedIn() ? (
             <>
               <Nav.Item>
-                <Link to={`/profile/${user.username}`} s>
+                <Link to={`/profile/${user.username}`}>
                   Profile
                 </Link>
               </Nav.Item>
@@ -64,23 +64,19 @@ const AppNavBar = () => {
         show={showModal}
         onHide={() => setShowModal(false)}
         aria-labelledby="signup-modal"
-        
+
       >
         {/* tab container to do either signup or login component */}
         <Tab.Container defaultActiveKey="login">
           <Modal.Header closeButton>
             <Modal.Title id="signup-modal">
               <Nav>
-                
-                  <Nav.Link eventKey="login">
-                    <span className="login-signup">Login</span>
-                  </Nav.Link>
-                
-                
-                  <Nav.Link eventKey="signup">
-                    <span className="login-signup">Sign Up</span>
-                  </Nav.Link>
-                
+                <Nav.Link eventKey="login">
+                  <span className="login-signup">Login</span>
+                </Nav.Link>
+                <Nav.Link eventKey="signup">
+                  <span className="login-signup">Sign Up</span>
+                </Nav.Link>
               </Nav>
             </Modal.Title>
           </Modal.Header>
@@ -98,7 +94,6 @@ const AppNavBar = () => {
       </Modal>
     </>
   );
-
 };
 
 export default AppNavBar;

@@ -4,8 +4,10 @@ import { SAVE_PLAYLIST, SAVE_SONG } from '../../utils/mutations';
 import Auth from '../../utils/auth';
 import Song from '../Song';
 import PlaylistMembers from '../PlaylistMembers';
-import EasyEdit, { Types } from "react-easy-edit";
+import EditableText from '../EditableText';
 import Col from 'react-bootstrap/Col';
+import { Link } from 'react-router-dom';
+import './Playlist.css';
 
 
 const Playlist = ({ playlistId, setVideo }) => {
@@ -44,7 +46,7 @@ const Playlist = ({ playlistId, setVideo }) => {
     playlist = updatedPlaylist.data.updatePlaylist;
   }
 
-  const save = async value => {
+  const saveName = async value => {
     const { visibility, members } = playlist;
     const updatedPlaylist = await updatePlaylist({
       variables: { playlistId: playlist._id, playlist: { name: value, visibility, members } }
@@ -56,7 +58,15 @@ const Playlist = ({ playlistId, setVideo }) => {
       playlist = updatedPlaylist.data.updatePlaylist;
     }
   };
-  const cancel = value => { };
+
+  const setVisibility = async value => {
+    const { name, members } = playlist;
+    const visibility = value === 'public' ? 'public' : 'private';
+    const updatedPlaylist = await updatePlaylist({
+      variables: { playlistId: playlist._id, playlist: { name, visibility, members } }
+    });
+    playlist = updatedPlaylist.data.updatePlaylist;
+  };
 
   console.log(playlistData);
   playlist = playlistId ? playlistData.playlist : { username: currentUser.username, name: 'Give us a name, eh?', visibility: 'private', members: [], songs: [] };
@@ -64,24 +74,34 @@ const Playlist = ({ playlistId, setVideo }) => {
   const isOwner = playlist.username === currentUser.username;
   const isMember = playlist.members.indexOf(currentUser.username) > -1;
 
-  console.log('orig playlist', playlist);
-
   return (
     <>
       <Col xs={12} md={12}>
-        <h2>{playlist.name}</h2>
-        <EasyEdit
-          type={Types.TEXT}
-          value={playlist.name}
-          onSave={save}
-          onCancel={cancel}
-          hideSaveButton={true}
-          hideCancelButton={true}
-          saveOnBlur={true}
-          attributes={{ className: "playlist-title" }}
-        />
+        <EditableText
+          inputClass={'playlist-title'}
+          textClass={'playlist-title'}
+          blur={'save'}
+          save={saveName}
+        >
+          {playlist.name}
+        </EditableText>
+        <p class="playlist-owner">
+          created by <Link to={`/profile/${playlist.username}`}>{playlist.username}</Link>
+          {playlist.members.length ? ' (and posse)' : ''}
+        </p>
+      </Col>
+      <Col xs={12} md={12}>
+        {(isMember || isOwner) && !isNew ? (
+          <>
+            <span className={`visibility-btn private ${playlist.visibility !== 'public' ? ' selected' : ''}`} onClick={() => setVisibility('private')}> private</span>
+            <span className={`visibility-btn public ${playlist.visibility === 'public' ? ' selected' : ''}`} onClick={() => setVisibility('public')}> public</span>
+          </>
+        ) : (
+          ""
+        )}
       </Col>
       <Col xs={12} md={12} lg={3}>
+        <br />
         <PlaylistMembers
           members={playlist.members}
           canEdit={isOwner}
@@ -93,7 +113,7 @@ const Playlist = ({ playlistId, setVideo }) => {
           const canEdit = currentUser.username === song.username;
           return <Song key={song._id} song={song} canEdit={canEdit} saveSong={saveSong} setVideo={setVideo}></Song>;
         })}
-        {(isMember || isOwner) && playlistId ? (
+        {(isMember || isOwner) && !isNew ? (
           <Song key={"newsong"} song={null} canEdit={true} saveSong={saveSong}></Song>
         ) : (
           ""

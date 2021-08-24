@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../utils/queries';
 import Playlist from '../components/Playlist';
@@ -14,12 +14,10 @@ import Spinner from "react-bootstrap/Spinner";
 const PlaylistPage = () => {
   const [currentVideo, setCurrentVideo] = useState(null);
   const { playlistId } = useParams();
-  console.log('playlistId', playlistId);
   const { loading, error, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
 
   const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
 
-  console.log('playlistId', playlistId);
   // if data isn't here yet, say so
   if (!playlistData && loading) {
     return (
@@ -52,7 +50,6 @@ const PlaylistPage = () => {
     }
   }
   const playlist = playlistId !== "new" ? playlistData.playlist : { _id: null, username: currentUser.username };
-  const isOwner = playlist.username === currentUser.username;
 
   const setVideo = (video) => {
     setCurrentVideo({ ...video });

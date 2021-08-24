@@ -24,6 +24,7 @@
     "concurrently": "^6.2.1"
   },
   "dependencies": {
-    "fz-search": "^1.0.0"
+    "fz-search": "^1.0.0",
+    "prune": "^0.0.2"
   }
 }

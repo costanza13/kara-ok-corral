@@ -42,6 +42,4 @@ const Stats = props => {
         </div>
     );
 }
-
-
 export default Stats;
