@@ -82,6 +82,9 @@ export const QUERY_USER = gql`
         username
       }
       friendCount
+      playlistCount
+      songCount
+      performanceCount
       playlists {
         _id
         name

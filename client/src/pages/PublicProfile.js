@@ -58,17 +58,35 @@ const PublicProfile = props => {
         </Row>
         <Row>
           <Col xs={12} md={3} className="pub-friends">
-            <p className="friend-count">
-              {user.username} has {user.friendCount}{" "}
-              {user.friendCount === 1 ? "friend" : "friends"}
-            </p>
-            {userParam && (
+            <div className="friend-count">
+              {user.username} has ... 
+              <ul>
+              <li>{user.friendCount}{" "}
+              {user.friendCount === 1 ? "friend" : "friends"}</li>
+              <li>
+              {user.playlistCount}{" "}
+              {user.playlistsCount === 1 ? "public playlist" : "public playlists"}</li>
+              <ul>
+              {user.playlists.map((playlist) => {
+                return (
+                  <li key={"li" + playlist._id}>
+                    <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
+                      {playlist.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+              </ul>
+              {console.log(user)}
+            </div>
+            {/* {userParam && (
               <button className="btn ml-auto" onClick={handleClick}>
                 Add Friend
               </button>
-            )}
+            )} */}
           </Col>
-          <Col xs={12}>
+          {/* <Col xs={12}>
             <ul>
               {user.playlists.map((playlist) => {
                 return (
@@ -80,7 +98,7 @@ const PublicProfile = props => {
                 );
               })}
             </ul>
-          </Col>
+          </Col> */}
         </Row>
       </Container>
     </div>
