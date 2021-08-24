@@ -23,19 +23,29 @@ const handleInputOnChange = e => {
 
   return (
     <>
-        <button className="btn ml-auto" onClick={handleClick}>
-                Add Friend
-              </button> 
-        <input value={value} onChange={handleInputOnChange} type="text" />
-        {(fuzzyValue.length > 0 && <div>
-               {fuzzyValue.map(user => <button className="btn ml-auto" onClick={() => handleClickAdd(user.username)} >
-                {user.username} 
-                </button>)} 
-                </div>
-        )} 
-       
-        </>
-    )}
+      <button className="add-friend-btn" onClick={handleClick}>
+        <i class="fas fa-user-plus fa-sm"></i>
+      </button>
+      <input
+        className="friend-input"
+        value={value}
+        onChange={handleInputOnChange}
+        type="text"
+      />
+      {fuzzyValue.length > 0 && (
+        <div>
+          {fuzzyValue.map((user) => (
+            <button
+              className="btn ml-auto"
+              onClick={() => handleClickAdd(user.username)}
+            >
+              {user.username}
+            </button>
+          ))}
+        </div>
+      )}
+    </>
+  );}
            
    
 export default FriendSearch;
