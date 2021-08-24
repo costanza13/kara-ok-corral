@@ -108,3 +108,23 @@ export const QUERY_STATS = gql`
   }
 }
 `;
+
+export const QUERY_PERFORMANCE = gql`
+  query getPerformance($performanceId: ID!) {
+    performance(_id: $performanceId) {
+      _id
+      url
+      username
+      reactions {
+        _id
+        username
+        reactionBody
+        createdAt
+      }
+      song {
+        title
+        artist
+      }
+    }
+  }
+`;

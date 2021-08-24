@@ -39,6 +39,10 @@ const performanceSchema = new Schema({
     enum: ['private', 'public', 'friends'],
     default: 'private'
   },
+  song: {
+    type: Schema.Types.ObjectId,
+    ref: 'Song'
+  },
   reactions: [reactionSchema],
   createdAt: {
     type: Date,
