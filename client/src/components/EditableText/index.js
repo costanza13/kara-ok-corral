@@ -43,7 +43,7 @@ const EditableText = ({ edit, textClass, inputClass, blur, save, children }) => 
     <>
       {
         editMode
-          ? <input className={inputClass} type="text" value={inputValue} onBlur={handleBlur} onChange={handleChange} onKeyUp={handleKeyUp} />
+          ? <input className={inputClass} type="text" value={inputValue} onBlur={handleBlur} onChange={handleChange} onKeyUp={handleKeyUp} autoFocus />
           : <span className={textClass}>{children}
             <span
               onClick={() => setEditMode(true)}
