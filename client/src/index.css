@@ -322,7 +322,7 @@ em {
   align-items: center;
   text-align: center;
   height: 500px;
-  background-image: url('../src/assets/KaraOK_BG.png');
+  background-image: url('../src/assets/kokc-hero-web.png');
   background-repeat: norepeat, repeat;
   background-position: relative;
   background-size: cover;
@@ -337,20 +337,39 @@ em {
   width: 100%;
   justify-content: center;
   align-items: center;
-  color: #FBEDDA;
+  color: #ffeedb;
   }
 
   .jumbo-span {
-  color: #E59824;
+  color: #fd2f40;
+  }
+
+  .jumbo-text h2 {
+    background-color: rgba(39, 12, 1, .4);
+    padding: 5px;
+    box-shadow: 0 0 30px rgba(39, 12, 1, .8);
+    border-radius: 4px;
+    
+  }
+
+  @media (max-width: 750px) {
+    .jumbo {
+      height: 300px;
+    }
+
+    .jumbo-text {
+      height: 50%;
+      width: 90%;
+    }
   }
 
   /* STATS AND INFO SECTION STYLES */
 
   .stats-bar {
     align-items: center;
-  text-align: center;
-  padding-top: 50px;
-  padding-bottom: 80px;
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 80px;
   }
 
 .stats-number {
@@ -364,6 +383,7 @@ em {
 .stats-h2 {
   font-size: 42px;
   padding-bottom: 25px;
+  margin-top: 0;
 }
 
 .stats-span {
@@ -401,13 +421,23 @@ em {
   border: 1px solid var(--red);
 }
 
+.btn-success:hover {
+  background-color: var(--red);
+  color: var(--dark);
+}
+
 /* public profile*/
 
 .pub-header {
   margin: 10px;
   margin-top: 20px;
   color: var(--red);
-  text-align: center;
+}
+
+@media (max-width: 750px) {
+  .pub-header {
+    text-align: center;
+  }
 }
 
 .pub-name {
@@ -435,6 +465,8 @@ em {
   font-size: 20px; 
 }
 
+
+/* reactions styles */
 .reaction-section {
   text-align: center;
 }
