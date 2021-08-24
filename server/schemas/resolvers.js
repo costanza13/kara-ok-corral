@@ -131,9 +131,9 @@ const resolvers = {
             }
           }
         }
-        throw new UserInputError('NOT FOUND: The requested performance was not found.');
+        throw new ForbiddenError('FORBIDDEN: You are not authorized to view this document.');
       }
-      throw new ForbiddenError('FORBIDDEN: You are not authorized to view this document.');
+      throw new UserInputError('NOT FOUND: The requested performance was not found.');
     }
   },
 
