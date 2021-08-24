@@ -73,8 +73,6 @@ const Playlist = ({ playlistId, setVideo }) => {
   const isOwner = playlist.username === currentUser.username;
   const isMember = playlist.members.indexOf(currentUser.username) > -1;
 
-  console.log('orig playlist', playlist);
-
   return (
     <>
       <Col xs={12} md={12}>

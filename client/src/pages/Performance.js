@@ -49,11 +49,27 @@ const Performance = () => {
   }
 
   console.log(performanceData);
+  const { username, url, reactions } = performanceData.performance;
 
   return (
-    <div>
-      Performance {performanceId}!
-    </div>
+    <Container>
+      <Row>
+        <Col>
+          <h1>A Performance by {username}!</h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <EmbeddedVideo title="Performance" artist={username} url={url} />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <h2>Let's Hear It For {username}!</h2>
+          (reactions will go here)
+        </Col>
+      </Row>
+    </Container>
   )
 };
 
