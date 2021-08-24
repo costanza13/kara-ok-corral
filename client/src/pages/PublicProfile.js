@@ -42,7 +42,48 @@ const PublicProfile = props => {
   };
 
   return (
-    <div></div>
+    <div>
+      <Container>
+        <Row className="pub-header">
+          <Col xs={1}>
+            <span>
+              <i className="fas fa-hat-cowboy fa-md pub-user-icon"></i>
+            </span>
+          </Col>
+          <Col xs={11}>
+            <h2 className="pub-name">
+              {userParam ? `${user.username}'s` : "your"} profile
+            </h2>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={12} md={3} className="pub-friends">
+            <p className="friend-count">
+              {user.username} has {user.friendCount}{" "}
+              {user.friendCount === 1 ? "friend" : "friends"}
+            </p>
+            {userParam && (
+              <button className="btn ml-auto" onClick={handleClick}>
+                Add Friend
+              </button>
+            )}
+          </Col>
+          <Col xs={12}>
+            <ul>
+              {user.playlists.map((playlist) => {
+                return (
+                  <li key={"li" + playlist._id}>
+                    <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
+                      {playlist.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 
