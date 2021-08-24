@@ -1,7 +1,11 @@
-.spacer {
-  padding: 0 1rem;
+.song-edit-btn {
+  float: right;
 }
 
-.song-btn {
-  float: right;
+.song-btn > i {
+  margin-left: 0.2rem;
+}
+
+.italic {
+  font-style: italic;
 }
