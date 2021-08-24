@@ -1,8 +1,16 @@
 .playlist-title {
-  font-size: 140%;
+  display: inline-block;
+  font-size: 200%;
   font-weight: bold;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
-.edit-btn {
+.edit-btn i {
   margin-left: 0.5rem;
+  color: rgba(0 0 0 / 19%);
+}
+
+.playlist-title:hover .edit-btn i {
+  color: rgba(0 0 0 / 50%);
 }
