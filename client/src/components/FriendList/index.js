@@ -66,7 +66,7 @@ const FriendList = ({ username, friends, setFriendCount }) => {
         {localFriends.map((friend, index) => (
         <button className="btn w-100 display-block mb-2" key={`friend${index}`}>
           <Link to={`/profile/${friend.username}`}>{friend.username} </Link>
-          <i className="fas fa-minus-circle fa-xs" onClick={() => handleClickRemove(friend.username)} ></i>
+          <i className="fas fa-minus-circle fa-xs friend-delete" onClick={() => handleClickRemove(friend.username)} ></i>
         </button>
       ))}
       <FriendSearch handleClick={handleClickAdd} />

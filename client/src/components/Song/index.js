@@ -3,8 +3,9 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import ListGroup from 'react-bootstrap/ListGroup';
-import Button from 'react-bootstrap/button';
+import { Link } from "react-router-dom";
 import Collapse from 'react-bootstrap/Collapse';
+import './Song.css';
 
 const Song = ({ song, canEdit, saveSong, setVideo }) => {
   const [open, setOpen] = useState(false);
@@ -40,8 +41,7 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
         <Row>
           <Col xs={12}>
             {song.title && song.artist ? (<p className="song-content">
-              <span className="song-title">{song.title}</span>{" "}
-              <br></br>
+              <span className="song-title">{song.title}</span>{' - '}
               <span className="song-artist">by {song.artist}</span>
             </p>) : ('')}
           </Col>
@@ -63,7 +63,7 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
     </>
   )
 
-  const EditCollapse = (
+  const editCollapse = (
     <>
       <Collapse in={open}>
         <div className="song-form">
@@ -136,6 +136,10 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
   );
 
   const videoDetails = { title: song.title, artist: song.artist, videoUrl: song.videoUrl };
+  const launchVideo = (e) => {
+    e.preventDefault();
+    setVideo({ ...videoDetails });
+  };
 
   return (
     <ListGroup>
@@ -143,46 +147,53 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
         <ListGroup.Item>
           <Row>
             <Col xs={12}>
-              <span>{song.title}</span> <br></br> <span>{song.artist}</span>
+              <span>{song.title}</span>&nbsp; &middot; &nbsp;<em>{song.artist}</em>
               <br></br>
               <span>
                 <a href={song.lyricsUrl} target="_blank" rel="noreferrer">
-                  lyrics
-                </a>{" "}
-              </span>
-              //{" "}
-              <span>
-                <a href={song.videoUrl} target="_blank" rel="noreferrer">
-                  video
+                  lyrics <i className="far fa-file-alt"></i>
                 </a>
-                <span onClick={() => setVideo({ ...videoDetails })}> &gt; </span>
+              </span>
+              <span className="spacer">{'//'}</span>
+              <span>
+                <a href={song.videoUrl} onClick={(e) => launchVideo(e)} rel="noreferrer">
+                  video <i title="watch" className="fas fa-desktop"></i>
+                </a>
               </span>
               {
                 song.performance
-                  ? <span>
-                    <a href={song.performance.url} target="_blank" rel="noreferrer">
-                      performance
-                    </a>
+                  ? <>
+                    <span className="spacer">{'//'}</span>
+                    <span>
+                      <Link to={`/performance/${song.performance._id}`}>
+                        performance <i className="fas fa-music"></i>
+                      </Link>
+                    </span>
+                  </>
+                  : ''
+              }
+              {
+                canEdit
+                  ?
+                  <span
+                    onClick={() => setOpen(!open)}
+                    aria-controls="editSong-collapse-text"
+                    aria-expanded={open}
+                    className="song-btn"
+                  >
+                    <i className="far fa-edit fa-md"></i>
                   </span>
                   : ''
               }
-              <span
-                onClick={() => setOpen(!open)}
-                aria-controls="editSong-collapse-text"
-                aria-expanded={open}
-                className="song-btn"
-              >
-                <i className="far fa-edit fa-md"></i>
-              </span>
             </Col>
-            {canEdit ? (<Col xs={12}>{EditCollapse}</Col>) : ('')}
+            {canEdit ? (<Col xs={12}>{editCollapse}</Col>) : ('')}
           </Row>
         </ListGroup.Item>
       ) : (
         <ListGroup.Item>
           <Container>
             {SongCollapse}
-            {canEdit ? (<span>{EditCollapse}</span>) : ("")}
+            {canEdit ? (<span>{editCollapse}</span>) : ("")}
           </Container>
         </ListGroup.Item>
       )
