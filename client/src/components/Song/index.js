@@ -166,7 +166,7 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
                   ? <>
                     <span className="spacer">{'//'}</span>
                     <span>
-                      <Link to={`/performance/${performance}`}>
+                      <Link to={`/performance/${performance._id}`}>
                         performance <i className="fas fa-music"></i>
                       </Link>
                     </span>
