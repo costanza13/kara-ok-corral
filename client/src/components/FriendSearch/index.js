@@ -25,8 +25,10 @@ const handleInputOnChange = e => {
     <>
         <button className="btn ml-auto" onClick={handleClick}>
                 Add Friend
-              </button> 
-        <input value={value} onChange={handleInputOnChange} type="text" />
+        </button>  
+        
+          <input value={value} onChange={handleInputOnChange} type="text" />
+        
         {(fuzzyValue.length > 0 && <div>
                {fuzzyValue.map(user => <button className="btn ml-auto" onClick={() => handleClickAdd(user.username)} >
                 {user.username} 
