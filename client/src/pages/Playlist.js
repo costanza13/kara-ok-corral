@@ -14,12 +14,10 @@ import Spinner from "react-bootstrap/Spinner";
 const PlaylistPage = () => {
   const [currentVideo, setCurrentVideo] = useState(null);
   const { playlistId } = useParams();
-  console.log('playlistId', playlistId);
   const { loading, error, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
 
   const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
 
-  console.log('playlistId', playlistId);
   // if data isn't here yet, say so
   if (!playlistData && loading) {
     return (
