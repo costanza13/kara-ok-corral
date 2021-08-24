@@ -65,6 +65,9 @@ export const QUERY_PLAYLIST = gql`
         videoUrl
         createdAt
         username
+        performance {
+          _id
+        }
       }
     }
   }
