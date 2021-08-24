@@ -4,7 +4,7 @@ import { SAVE_PLAYLIST, SAVE_SONG } from '../../utils/mutations';
 import Auth from '../../utils/auth';
 import Song from '../Song';
 import PlaylistMembers from '../PlaylistMembers';
-import EasyEdit, { Types } from "react-easy-edit";
+import EditableText from '../EditableText';
 import Col from 'react-bootstrap/Col';
 
 
@@ -69,17 +69,14 @@ const Playlist = ({ playlistId, setVideo }) => {
   return (
     <>
       <Col xs={12} md={12}>
-        <h2>{playlist.name}</h2>
-        <EasyEdit
-          type={Types.TEXT}
-          value={playlist.name}
-          onSave={save}
-          onCancel={cancel}
-          hideSaveButton={true}
-          hideCancelButton={true}
-          saveOnBlur={true}
-          attributes={{ className: "playlist-title" }}
-        />
+        <EditableText
+          inputClass={'playlist-title'}
+          textClass={'playlist-title'}
+          blur={'save'}
+          save={save}
+        >
+          {playlist.name}
+        </EditableText>
       </Col>
       <Col xs={12} md={12} lg={3}>
         <PlaylistMembers
