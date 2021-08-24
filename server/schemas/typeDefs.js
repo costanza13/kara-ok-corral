@@ -10,11 +10,17 @@ type Reaction {
   createdAt: String
 }
 
+type SongMeta {
+  title: String
+  artist: String
+}
+
 type Performance {
   _id: ID
   url: String
   username: String
   reactions: [Reaction]
+  song: SongMeta
 }
 
 type Song {
@@ -119,6 +125,7 @@ type Mutation {
   updatePerformance(performanceId: ID!, performanceInfo: PerformanceInfo!): Performance
   removePerformance(performanceId: ID!): Song
   addReaction(performanceId: ID!, reactionBody: String!): Performance
+  removeReaction(performanceId: ID!, reactionId: ID!): Performance
 }
 `;
 

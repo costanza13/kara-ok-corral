@@ -121,6 +121,10 @@ export const QUERY_PERFORMANCE = gql`
         reactionBody
         createdAt
       }
+      song {
+        title
+        artist
+      }
     }
   }
 `;

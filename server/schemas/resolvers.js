@@ -116,7 +116,7 @@ const resolvers = {
       return performances;
     },
     performance: async (parent, { _id }, context) => {
-      const performance = await Performance.findOne({ _id });
+      const performance = await Performance.findOne({ _id }).populate('song', 'title artist -_id');
 
       if (performance) {
         if (performance.visibility === 'public' ||
@@ -131,7 +131,6 @@ const resolvers = {
             }
           }
         }
-      } else {
         throw new UserInputError('NOT FOUND: The requested performance was not found.');
       }
       throw new ForbiddenError('FORBIDDEN: You are not authorized to view this document.');
@@ -410,6 +409,9 @@ const resolvers = {
         throw new UserInputError('NOT FOUND: The requested performance was not found.');
       }
       throw new ForbiddenError('FORBIDDEN: You must be logged in to add reactions.');
+    },
+    removeReaction: async (parent, { performanceId, reactionId }, context) => {
+      return {};
     }
   }
 };

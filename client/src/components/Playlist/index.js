@@ -6,6 +6,7 @@ import Song from '../Song';
 import PlaylistMembers from '../PlaylistMembers';
 import EditableText from '../EditableText';
 import Col from 'react-bootstrap/Col';
+import { Link } from 'react-router-dom';
 import './Playlist.css';
 
 
@@ -84,6 +85,10 @@ const Playlist = ({ playlistId, setVideo }) => {
         >
           {playlist.name}
         </EditableText>
+        <p class="playlist-owner">
+          created by <Link to={`/profile/${playlist.username}`}>{playlist.username}</Link>
+          {playlist.members.length ? ' (and posse)' : ''}
+        </p>
       </Col>
       <Col xs={12} md={12}>
         {(isMember || isOwner) && !isNew ? (

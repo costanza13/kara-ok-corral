@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_PERFORMANCE } from '../utils/queries';
-import Playlist from '../components/Playlist';
 import EmbeddedVideo from '../components/EmbeddedVideo';
 import Auth from '../utils/auth';
+import { Link } from 'react-router-dom';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from 'react-bootstrap/Col';
@@ -13,8 +13,6 @@ const Performance = () => {
   // const [currentVideo, setCurrentVideo] = useState(null);
   const { performanceId } = useParams();
   const { loading, error, data: performanceData } = useQuery(QUERY_PERFORMANCE, { variables: { performanceId } });
-
-  const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
 
   // if data isn't here yet, say so
   if (!performanceData && loading) {
@@ -49,24 +47,38 @@ const Performance = () => {
   }
 
   console.log(performanceData);
-  const { username, url, reactions } = performanceData.performance;
+  const { username, url, reactions, song } = performanceData.performance;
 
   return (
     <Container>
       <Row>
-        <Col>
-          <h1>A Performance by {username}!</h1>
+        <Col className='text-center'>
+          <h1 className='performance-headline'>{song.title} - {song.artist}!</h1>
+          <h2 className='performance-byline'>A performance by {username}!</h2>
         </Col>
       </Row>
       <Row>
         <Col>
-          <EmbeddedVideo title="Performance" artist={username} url={url} />
+          <EmbeddedVideo title={song.title} artist={username} url={url} />
         </Col>
       </Row>
       <Row>
-        <Col>
-          <h2>Let's Hear It For {username}!</h2>
-          (reactions will go here)
+        <Col className='reaction-section'>
+          <h3>Let's hear it for {username}!</h3>
+          <div className='reactions'>
+            {
+              reactions.map(reaction => {
+                return <div className="reaction">
+                  <div className='reaction-body'>{reaction.reactionBody}</div>
+                  <div className='reaction-byline'><Link to={`/profile/${reaction.username}`}>{reaction.username}</Link> - {reaction.createdAt}</div>
+                </div>
+              })
+            }
+            <div className='reaction-form'>
+              <textarea id='reaction-text-input'></textarea>
+              <span className='reaction-submit'><i className="far fa-share-square fa-2x"></i></span>
+            </div>
+          </div>
         </Col>
       </Row>
     </Container>

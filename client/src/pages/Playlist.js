@@ -50,7 +50,6 @@ const PlaylistPage = () => {
     }
   }
   const playlist = playlistId !== "new" ? playlistData.playlist : { _id: null, username: currentUser.username };
-  const isOwner = playlist.username === currentUser.username;
 
   const setVideo = (video) => {
     setCurrentVideo({ ...video });
