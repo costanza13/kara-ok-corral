@@ -1,0 +1,45 @@
+.btn-group {
+  display: flex;
+}
+
+.party-members {
+  padding: 5px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--yellow);
+}
+
+@media only screen and (min-width: 780px) {
+  .party-members {
+    border-bottom: none;
+  }
+
+}
+
+.member-text {
+  font-weight: 600;
+  color: var(--yellow);
+  font-size: 20px;
+}
+
+.add-member-button {
+  border-color: none;
+  color: var(--yellow);
+  border-radius: 50px;
+  padding: 4px;
+  margin-left: 5px;
+  background-color: var(--xtra-light);
+  box-shadow: 6px 6px 6px 0 rgba(39, 12, 1, .1);
+} 
+
+.member-button {
+  border-radius: 50px;
+  padding: 3px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: rgba(229, 152, 36, .8);
+  margin: 6px 5px 6px 6px;
+  border-color: none;
+  color: var(--xtra-light);
+  box-shadow: 6px 6px 6px 1px rgba(39, 12, 1, .2);
+  font-weight: bold;
+}

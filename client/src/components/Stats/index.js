@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import { useQuery } from '@apollo/client';
 import { QUERY_STATS } from '../../utils/queries';
-
+import './Stats.css';
 
 
 const Stats = props => {

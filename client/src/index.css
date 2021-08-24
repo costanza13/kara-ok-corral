@@ -25,48 +25,6 @@ body {
   margin-bottom: 70px;
 }
 
-header {
-  background-color: var(--dark);
-  padding: 10px;
-}
-
-h1 {
-  font-family: becker-gothics-concave, serif;
-  font-style: normal;
-  font-weight: 400;
-  text-align: center;
-}
-
-.nav-item, .nav-link {
-  margin: 10px;
-  margin-bottom: 5px;
-  border: 2px solid var(--yellow);
-  border-radius: 50px;
-  padding: 3px;
-  padding-right: 15px;
-  padding-left: 15px;
-  color: var(--yellow);
-  font-weight: 600;
-}
-
-.nav-link span {
-  margin: 20px;
-}
-
-.nav-item:hover a:hover {
-  color: var(--light);
-  border-color: var(--light);
-}
-
-.modal-title .nav-link {
-  border: none;
-}
-
-.nav-link:focus, .nav-link:hover {
-  background-color: var(--yellow);
-  color: var(--dark);
-}
-
 .footer {
   position: fixed;
   padding: 10px 10px 0px 10px;
@@ -91,36 +49,6 @@ h2 {
 li {
   list-style: none;
 }
-
-/* song styles */
-.song-content {
-  text-align: center;
-}
-
-.song-title {
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.song-artist {
-  color: var(--yellow);
-}
-
-.song-btn {
-  background-color: var(--light);
-  border: none;
-  border-radius: 50px;
-  padding: 5px;
-  padding-left: 25px;
-  padding-right: 25px;
-  margin: 3px;
-  box-shadow: 3px 3px 3px 0 rgba(39, 12, 1, .1);
-}
-
-.fa-edit {
-  color: var(--dark);
-}
-
 
 /* dashboard styles */
 .user-info {
@@ -200,24 +128,30 @@ li {
   border-radius: 5px;
 }
 
-.add-friend-btn {
-  margin-top: 25px;
+.offcanvas .btn:hover {
   color: var(--dark);
+  background-color: var(--light);
+}
+
+.add-friend-btn {
+  color: var(--dark);
+}
+
+.input-group-text {
   background-color: var(--yellow);
-  border-style: none;
-  border-radius: 50%;
-  padding: 5px;
-  padding-left: 8px;
-  padding-right: 8px;
-  margin-right: 20px;
-  margin-left: 10px;
+  border: none;
 }
 
 .friend-input {
   border-radius: 5px;
   border-color: var(--yellow);
   background-color: var(--xtra-light);
-  width: 70%;
+}
+
+.input-group {
+  margin-top: 20px;
+  width: 90%;
+  margin-left: 5%;
 }
 
 .fa-glass-cheers {
@@ -264,53 +198,6 @@ em {
 .list-group-flush>.list-group-item:last-child {
   border-radius: 0 0 6px 6px;
   box-shadow: 15px 18px 15px -15px rgba(39, 12, 1, .4);
-}
-
-/* playlist page styles, member styles */
-.btn-group {
-  display: flex;
-}
-
-.party-members {
-  padding: 5px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--yellow);
-}
-
-@media only screen and (min-width: 780px) {
-  .party-members {
-    border-bottom: none;
-  }
-
-}
-
-.member-text {
-  font-weight: 600;
-  color: var(--yellow);
-  font-size: 20px;
-}
-
-.add-member-button {
-  border-color: none;
-  color: var(--yellow);
-  border-radius: 50px;
-  padding: 4px;
-  margin-left: 5px;
-  background-color: var(--xtra-light);
-  box-shadow: 6px 6px 6px 0 rgba(39, 12, 1, .1);
-} 
-
-.member-button {
-  border-radius: 50px;
-  padding: 3px;
-  padding-left: 20px;
-  padding-right: 20px;
-  background-color: rgba(229, 152, 36, .8);
-  margin: 6px 5px 6px 6px;
-  border-color: none;
-  color: var(--xtra-light);
-  box-shadow: 6px 6px 6px 1px rgba(39, 12, 1, .2);
-  font-weight: bold;
 }
 
 /* JUMBOTRON STYLES */
@@ -362,69 +249,6 @@ em {
       width: 90%;
     }
   }
-
-  /* STATS AND INFO SECTION STYLES */
-
-  .stats-bar {
-    align-items: center;
-    text-align: center;
-    padding-top: 50px;
-    padding-bottom: 80px;
-  }
-
-.stats-number {
-  font-family: becker-gothics-concave, serif;
-  font-weight: 400;
-  text-align: center;
-  font-size: xx-large;
-  color: #e7414f;
-}
-
-.stats-h2 {
-  font-size: 42px;
-  padding-bottom: 25px;
-  margin-top: 0;
-}
-
-.stats-span {
-  font-family: becker-gothics-concave, serif;
-  font-weight: bold;
-}
-.stats-padding {
-  padding-bottom: 40px;
-}
-
-.modal-header, .modal-body {
-  background-color: var(--xtra-light);
-}
-
-.modal-header {
-  border-bottom: 1px solid var(--yellow);
-  border-radius: 20px 20px 0 0;
-}
-
-.modal-body {
-  border-radius: 0 0 20px 20px;
-}
-
-.btn-success {
-  margin-top: 20px;
-  width: 100%;
-  background-color: var(--yellow);
-  border: none;
-  border-radius: 50px;
-}
-
-.btn-success.disabled, .btn-success:disabled {
-  color: var(--red);
-  background-color: var(--xtra-light);
-  border: 1px solid var(--red);
-}
-
-.btn-success:hover {
-  background-color: var(--red);
-  color: var(--dark);
-}
 
 /* public profile*/
 

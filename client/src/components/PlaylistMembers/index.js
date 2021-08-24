@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_ME } from '../../utils/queries';
 import Spinner from "react-bootstrap/Spinner";
+import './PlaylistMembers.css';
 
 const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
   const { loading, data } = useQuery(QUERY_ME);

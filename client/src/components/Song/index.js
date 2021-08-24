@@ -116,12 +116,11 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
                 onChange={(e) => handleChange(e, "performanceUrl")}
               />
             </div>
-            <button
-              type="submit"
-              className="song-btn"
-              onClick={handleSubmit}
-            >
+            <button type="submit" className="song-btn" onClick={handleSubmit}>
               update
+            </button>
+            <button type="submit" className="song-btn">
+              <i class="fas fa-trash-alt fa-sm"></i>
             </button>
             <span
               onClick={() => setOpen(!open)}

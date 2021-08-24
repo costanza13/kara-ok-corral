@@ -1,0 +1,28 @@
+  .stats-bar {
+    align-items: center;
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 80px;
+  }
+
+.stats-number {
+  font-family: becker-gothics-concave, serif;
+  font-weight: 400;
+  text-align: center;
+  font-size: xx-large;
+  color: #e7414f;
+}
+
+.stats-h2 {
+  font-size: 42px;
+  padding-bottom: 25px;
+  margin-top: 0;
+}
+
+.stats-span {
+  font-family: becker-gothics-concave, serif;
+  font-weight: bold;
+}
+.stats-padding {
+  padding-bottom: 40px;
+}

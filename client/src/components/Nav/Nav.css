@@ -1,0 +1,73 @@
+header {
+  background-color: var(--dark);
+  padding: 10px;
+}
+
+h1 {
+  font-family: becker-gothics-concave, serif;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+}
+
+.nav-item, .nav-link {
+  margin: 10px;
+  margin-bottom: 5px;
+  border: 2px solid var(--yellow);
+  border-radius: 50px;
+  padding: 3px;
+  padding-right: 15px;
+  padding-left: 15px;
+  color: var(--yellow);
+  font-weight: 600;
+}
+
+.nav-link span {
+  margin: 20px;
+}
+
+.nav-item:hover a:hover {
+  color: var(--light);
+  border-color: var(--light);
+}
+
+.modal-title .nav-link {
+  border: none;
+}
+
+.nav-link:focus, .nav-link:hover {
+  background-color: var(--yellow);
+  color: var(--dark);
+}
+
+.modal-header, .modal-body {
+  background-color: var(--xtra-light);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--yellow);
+  border-radius: 20px 20px 0 0;
+}
+
+.modal-body {
+  border-radius: 0 0 20px 20px;
+}
+
+.btn-success {
+  margin-top: 20px;
+  width: 100%;
+  background-color: var(--yellow);
+  border: none;
+  border-radius: 50px;
+}
+
+.btn-success.disabled, .btn-success:disabled {
+  color: var(--red);
+  background-color: var(--xtra-light);
+  border: 1px solid var(--red);
+}
+
+.btn-success:hover {
+  background-color: var(--red);
+  color: var(--dark);
+}

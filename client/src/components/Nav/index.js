@@ -6,6 +6,7 @@ import LoginForm from '../LoginForm';
 import Auth from '../../utils/auth';
 import { QUERY_ME } from '../../utils/queries';
 import { useQuery } from '@apollo/client';
+import './Nav.css';
 
 const AppNavBar = () => {
 

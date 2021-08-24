@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import fuzzySearch from 'fz-search';
 import { useQuery} from '@apollo/client';
 import { QUERY_USERS } from '../../utils/queries';
+import { InputGroup, FormControl } from 'react-bootstrap';
 
 
 const FriendSearch = ({handleClick}) => {
@@ -23,15 +24,20 @@ const handleInputOnChange = e => {
 
   return (
     <>
-      <button className="add-friend-btn">
-        <i class="fas fa-user-plus fa-sm"></i>
-      </button>
-      <input
-        className="friend-input"
-        value={value}
-        onChange={handleInputOnChange}
-        type="text"
-      />
+      <InputGroup className="mb-3">
+        <InputGroup.Text id="basic-addon1">
+          <span className="add-friend-btn">
+            <i class="fas fa-user-plus fa-sm"></i>
+          </span>
+        </InputGroup.Text>
+        <FormControl
+          className="friend-input"
+          value={value}
+          onChange={handleInputOnChange}
+          type="text"
+          aria-describedby="basic-addon1"
+        />
+      </InputGroup>
       {fuzzyValue.length > 0 && (
         <div>
           {fuzzyValue.map((user) => (
