@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import FriendList from '../components/FriendList';
 
 
 import { useQuery, useMutation } from '@apollo/client';
@@ -12,6 +13,8 @@ const PublicProfile = props => {
     const { username: userParam } = useParams();
 
     const [addFriend] = useMutation(ADD_FRIEND);
+
+    const [friendCount, setFriendCount] = useState(-1);
 
     const { loading, data } = useQuery(QUERY_USER, {
         variables: { username: userParam }
@@ -39,16 +42,22 @@ const PublicProfile = props => {
         }
     };
 
+    if (friendCount === -1) {
+        setFriendCount(user.friendCount);
+      }
+
     return (
         <div>
             <div className="flex-row mb-3">
                 <h2 className="bg-dark text-secondary p-3 display-inline-block">
-                    Viewing {userParam ? `${user.username}'s` : 'your'} profile.
+                    Viewing {userParam ? `${user.username}'s` : 'your'} profile
                 </h2>
+                <h3>{user.username} has {friendCount} {friendCount === 1 ? 'friend' : 'friends'}</h3>
                     <ul>
                         {user.playlists.map((playlist) => {
                             
                             return (
+                                
                                 <li key={'li' + playlist._id}>
                                     <Link
                                         key={playlist._id}
