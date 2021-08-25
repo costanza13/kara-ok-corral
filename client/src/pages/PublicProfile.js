@@ -49,7 +49,6 @@ const PublicProfile = props => {
   };
  
   return (
-    <div>
       <Container>
         <Row className="pub-header">
           <Col xs={1}>
@@ -72,21 +71,47 @@ const PublicProfile = props => {
         <Row>
           <Col className="pub-friends">
             <div className="friend-count">
-              <h3>{user.username} has ... </h3>
+              <h3>
+                {user.username} (member since {user.createdAt}) has ...{" "}
+              </h3>
               <Row>
-                <Col xs={6} md={{span: 3, offset: 3}}>
-                  <span className="stats-number pub-stats">{user.friendCount} </span> <br></br>
+                <Col xs={6} md={{ span: 3, offset: 3 }}>
+                  <span className="stats-number pub-stats">
+                    {user.friendCount}{" "}
+                  </span>{" "}
+                  <br></br>
                   {user.friendCount === 1 ? "friend" : "friends"}
                 </Col>
-                <Col xs={6} md={{span: 3, offset: 2}}>
-                  <span className="stats-number pub-stats">{user.playlistCount} </span><br></br>
+                <Col xs={6} md={{ span: 3, offset: 2 }}>
+                  <span className="stats-number pub-stats">
+                    {user.playlistCount}{" "}
+                  </span>
+                  <br></br>
                   {user.playlistsCount === 1
                     ? "public playlist"
                     : "public playlists"}
                 </Col>
+                <Col>
+                  <span className="stats-number pub-stats">
+                    {user.songCount}{" "}
+                  </span>
+                  <br></br>
+                  {user.songCount === 1
+                    ? "songs in the public playlist"
+                    : "songs in public playlists"}
+                </Col>
+                <Col>
+                  <span className="stats-number pub-stats">
+                    {user.performanceCount}{" "}
+                  </span>
+                  <br></br>
+                  {user.performanceCount === 1
+                    ? "public performance"
+                    : "public performances"}
+                </Col>
               </Row>
               <Row>
-                <Col xs={11} md={{span: 10, offset: 1}}>
+                <Col xs={11} md={{ span: 10, offset: 1 }}>
                   <div className="pub-play-list">
                     <p className="publist-header">Playlists:</p>
                     {user.playlists.map((playlist) => {
@@ -104,25 +129,10 @@ const PublicProfile = props => {
                   </div>
                 </Col>
               </Row>
-              {console.log(user)}
             </div>
           </Col>
-          {/* <Col xs={12}>
-            <ul>
-              {user.playlists.map((playlist) => {
-                return (
-                  <li key={"li" + playlist._id}>
-                    <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
-                      {playlist.name}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </Col> */}
         </Row>
       </Container>
-    </div>
   );
 };
 
