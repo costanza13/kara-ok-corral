@@ -77,6 +77,7 @@ export const QUERY_USER = gql`
   query user($username: String!) {
     user(username: $username) {
       username
+      createdAt
       email
       friendCount
       friends {
@@ -94,6 +95,11 @@ export const QUERY_USER = gql`
       performanceCount
       performances {
         _id
+        url
+        song {
+          title
+          artist
+        }
       }
       songCount
     }
@@ -124,6 +130,7 @@ export const QUERY_PERFORMANCE = gql`
       _id
       url
       username
+      visibility
       reactions {
         _id
         username

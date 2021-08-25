@@ -12,7 +12,6 @@ const resolvers = {
           .select('-__v -password')
           .populate('friends')
           .populate('playlists');
-
         return userData;
       }
 
@@ -139,11 +138,18 @@ const resolvers = {
   },
 
   User: {
-    partyPlaylists: async ({ username }) => {
-      return await Playlist.find({ members: { $in: [username] } });
+    partyPlaylists: async ({ username }, context) => {
+      const filter = { members: { $in: [username] } };
+      if (!context.user) {
+        filter.visibility = 'public';
+      }
+      return await Playlist.find(filter);
     },
     performances: async ({ username }) => {
-      return await Performance.find({ username, visibility: 'public' }, '_id');
+      return await Performance.find({ username, visibility: 'public' }, '_id url')
+      .populate('song')
+      .sort('-createAt')
+      .limit(1);
     },
     performanceCount: async ({ username }) => {
       return await Performance.countDocuments({ username });
@@ -227,12 +233,8 @@ const resolvers = {
             { ...playlist, username: context.user.username },
             { new: true, runValidators: true }
           )
-            .populate({
-              path: 'songs',
-              populate: {
-                path: 'performance'
-              }
-            });
+            .populate('songs')
+            .populate('songs.song.performance');
 
         // if this is a new playlist, and it was created successfully, add it to the user's list of playlists
         if (updatedPlaylist) {
@@ -272,24 +274,28 @@ const resolvers = {
 
         let newPerf;
         if (performanceUrl) {
+          console.log('1', song);
           // check if the song already has a performance
           const songToUpdate = songId
-            ? await Song.findOne({ _id: songId })
+            ? await Song.findOne({ _id: songId, username: context.user.username })
             : null;
 
           // if the song already exists, check if it has a performance
           if (songToUpdate && songToUpdate.performance) {
+            console.log('2', songToUpdate);
             // if so, update the url
             const updatedPerformance = await Performance.updateOne(
-              { _id: songToUpdate.performance },
+              { _id: songToUpdate.performance, username: context.user.username },
               { url: performanceUrl }
             );
+            console.log('2b', updatedPerformance);
           } else {
             // otherwise, create the performance
             newPerf = await Performance.create(
               { url: performanceUrl, username: context.user.username, visibility: 'private' });
           }
         }
+        console.log('3', newPerf);
 
         const songUpdate = { title, artist, videoUrl, lyricsUrl };
         // if a new performance was added, include it in the song update
@@ -302,6 +308,12 @@ const resolvers = {
             songUpdate,
             { new: true }
           );
+
+        console.log('4', updatedSong);
+        // finally, update the performance with the song
+        await Performance.updateOne(
+          { _id: updatedSong.performance, username: context.user.username },
+          { song: updatedSong._id });
 
         // if this song wasn't already in the list (this is an add, not an update), push it onto the list
         const updatedPlaylist =
@@ -331,6 +343,11 @@ const resolvers = {
     removeSong: async (parent, { playlistId, songId }, context) => {
       if (context.user) {
         const removedSong = await Song.findOneAndDelete({ _id: songId, username: context.user.username });
+
+        // remove any associated performance
+        if (removedSong) {
+          Performance.deleteOne({ song: songId });
+        }
 
         const updatedPlaylist = removedSong
           ? await Playlist.findOneAndUpdate(
@@ -420,7 +437,15 @@ const resolvers = {
       throw new ForbiddenError('FORBIDDEN: You must be logged in to add reactions.');
     },
     removeReaction: async (parent, { performanceId, reactionId }, context) => {
-      return {};
+      if (context.user) {
+        console.log(reactionId);
+        return await Performance.findOneAndUpdate(
+          { _id: performanceId, username: context.user.username },
+          { $pull: { reactions: { _id: reactionId } } },
+          { new: true }
+        );
+      }
+      throw new ForbiddenError('FORBIDDEN: You must be logged in to manage reactions.');
     }
   }
 };

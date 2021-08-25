@@ -5,7 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_USER, QUERY_ME } from '../utils/queries';
 import { ADD_FRIEND } from '../utils/mutations';
-
+import EmbeddedVideo from '../components/EmbeddedVideo';
 
 const PublicProfile = props => {
   const { username: userParam } = useParams();
@@ -13,33 +13,42 @@ const PublicProfile = props => {
     variables: { username: userParam }
   });
 
-   const [addFriend] = useMutation(ADD_FRIEND, {
-     update(cache, {data: { addFriend }}) {
-       cache.modify({
-         fields: {
-           me(existingMeData) {
-             return addFriend
-           }
+  const [addFriend] = useMutation(ADD_FRIEND, {
+    update(cache, { data: { addFriend } }) {
+      cache.modify({
+        fields: {
+          me(existingMeData) {
+            return addFriend
+          }
         }
-       })
-     }
-   });
+      })
+    }
+  });
 
   if (loading) {
     return <div>Loading...</div>;
   }
   const user = data.user;
 
-   const handleClick = async (addUsername) => {
-     try {
-       await addFriend({
-         variables: { username: addUsername }
-       });
-     } catch (e) {
-       console.error(e);
+  const handleClick = async (addUsername) => {
+    try {
+      await addFriend({
+        variables: { username: addUsername }
+      });
+    } catch (e) {
+      console.error(e);
     }
   };
- 
+
+  const showLatestPerformance = (performances) => {
+    if (performances.length) {
+      const { title, url } = performances[0];
+      return <EmbeddedVideo title={title} artist={user.username} url={url} />
+    }
+  }
+
+  console.log(user);
+
   return (
     <Container>
       <Row className="pub-header">
@@ -120,22 +129,37 @@ const PublicProfile = props => {
                   })}
                 </div>
               </Col>
-              <Col xs={11} md={6}>
-                <div className="pub-play-list">
-                  <p className="publist-header">{user.username} invited to:</p>
-                  {user.partyPlaylists.map((playlist) => {
-                    return (
-                      <p className="pub-li" keys={"li" + playlist._id}>
-                        <Link key={playlist._id} to={`/party/${playlist._id}`}>
-                          {playlist.name}
-                        </Link>
-                      </p>
-                    );
-                  })}
-                </div>
-                {console.log(user)}
-              </Col>
+              {
+                user.partyPlaylists.length ? (
+                  <Col xs={11} md={6}>
+                    <div className="pub-play-list">
+                      <p className="publist-header">{user.username} invited to:</p>
+                      {user.partyPlaylists.map((playlist) => {
+                        return (
+                          <p className="pub-li" key={"li" + playlist._id}>
+                            <Link key={playlist._id} to={`/party/${playlist._id}`}>
+                              {playlist.name}
+                            </Link>
+                          </p>
+                        );
+                      })}
+                    </div>
+                  </Col>
+                ) : ('')}
             </Row>
+            {
+              user.performances.length ? (
+                <Row>
+                  <Col xs={11} md={11}>
+                    <h4>{user.username}'s Latest Performance</h4>
+                    <div className='perfromance-video'>
+                      {showLatestPerformance(user.performances)}
+                    </div>
+                  </Col>
+                </Row>
+              ) : (
+                ''
+              )}
           </div>
         </Col>
       </Row>

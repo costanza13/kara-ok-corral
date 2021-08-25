@@ -1,75 +1,139 @@
+import { useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../../utils/queries';
-import { SAVE_PLAYLIST, SAVE_SONG } from '../../utils/mutations';
+import { SAVE_PLAYLIST, SAVE_SONG, DELETE_PLAYLIST, DELETE_SONG } from '../../utils/mutations';
 import Auth from '../../utils/auth';
+import { Link } from 'react-router-dom';
 import Song from '../Song';
 import PlaylistMembers from '../PlaylistMembers';
 import EditableText from '../EditableText';
+import Spinner from 'react-bootstrap/Spinner';
 import Col from 'react-bootstrap/Col';
-import { Link } from 'react-router-dom';
 import './Playlist.css';
 
 
-const Playlist = ({ playlistId, setVideo }) => {
+const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
   const { loading, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
-  const [updatePlaylist] = useMutation(SAVE_PLAYLIST);
-  const [updateSong] = useMutation(SAVE_SONG);
 
-  const isNew = !playlistId;
+  const [updatePlaylist] = useMutation(SAVE_PLAYLIST, {
+    update(cache, { data: { updatePlaylist } }) {
+      cache.modify({
+        fields: {
+          playlist(existingPlaylistData) {
+            return updatePlaylist
+          }
+        }
+      })
+    }
+  });
+
+  const [deletePlaylist] = useMutation(DELETE_PLAYLIST, {
+    update(cache, { data: { deletePlaylist } }) {
+      cache.modify({
+        fields: {
+          me(existingMeData) {
+            return deletePlaylist
+          }
+        }
+      })
+    }
+  });
+
+  const [updateSong] = useMutation(SAVE_SONG, {
+    update(cache, { data: { updateSong } }) {
+      cache.modify({
+        fields: {
+          playlist(existingPlaylistData) {
+            return updateSong
+          }
+        }
+      })
+    }
+  });
+
+  const [deleteSong] = useMutation(DELETE_SONG, {
+    update(cache, { data: { deleteSong } }) {
+      cache.modify({
+        fields: {
+          playlist(existingPlaylistData) {
+            return deleteSong
+          }
+        }
+      })
+    }
+  });
+
+  useEffect(() => {
+    // Update the document title using the browser API
+    console.log('something updated!');
+  }, [playlistData, updatePlaylist, updateSong]);
 
   const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
 
   if (loading) {
-    return null;
+    return (
+      <div className="spinner">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    );
   }
 
-  let playlist;
-  const updateMembers = async (updatedMembers) => {
-    const { name, visibility } = playlist;
-    const updatedPlaylist = await updatePlaylist({
-      variables: { playlistId: playlist._id, playlist: { name, visibility, members: updatedMembers } }
-    });
+  const playlist = !playlistId || playlistId === 'new' ? { name: '', visibility: 'private', members: [], songs: [] } : playlistData.playlist;
+  console.log('playlistData', playlistData);
 
-    if (isNew) {
-      window.location.assign(`/playlist/${updatedPlaylist.data.updatePlaylist._id}`);
-    } else {
-      playlist = updatedPlaylist.data.updatePlaylist;
+  const saveName = async name => {
+    if (name.trim().length) {
+      console.log('what the glorious crap!');
+      const { visibility, members, songs } = playlist;
+      const variables = { playlist: { name, visibility, members, songs } };
+      if (playlist._id) {
+        variables.playlistId = playlist._id;
+      }
+      const { data } = await updatePlaylist({ variables });
+      if (data) {
+        updatePlaylistId(data.updatePlaylist._id);
+      }
+    }
+  };
+
+  const updateMembers = async (members) => {
+    const { name, visibility, songs } = playlist;
+    const variables = { playlistId: playlist._id, playlist: { name, visibility, songs, members } };
+    await updatePlaylist({ variables });
+    const { data } = await updatePlaylist({ variables });
+    if (data) {
+      updatePlaylistId(data.updatePlaylist._id);
     }
   }
 
   const saveSong = async (songData) => {
-    const { title, artist, lyricsUrl, videoUrl } = songData;
-    const updatedPlaylist = await updateSong({
-      variables: { playlistId, songId: songData._id, songData: { title, artist, lyricsUrl, videoUrl } }
+    const { title, artist, lyricsUrl, videoUrl, performanceUrl } = songData;
+    await updateSong({
+      variables: { playlistId, songId: songData._id, songData: { title, artist, lyricsUrl, videoUrl, performanceUrl } }
     });
-
-    playlist = updatedPlaylist.data.updatePlaylist;
   }
 
-  const saveName = async value => {
-    const { visibility, members } = playlist;
-    const updatedPlaylist = await updatePlaylist({
-      variables: { playlistId: playlist._id, playlist: { name: value, visibility, members } }
+  const removeSong = async (songId) => {
+    await deleteSong({
+      variables: { playlistId, songId }
     });
-
-    if (isNew) {
-      window.location.assign(`/playlist/${updatedPlaylist.data.updatePlaylist._id}`);
-    } else {
-      playlist = updatedPlaylist.data.updatePlaylist;
-    }
-  };
+  }
 
   const setVisibility = async value => {
-    const { name, members } = playlist;
     const visibility = value === 'public' ? 'public' : 'private';
-    const updatedPlaylist = await updatePlaylist({
-      variables: { playlistId: playlist._id, playlist: { name, visibility, members } }
+    await updatePlaylist({
+      variables: { playlistId: playlist._id, playlist: { visibility } }
     });
-    playlist = updatedPlaylist.data.updatePlaylist;
   };
 
-  console.log(playlistData);
-  playlist = playlistId ? playlistData.playlist : { username: currentUser.username, name: 'Give us a name, eh?', visibility: 'private', members: [], songs: [] };
+  const handleDeleteClick = async () => {
+    await deletePlaylist({
+      variables: { playlistId: playlist._id }
+    });
+    window.location.assign('/dashboard');
+  };
 
   const isOwner = playlist.username === currentUser.username;
   const isMember = playlist.members.indexOf(currentUser.username) > -1;
@@ -83,15 +147,15 @@ const Playlist = ({ playlistId, setVideo }) => {
           blur={'save'}
           save={saveName}
         >
-          {playlist.name}
+          {playlist.name || 'Name this playlist to get started!'}
         </EditableText>
-        <p class="playlist-owner">
+        <p className="playlist-owner">
           created by <Link to={`/profile/${playlist.username}`}>{playlist.username}</Link>
           {playlist.members.length ? ' (and posse)' : ''}
         </p>
       </Col>
       <Col xs={12} md={12}>
-        {(isMember || isOwner) && !isNew ? (
+        {(isMember || isOwner) && !!playlist._id ? (
           <>
             <span className={`visibility-btn private ${playlist.visibility !== 'public' ? ' selected' : ''}`} onClick={() => setVisibility('private')}> private</span>
             <span className={`visibility-btn public ${playlist.visibility === 'public' ? ' selected' : ''}`} onClick={() => setVisibility('public')}> public</span>
@@ -111,13 +175,16 @@ const Playlist = ({ playlistId, setVideo }) => {
       <Col xs={12} md={12} lg={9} className="song-list">
         {playlist.songs.map((song) => {
           const canEdit = currentUser.username === song.username;
-          return <Song key={song._id} song={song} canEdit={canEdit} saveSong={saveSong} setVideo={setVideo}></Song>;
+          return <Song key={song._id} song={song} canEdit={canEdit} saveSong={saveSong} setVideo={setVideo} deleteSong={removeSong}></Song>;
         })}
-        {(isMember || isOwner) && !isNew ? (
+        {(isMember || isOwner) && !!playlist._id ? (
           <Song key={"newsong"} song={null} canEdit={true} saveSong={saveSong}></Song>
         ) : (
           ""
         )}
+      </Col>
+      <Col xs={12} md={12}>
+        <span className='btn delete-btn' onClick={() => handleDeleteClick()}>Delete Playlist</span>
       </Col>
     </>
   );

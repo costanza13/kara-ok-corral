@@ -1,3 +1,15 @@
+.playlist-title {
+  display: inline-block;
+  font-size: 200%;
+  font-weight: bold;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.playlist-title span {
+  font-size: 75%;
+}
+
 .visibility-btn {
   background-color: var(--xtra-light);
   color: var(--dark);
@@ -23,4 +35,15 @@
 
 .visibility-btn.private.selected {
   background-color: var(--red);
+}
+
+.delete-btn {
+  display: inline-block;
+  margin: 1rem auto;
+  background-color: red;
+  color: white;
+  border-radius: 25px;
+  padding: 1rem;
+  font-size: 140%;
+  font-weight: bold;
 }

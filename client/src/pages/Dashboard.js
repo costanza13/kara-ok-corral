@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { useQuery, useMutation, ApolloCache } from '@apollo/client';
-import { QUERY_ME, QUERY_USER } from '../utils/queries';
+import { useQuery } from '@apollo/client';
+import { QUERY_ME } from '../utils/queries';
 import FriendList from '../components/FriendList';
-import { REMOVE_FRIEND } from '../utils/mutations';
 import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -58,6 +56,7 @@ const Dashboard = () => {
     ...user.partyPlaylists
   ];
 
+  const performanceCount = 0;
 
   const handleClose = () => setShowFriends(false);
   const handleShow = () => setShowFriends(true);
@@ -84,11 +83,10 @@ const Dashboard = () => {
           </span>
           <h2 className="username">
             {user.username}
-            <br></br>
-            <span>
-              {friendsOffCanvas}
-            </span>
           </h2>
+          <div className='dashsboard-stats'>
+            <span>playlists: {user.playlists.length}</span>|<span>performances: {performanceCount}</span>|<span>friends: {friendsOffCanvas}</span>
+          </div>
         </div>
       </Row>
       <Row xs={1} md={2}>
