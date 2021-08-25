@@ -1,23 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import FriendList from '../components/FriendList';
 import { Container, Row, Col } from 'react-bootstrap';
-
-
 import { useQuery, useMutation } from '@apollo/client';
-import { QUERY_USER } from '../utils/queries';
+import { QUERY_USER, QUERY_ME } from '../utils/queries';
 import { ADD_FRIEND } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const PublicProfile = props => {
   const { username: userParam } = useParams();
-
-  const [addFriend] = useMutation(ADD_FRIEND);
-
-  const { loading, data } = useQuery(QUERY_USER, {
+  const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME, {
     variables: { username: userParam }
   });
+
+   const [addFriend] = useMutation(ADD_FRIEND, {
+     update(cache, {data: { addFriend }}) {
+       cache.modify({
+         fields: {
+           me(existingMeData) {
+             return addFriend
+           }
+        }
+       })
+     }
+   });
 
   if (loading) {
     return <div>Loading...</div>;
@@ -31,16 +37,16 @@ const PublicProfile = props => {
   //     return "Welcome to your public profile page!"
   // }
 
-  const handleClick = async () => {
-    try {
-      await addFriend({
-        variables: { id: user._id }
-      });
-    } catch (e) {
-      console.error(e);
+   const handleClick = async (addUsername) => {
+     try {
+       await addFriend({
+         variables: { username: addUsername }
+       });
+     } catch (e) {
+       console.error(e);
     }
   };
-
+ 
   return (
     <div>
       <Container>
@@ -52,7 +58,10 @@ const PublicProfile = props => {
           </Col>
           <Col xs={11}>
             <h2 className="pub-name">
-              {userParam ? `${user.username}'s` : "your"} profile
+              {userParam ? `${user.username}'s` : "your"} profile 
+              <button className="btn ml-auto" onClick={handleClick(user.username)}>
+                Add Friend
+              </button>
             </h2>
           </Col>
         </Row>
@@ -84,11 +93,7 @@ const PublicProfile = props => {
               </ul>
               {console.log(user)}
             </div>
-            {/* {userParam && (
-              <button className="btn ml-auto" onClick={handleClick}>
-                Add Friend
-              </button>
-            )} */}
+            
           </Col>
           {/* <Col xs={12}>
             <ul>
@@ -105,6 +110,7 @@ const PublicProfile = props => {
           </Col> */}
         </Row>
       </Container>
+      
     </div>
   );
 };
