@@ -5,8 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_USER, QUERY_ME } from '../utils/queries';
 import { ADD_FRIEND } from '../utils/mutations';
-import Auth from '../utils/auth';
-import { ListGroup } from 'react-bootstrap';
+
 
 const PublicProfile = props => {
   const { username: userParam } = useParams();
@@ -30,13 +29,6 @@ const PublicProfile = props => {
     return <div>Loading...</div>;
   }
   const user = data.user;
-
-  // if (
-  //     Auth.loggedIn() &&
-  //     Auth.getProfile().data.username === userParam
-  // ) {
-  //     return "Welcome to your public profile page!"
-  // }
 
    const handleClick = async (addUsername) => {
      try {
