@@ -50,6 +50,11 @@ li {
   list-style: none;
 }
 
+.nav-item, .nav-link {
+  border-radius: 50px;
+}
+
+
 /* dashboard styles */
 .user-info {
   display: flex;
@@ -386,3 +391,4 @@ em {
 .reaction-submit {
   color: var(--yellow);
 }
+

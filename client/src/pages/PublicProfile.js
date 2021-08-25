@@ -94,10 +94,10 @@ const PublicProfile = props => {
               </Col>
               <Col xs={6} md={3}>
                 <span className="stats-number pub-stats">
-                  {user.performanceCount}{" "}
+                  {user.performances.length}{" "}
                 </span>
                 <br></br>
-                {user.performanceCount === 1
+                {user.performances.length === 1
                   ? "public performance"
                   : "public performances"}
               </Col>
