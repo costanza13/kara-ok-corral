@@ -1,3 +1,15 @@
+.playlist-title {
+  display: inline-block;
+  font-size: 200%;
+  font-weight: bold;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.playlist-title span {
+  font-size: 75%;
+}
+
 .visibility-btn {
   background-color: lightgray;
   border: none;
