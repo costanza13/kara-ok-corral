@@ -38,11 +38,6 @@ const AppNavBar = () => {
           {Auth.loggedIn() ? (
             <>
               <Nav.Item>
-                <Link to={`/profile/${user.username}`}>
-                  Profile
-                </Link>
-              </Nav.Item>
-              <Nav.Item>
                 <Link to="/dashboard">Dashboard</Link>
               </Nav.Item>
               <Nav.Item>

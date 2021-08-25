@@ -86,6 +86,7 @@ const Dashboard = () => {
           </Col>
           <Col xs={12} md={8}>
             <span className="dash-stats">
+              <Link to={`/profile/${user.username}`}>public profile</Link> ||
               playlists: {user.playlists.length} || performances:{" "}
               {performanceCount} || {friendsOffCanvas}
             </span>

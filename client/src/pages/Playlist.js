@@ -27,24 +27,24 @@ const PlaylistPage = () => {
       </div>
     );
   } else if (error) {
-    if (error.toString().indexOf('NOT FOUND:') > -1) {
+    if (error.message.indexOf('NOT FOUND:') > -1) {
       return (
-        <>
+        <div className='error'>
           <h1 className='display-2'>Not Found!</h1>
           <h2>We could not find the playlist you're looking for.</h2>
-        </>
+        </div>
       )
     }
-    if (error.message.indexOf('NOT AUTHORIZED:') > -1) {
+    if (error.message.indexOf('FORBIDDEN:') > -1) {
       return (
-        <>
+        <div className='error'>
           <h1 className='display-2'>Not AUTHORIZED!</h1>
           <h2>{
             Auth.loggedIn()
               ? 'You do not have permission to view this playlist.'
               : 'You might need to be logged in to view this playlist.'
           }</h2>
-        </>
+        </div>
       )
     }
   }

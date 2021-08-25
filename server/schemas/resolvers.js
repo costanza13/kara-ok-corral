@@ -91,12 +91,13 @@ const resolvers = {
     },
     playlist: async (parent, { _id }, context) => {
       try {
-        const playlist = await Playlist.findOne({ _id }).populate({
-          path: "songs",
-          populate: {
-            path: "performance",
-          },
-        });
+        const playlist = await Playlist.findOne({ _id })
+          .populate({
+            path: "songs",
+            populate: {
+              path: "performance",
+            },
+          });
         if (!playlist) {
           throw new UserInputError(
             "NOT FOUND: The requested playlist was not found."

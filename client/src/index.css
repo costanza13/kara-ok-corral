@@ -29,6 +29,15 @@ body {
   white-space: nowrap;
 }
 
+.error {
+  margin-top: 20vh;
+  text-align: center;
+}
+
+.spinner {
+  margin: 20px;
+}
+
 .footer {
   position: fixed;
   padding: 10px 10px 0px 10px;
@@ -44,10 +53,6 @@ body {
 
 h2 {
   font-weight: bold;
-}
-
-.spinner {
-  margin: 20px;
 }
 
 li {
@@ -92,12 +97,12 @@ li {
   font-weight: 800;
   color: var(--yellow);
   font-size: 15px;
-  text-decoration: underline;
   cursor: pointer;
   display: inline;
 }
 
 .friends-toggle:hover {
+  color: var(--red);
   font-style: italic;
 }
 

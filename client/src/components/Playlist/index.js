@@ -83,22 +83,22 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
     console.log(error);
     if (error.message.indexOf('NOT FOUND:') > -1) {
       return (
-        <>
+        <div className='error'>
           <h1 className='display-2'>Not Found!</h1>
           <h2>We could not find the playlist you're looking for.</h2>
-        </>
+        </div>
       )
     }
     if (error.message.indexOf('FORBIDDEN:') > -1) {
       return (
-        <>
+        <div className='error'>
           <h1 className='display-2'>Not AUTHORIZED!</h1>
           <h2>{
             Auth.loggedIn()
               ? 'You do not have permission to view this playlist.'
               : 'You might need to be logged in to view this playlist.'
           }</h2>
-        </>
+        </div>
       )
     }
   }
@@ -187,18 +187,16 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
         {(isMember || isOwner) && !!playlist._id ? (
           <>
             <span
-              className={`visibility-btn private ${
-                playlist.visibility !== "public" ? " selected" : ""
-              }`}
+              className={`visibility-btn private ${playlist.visibility !== "public" ? " selected" : ""
+                }`}
               onClick={() => setVisibility("private")}
             >
               {" "}
               private
             </span>
             <span
-              className={`visibility-btn public ${
-                playlist.visibility === "public" ? " selected" : ""
-              }`}
+              className={`visibility-btn public ${playlist.visibility === "public" ? " selected" : ""
+                }`}
               onClick={() => setVisibility("public")}
             >
               {" "}
