@@ -133,6 +133,22 @@ export const REMOVE_FRIEND = gql`
   } 
 `;
 
+export const UPDATE_PERFORMANCE = gql`
+  mutation updatePerformance($performanceId: ID!, $performanceInfo: PerformanceInfo!) {
+    updatePerformance(performanceId: $performanceId, performanceInfo: $performanceInfo) {
+      _id
+      url
+      username
+      reactions {
+        _id
+        reactionBody
+        username
+        createdAt
+      }
+    }
+  }
+`;
+
 export const ADD_REACTION = gql`
   mutation addReaction($performanceId: ID!, $reactionBody: String!) {
     addReaction(performanceId: $performanceId, reactionBody: $reactionBody) {

@@ -121,6 +121,7 @@ export const QUERY_PERFORMANCE = gql`
       _id
       url
       username
+      visibility
       reactions {
         _id
         username

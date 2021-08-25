@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { useQuery, useMutation, ApolloCache } from '@apollo/client';
-import { QUERY_ME, QUERY_USER } from '../utils/queries';
+import { useQuery } from '@apollo/client';
+import { QUERY_ME } from '../utils/queries';
 import FriendList from '../components/FriendList';
-import { REMOVE_FRIEND } from '../utils/mutations';
 import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";

@@ -16,6 +16,7 @@ type Performance {
   username: String
   reactions: [Reaction]
   song: Song
+  visibility: String
 }
 
 type Song {

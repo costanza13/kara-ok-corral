@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../../utils/queries';
 import { SAVE_PLAYLIST, SAVE_SONG, DELETE_PLAYLIST } from '../../utils/mutations';
@@ -52,7 +52,7 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
 
   useEffect(() => {
     // Update the document title using the browser API
-    console.log('something updated!')
+    console.log('something updated!');
   }, [playlistData, updatePlaylist, updateSong]);
 
   const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
@@ -97,22 +97,16 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
 
   const saveSong = async (songData) => {
     const { title, artist, lyricsUrl, videoUrl, performanceUrl } = songData;
-    const { data } = await updateSong({
+    await updateSong({
       variables: { playlistId, songId: songData._id, songData: { title, artist, lyricsUrl, videoUrl, performanceUrl } }
     });
-    if (data) {
-      updatePlaylistId(data.updateSong._id);
-    }
   }
 
   const setVisibility = async value => {
     const visibility = value === 'public' ? 'public' : 'private';
-    const { data } = await updatePlaylist({
+    await updatePlaylist({
       variables: { playlistId: playlist._id, playlist: { visibility } }
     });
-    if (data) {
-      updatePlaylistId(data.updatePlaylist._id);
-    }
   };
 
   const handleDeleteClick = async () => {
