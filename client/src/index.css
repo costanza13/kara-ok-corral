@@ -217,14 +217,15 @@ em {
   }
 
   .jumbo-text {
-  position: absolute;
+  /* position: absolute; */
   display: flex;
   flex-direction: column;
-  height: 90%;
+  height: 60%;
   width: 100%;
   justify-content: center;
   align-items: center;
   color: #ffeedb;
+  padding-top: 30%;
   }
 
   .jumbo-span {
@@ -248,6 +249,10 @@ em {
       height: 50%;
       width: 90%;
     }
+
+    /* .display-3 {
+      font-size: 4.3vw;
+    } */
   }
 
 /* public profile*/
