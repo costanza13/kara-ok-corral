@@ -49,90 +49,106 @@ const PublicProfile = props => {
   };
  
   return (
-      <Container>
-        <Row className="pub-header">
-          <Col xs={1}>
-            <span>
-              <i className="fas fa-hat-cowboy fa-md pub-user-icon"></i>
-            </span>
-          </Col>
-          <Col xs={11}>
-            <h2 className="pub-name">
-              {userParam ? `${user.username}'s` : "your"} profile
-              <button
-                className="btn ml-auto"
-                onClick={handleClick(user.username)}
-              >
-                Add Friend
-              </button>
-            </h2>
-          </Col>
-        </Row>
-        <Row>
-          <Col className="pub-friends">
-            <div className="friend-count">
-              <h3>
-                {user.username} (member since {user.createdAt}) has ...{" "}
-              </h3>
-              <Row>
-                <Col xs={6} md={{ span: 3, offset: 3 }}>
-                  <span className="stats-number pub-stats">
-                    {user.friendCount}{" "}
-                  </span>{" "}
-                  <br></br>
-                  {user.friendCount === 1 ? "friend" : "friends"}
-                </Col>
-                <Col xs={6} md={{ span: 3, offset: 2 }}>
-                  <span className="stats-number pub-stats">
-                    {user.playlistCount}{" "}
-                  </span>
-                  <br></br>
-                  {user.playlistsCount === 1
-                    ? "public playlist"
-                    : "public playlists"}
-                </Col>
-                <Col>
-                  <span className="stats-number pub-stats">
-                    {user.songCount}{" "}
-                  </span>
-                  <br></br>
-                  {user.songCount === 1
-                    ? "songs in the public playlist"
-                    : "songs in public playlists"}
-                </Col>
-                <Col>
-                  <span className="stats-number pub-stats">
-                    {user.performanceCount}{" "}
-                  </span>
-                  <br></br>
-                  {user.performanceCount === 1
-                    ? "public performance"
-                    : "public performances"}
-                </Col>
-              </Row>
-              <Row>
-                <Col xs={11} md={{ span: 10, offset: 1 }}>
-                  <div className="pub-play-list">
-                    <p className="publist-header">Playlists:</p>
-                    {user.playlists.map((playlist) => {
-                      return (
-                        <p className="pub-li" key={"li" + playlist._id}>
-                          <Link
-                            key={playlist._id}
-                            to={`/playlist/${playlist._id}`}
-                          >
-                            {playlist.name}
-                          </Link>
-                        </p>
-                      );
-                    })}
-                  </div>
-                </Col>
-              </Row>
-            </div>
-          </Col>
-        </Row>
-      </Container>
+    <Container>
+      <Row className="pub-header">
+        <Col xs={1}>
+          <span>
+            <i className="fas fa-hat-cowboy fa-md pub-user-icon"></i>
+          </span>
+        </Col>
+        <Col xs={11}>
+          <h2 className="pub-name">
+            {userParam ? `${user.username}'s` : "your"} profile
+            <button
+              className="btn ml-auto"
+              onClick={handleClick(user.username)}
+            >
+              Add Friend
+            </button>
+          </h2>
+        </Col>
+      </Row>
+      <Row>
+        <Col className="pub-friends">
+          <div className="friend-count">
+            <h3>{user.username} has ... </h3>
+            <Row>
+              <Col xs={6} md={3}>
+                <span className="stats-number pub-stats">
+                  {user.friendCount}{" "}
+                </span>{" "}
+                <br></br>
+                {user.friendCount === 1 ? "friend" : "friends"}
+              </Col>
+              <Col xs={6} md={3}>
+                <span className="stats-number pub-stats">
+                  {user.playlistCount}{" "}
+                </span>
+                <br></br>
+                {user.playlistsCount === 1
+                  ? "public playlist"
+                  : "public playlists"}
+              </Col>
+              <Col xs={6} md={3}>
+                <span className="stats-number pub-stats">
+                  {user.songCount}{" "}
+                </span>
+                <br></br>
+                {user.songCount === 1
+                  ? "songs in the public playlist"
+                  : "songs in public playlists"}
+              </Col>
+              <Col xs={6} md={3}>
+                <span className="stats-number pub-stats">
+                  {user.performanceCount}{" "}
+                </span>
+                <br></br>
+                {user.performanceCount === 1
+                  ? "public performance"
+                  : "public performances"}
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={11} md={6}>
+                <div className="pub-play-list">
+                  <p className="publist-header">{user.username} created:</p>
+                  {user.playlists.map((playlist) => {
+                    return (
+                      <p className="pub-li" key={"li" + playlist._id}>
+                        <Link
+                          key={playlist._id}
+                          to={`/playlist/${playlist._id}`}
+                        >
+                          {playlist.name}
+                        </Link>
+                      </p>
+                    );
+                  })}
+                </div>
+              </Col>
+              <Col xs={11} md={6}>
+                <div className="pub-play-list">
+                  <p className="publist-header">{user.username} invited to:</p>
+                  {user.partyPlaylists.map((playlist) => {
+                    return (
+                      <p className="pub-li" keys={"li" + playlist._id}>
+                        <Link
+                          key={playlist._id}
+                          to={`/partyPlaylist/${playlist._id}`}
+                        >
+                          {playlist.name}
+                        </Link>
+                      </p>
+                    );
+                  })}
+                </div>
+                {console.log(user)}
+              </Col>
+            </Row>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
