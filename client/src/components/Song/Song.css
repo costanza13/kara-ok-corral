@@ -28,14 +28,7 @@
 }
 
 .song-btn {
-  background-color: var(--light);
-  border: none;
-  border-radius: 50px;
-  padding: 5px;
-  padding-left: 25px;
-  padding-right: 25px;
-  margin: 3px;
-  box-shadow: 3px 3px 3px 0 rgba(39, 12, 1, .1);
+  margin-right: 30px;
   cursor: pointer;
 }
 
@@ -55,3 +48,26 @@
   margin: 0;
   width: 10%;
 }
+
+.song-form-btn {
+  background-color: var(--xtra-light);
+  border-style: none;
+  border: 1px solid var(--yellow);
+  border-radius: 50px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 30px;
+  color: var(--yellow);
+}
+
+.song-form-btn:hover, .song-form-btn:focus {
+  padding: 8px;
+  padding-left: 13px;
+  padding-right: 13px;
+  background-color: var(--yellow);
+  color: var(--dark);
+  box-shadow: 3px 3px 2px 1px rgba(36, 27, 1, 0.2);
+  
+}
+

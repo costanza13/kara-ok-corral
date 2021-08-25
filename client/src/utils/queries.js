@@ -87,6 +87,10 @@ export const QUERY_USER = gql`
         _id
         name
       }
+      partyPlaylists {
+        _id
+        name
+      }
       performanceCount
       performances {
         _id

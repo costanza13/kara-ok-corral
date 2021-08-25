@@ -4,7 +4,7 @@
   --yellow: #E59824;
   --xtra-light: #fffbf5;
   --red: #e7414f;
-  --turq: #107c8a;
+  --turq: #0d9c84;
 }
 
 a {
@@ -126,6 +126,7 @@ li {
   box-shadow: 5px 5px 1px 3px rgba(14, 9, 1, 0.2);
   margin: 5px;
   border-radius: 5px;
+  color: var(--yellow);
 }
 
 .offcanvas .btn:hover {
@@ -217,14 +218,15 @@ em {
   }
 
   .jumbo-text {
-  position: absolute;
+  /* position: absolute; */
   display: flex;
   flex-direction: column;
-  height: 90%;
+  height: 60%;
   width: 100%;
   justify-content: center;
   align-items: center;
   color: #ffeedb;
+  padding-top: 30%;
   }
 
   .jumbo-span {
@@ -248,6 +250,10 @@ em {
       height: 50%;
       width: 90%;
     }
+
+    /* .display-3 {
+      font-size: 4.3vw;
+    } */
   }
 
 /* public profile*/
@@ -255,7 +261,7 @@ em {
 .pub-header {
   margin: 10px;
   margin-top: 20px;
-  color: var(--red);
+  color: var(--dark);
 }
 
 @media (max-width: 750px) {
@@ -285,10 +291,45 @@ em {
 }
 
 .friend-count {
-  color: var(--red);
+  color: var(--dark);
   font-size: 20px; 
+  margin-top: 30px;
 }
 
+.pub-play-list {
+  margin-top: 40px;
+}
+
+.pub-li {
+  background-color: var(--xtra-light);
+  margin-bottom: 3px;
+  text-align: center;
+  padding: 8px;
+  color: var(--red);
+}
+
+.pub-li:last-child {
+  border-radius: 0 0 6px 6px;
+}
+
+.publist-header {
+  background-color: var(--red);
+  margin-bottom: 0;
+  padding: 5px;
+  color: var(--xtra-light);
+  border-radius: 6px 6px 0 0;
+  text-align: center;
+}
+
+.pub-add-friend-btn {
+  color: var(--dark);
+  font-size: 18px;
+}
+
+.pub-add-friend-btn:hover {
+  font-size: 25px;
+  color: var(--red);
+}
 /* performance styles */
 .performance-video .video-wrap {
   width: 80%;

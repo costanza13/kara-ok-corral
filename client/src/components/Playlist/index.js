@@ -85,7 +85,7 @@ const Playlist = ({ playlistId, setVideo }) => {
         >
           {playlist.name}
         </EditableText>
-        <p class="playlist-owner">
+        <p className="playlist-owner">
           created by <Link to={`/profile/${playlist.username}`}>{playlist.username}</Link>
           {playlist.members.length ? ' (and posse)' : ''}
         </p>
