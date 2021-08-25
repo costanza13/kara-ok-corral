@@ -59,13 +59,15 @@ const PublicProfile = props => {
         <Row>
           <Col xs={12} md={3} className="pub-friends">
             <div className="friend-count">
-              {user.username} has ... 
+              {user.username} (member since {user.createdAt}) has ... 
               <ul>
-              <li>{user.friendCount}{" "}
+              <li><div className="profile-stats">{user.friendCount}{" "}</div>
               {user.friendCount === 1 ? "friend" : "friends"}</li>
               <li>
-              {user.playlistCount}{" "}
-              {user.playlistsCount === 1 ? "public playlist" : "public playlists"}</li>
+              <div className="profile-stats">{user.songCount}{" "}</div>
+              {user.songCount === 1 ? "songs in the public playlist" : "songs in public playlists"}</li>
+              <li><div className="profile-stats">{user.playlistCount}{" "}</div>
+              {user.playlistsCount === 1 ? "public playlist" : "public playlists"}:</li>
               <ul>
               {user.playlists.map((playlist) => {
                 return (
@@ -77,6 +79,8 @@ const PublicProfile = props => {
                 );
               })}
             </ul>
+            <li><div className="profile-stats">{user.performanceCount}{" "}</div>
+              {user.performanceCount === 1 ? "public performance" : "public performances"}</li>
               </ul>
               {console.log(user)}
             </div>
