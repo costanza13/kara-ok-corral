@@ -95,6 +95,11 @@ export const QUERY_USER = gql`
       performanceCount
       performances {
         _id
+        url
+        song {
+          title
+          artist
+        }
       }
       songCount
     }

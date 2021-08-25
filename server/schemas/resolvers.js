@@ -12,7 +12,6 @@ const resolvers = {
           .select('-__v -password')
           .populate('friends')
           .populate('playlists');
-
         return userData;
       }
 
@@ -139,11 +138,18 @@ const resolvers = {
   },
 
   User: {
-    partyPlaylists: async ({ username }) => {
-      return await Playlist.find({ members: { $in: [username] } });
+    partyPlaylists: async ({ username }, context) => {
+      const filter = { members: { $in: [username] } };
+      if (!context.user) {
+        filter.visibility = 'public';
+      }
+      return await Playlist.find(filter);
     },
     performances: async ({ username }) => {
-      return await Performance.find({ username, visibility: 'public' }, '_id');
+      return await Performance.find({ username, visibility: 'public' }, '_id url')
+      .populate('song')
+      .sort('-createAt')
+      .limit(1);
     },
     performanceCount: async ({ username }) => {
       return await Performance.countDocuments({ username });
@@ -337,7 +343,7 @@ const resolvers = {
     removeSong: async (parent, { playlistId, songId }, context) => {
       if (context.user) {
         const removedSong = await Song.findOneAndDelete({ _id: songId, username: context.user.username });
-        
+
         // remove any associated performance
         if (removedSong) {
           Performance.deleteOne({ song: songId });
