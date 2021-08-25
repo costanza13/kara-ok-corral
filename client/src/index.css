@@ -56,18 +56,22 @@ li {
 
 
 /* dashboard styles */
+
 .user-info {
   display: flex;
+  flex-wrap: wrap;
+  margin-left: 10px;
 }
 
 .username {
   text-align: left;
+  margin-left: 0;
 }
 
 .user-icon {
-  margin-right: 10px;
   color: var(--yellow);
-  padding: 10px;
+  margin-right: 5px;
+  padding: 12px;
   padding-top: 15px;
   padding-bottom: 15px;
   border-radius: 100%;
@@ -75,17 +79,35 @@ li {
   background-color: rgba(39, 12, 1, .9);
 }
 
+
 .friends-toggle {
   font-weight: 800;
   color: var(--yellow);
   font-size: 15px;
   text-decoration: underline;
   cursor: pointer;
+  display: inline;
 }
 
 .friends-toggle:hover {
   font-style: italic;
 }
+
+.dash-stats {
+  float: right;
+  margin-top: 20px;
+  font-weight: 600;
+}
+
+@media (max-width: 750px) {
+  .dash-stats {
+    float: left;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+  }
+}
+
 
 .offcanvas {
   max-width: 70%;
@@ -264,7 +286,6 @@ em {
 /* public profile*/
 
 .pub-header {
-  margin: 10px;
   margin-top: 20px;
   color: var(--dark);
 }
@@ -303,6 +324,7 @@ em {
 
 .pub-play-list {
   margin-top: 40px;
+  box-shadow: 8px 8px 15px 1px rgba(39, 12, 1, .3);
 }
 
 .pub-li {
@@ -315,6 +337,12 @@ em {
 
 .pub-li:last-child {
   border-radius: 0 0 6px 6px;
+}
+
+.pub-li.no-info {
+  font-size: 18px;
+  padding: 15px;
+  font-style: italic;
 }
 
 .publist-header {

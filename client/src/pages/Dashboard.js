@@ -78,15 +78,18 @@ const Dashboard = () => {
     <Container className="mt-4">
       <Row>
         <div className="user-info">
-          <span>
-            <i className="fas fa-hat-cowboy fa-lg user-icon"></i>
-          </span>
-          <h2 className="username">
-            {user.username}
-          </h2>
-          <div className='dashsboard-stats'>
-            <span>playlists: {user.playlists.length}</span>|<span>performances: {performanceCount}</span>|<span>friends: {friendsOffCanvas}</span>
-          </div>
+          <Col xs={12} md={4}>
+            <h2 className="username">
+              <i className="fas fa-hat-cowboy fa-sm user-icon"></i>
+              {user.username}
+            </h2>
+          </Col>
+          <Col xs={12} md={8}>
+            <span className="dash-stats">
+              playlists: {user.playlists.length} || performances:{" "}
+              {performanceCount} || {friendsOffCanvas}
+            </span>
+          </Col>
         </div>
       </Row>
       <Row xs={1} md={2}>
@@ -101,7 +104,10 @@ const Dashboard = () => {
               </ListGroup.Item>
               {personalPlaylists.map((playlist) => {
                 return (
-                  <ListGroup.Item key={"li" + playlist._id} className="playlist-name">
+                  <ListGroup.Item
+                    key={"li" + playlist._id}
+                    className="playlist-name"
+                  >
                     <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
                       {playlist.name}
                     </Link>
@@ -118,7 +124,10 @@ const Dashboard = () => {
             <ListGroup variant="flush">
               {partyPlaylists.map((playlist) => {
                 return (
-                  <ListGroup.Item key={"li" + playlist._id} className="playlist-name">
+                  <ListGroup.Item
+                    key={"li" + playlist._id}
+                    className="playlist-name"
+                  >
                     <Link key={playlist._id} to={`/party/${playlist._id}`}>
                       {playlist.name}
                     </Link>
