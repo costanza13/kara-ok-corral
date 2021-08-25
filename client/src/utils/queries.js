@@ -77,6 +77,7 @@ export const QUERY_USER = gql`
   query user($username: String!) {
     user(username: $username) {
       username
+      createdAt
       email
       friendCount
       friends {

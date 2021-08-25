@@ -12,11 +12,10 @@ import Spinner from "react-bootstrap/Spinner";
 // import Confetti from "react-confetti";
 
 const PlaylistPage = () => {
+  const { playlistId: playlistIdParam } = useParams();
+  const [playlistId, setPlaylistId] = useState(playlistIdParam);
   const [currentVideo, setCurrentVideo] = useState(null);
-  const { playlistId } = useParams();
   const { loading, error, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
-
-  const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
 
   // if data isn't here yet, say so
   if (!playlistData && loading) {
@@ -49,20 +48,24 @@ const PlaylistPage = () => {
       )
     }
   }
-  const playlist = playlistId !== "new" ? playlistData.playlist : { _id: null, username: currentUser.username };
 
   const setVideo = (video) => {
     setCurrentVideo({ ...video });
-    console.log('dick', currentVideo);
   };
 
+  const updatePlaylistId = (newId) => {
+    if (!playlistId || playlistId !== newId) {
+      window.history.pushState("The Kara-OK Corral", "The Kara-OK Corral", `/playlist/${newId}`);
+    }
+    setPlaylistId(newId);
+  }
 
   return (
     <>
       <Container className="mt-4">
         {/* <Confetti confettiSource={(-10, 40, 1, 0)} /> */}
         <Row>
-          <Playlist key={playlist._id} playlistId={playlist._id} setVideo={setVideo}></Playlist>
+          <Playlist key={playlistId} playlistId={playlistId} setVideo={setVideo} updatePlaylistId={updatePlaylistId} />
         </Row>
         <Row>
           <Col>

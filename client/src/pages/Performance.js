@@ -14,38 +14,48 @@ import Spinner from "react-bootstrap/Spinner";
 const Performance = () => {
   // const [currentVideo, setCurrentVideo] = useState(null);
   const [reactionInput, setReactionInput] = useState('');
-  const [reactions, setReactions] = useState();
+  // const [reactions, setReactions] = useState();
   const { performanceId } = useParams();
   const { loading, error, data: performanceData } = useQuery(QUERY_PERFORMANCE, { variables: { performanceId } });
-  const [addReaction] = useMutation(ADD_REACTION);
-  const [removeReaction] = useMutation(REMOVE_REACTION);
+
+  const [addReaction] = useMutation(ADD_REACTION, {
+    update(cache, { data: { addReaction } }) {
+      cache.modify({
+        fields: {
+          performance(existingPerformanceData) {
+            return addReaction
+          }
+        }
+      })
+    }
+  });
+
+  const [removeReaction] = useMutation(REMOVE_REACTION, {
+    update(cache, { data: { removeReaction } }) {
+      cache.modify({
+        fields: {
+          performance(existingPerformanceData) {
+            return removeReaction
+          }
+        }
+      })
+    }
+  });
+
 
   const reactionSubmit = async () => {
     // reaction submission magic here!
-    console.log(reactionInput);
-
-    const reactionsUpdated = await addReaction({
+    await addReaction({
       variables: { performanceId, reactionBody: reactionInput }
     });
-
-    if (reactionsUpdated) {
-      console.log(reactionsUpdated);
-      // setReactions()
-    }
+    setReactionInput('');
   };
 
   const reactionDelete = async reactionId => {
-    // reaction delete magic here!
-    console.log(reactionInput);
-
-    const reactionsUpdated = await removeReaction({
+    await removeReaction({
       variables: { performanceId, reactionId }
     });
-
-    if (reactionsUpdated) {
-      console.log(reactionsUpdated);
-      // setReactions()
-    }
+    setReactionInput('');
   }
 
   // if data isn't here yet, say so
@@ -97,16 +107,14 @@ const Performance = () => {
         reactionSubmit();
         break;
       default:
-        // do nothing
+      // do nothing
     }
   }
 
-  console.log(performanceData);
-  const { username, url, song } = performanceData.performance;
+  console.log('PD', performanceData);
+  const { username, url, reactions, song } = performanceData.performance;
 
-  if (reactions.length === 0 && performanceData.performance.reactions.length) {
-    setReactions(performanceData.performance.reactions);
-  }
+  const isOwner = Auth.loggedIn() && Auth.getProfile().data.username === username;
 
   return (
     <Container>
@@ -128,6 +136,7 @@ const Performance = () => {
             {
               reactions.map(reaction => {
                 return <div className="reaction">
+                  {isOwner ? <div className='delete-btn' onClick={() => reactionDelete(reaction._id)}><i className="far fa-trash-alt"></i></div> : ''}
                   <div className='reaction-body'>{reaction.reactionBody}</div>
                   <div className='reaction-byline'><Link to={`/profile/${reaction.username}`}>{reaction.username}</Link> - {reaction.createdAt}</div>
                 </div>

@@ -10,17 +10,12 @@ type Reaction {
   createdAt: String
 }
 
-type SongMeta {
-  title: String
-  artist: String
-}
-
 type Performance {
   _id: ID
   url: String
   username: String
   reactions: [Reaction]
-  song: SongMeta
+  song: Song
 }
 
 type Song {
@@ -51,6 +46,7 @@ type PlaylistName {
 type User {
   _id: ID
   username: String
+  createdAt: String
   email: String
   friendCount: Int
   friends: [User]
@@ -75,9 +71,10 @@ type SiteStats {
 }
 
 input PlaylistInfo {
-  name: String!
-  visibility: String!
+  name: String
+  visibility: String
   members: [String]
+  songs: [ID]
 }
 
 input SongInfo {

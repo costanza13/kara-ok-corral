@@ -59,8 +59,8 @@ const PublicProfile = props => {
           <Col xs={11}>
             <h2 className="pub-name">
               {userParam ? `${user.username}'s` : "your"} profile 
-              <button className="btn ml-auto" onClick={handleClick(user.username)}>
-                Add Friend
+              <button className="btn ml-auto" onClick={() => handleClick(user.username)} title='add friend'>
+                <i className="fas fa-user-plus"></i>
               </button>
             </h2>
           </Col>

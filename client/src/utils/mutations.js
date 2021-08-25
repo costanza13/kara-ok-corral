@@ -38,6 +38,31 @@ mutation updatePlaylist($playlistId: ID, $playlist: PlaylistInfo!) {
   }
 }
 `;
+
+export const DELETE_PLAYLIST = gql`
+  mutation removePlaylist($playlistId: ID!) {
+    removePlaylist(playlistId: $playlistId) {
+      username
+      email
+      friendCount
+      playlists {
+        _id
+        name
+        visibility
+        members
+      }
+      partyPlaylists {
+        _id
+        name
+        members
+      }
+      friends {
+        username
+      }
+    }
+  }
+`;
+
 export const SAVE_SONG = gql`
   mutation updateSong($playlistId: ID!, $songId: ID, $songData: SongInfo!) {
     updateSong(playlistId: $playlistId, songId: $songId, song: $songData) {
