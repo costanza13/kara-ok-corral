@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../../utils/queries';
-import { SAVE_PLAYLIST, SAVE_SONG, DELETE_PLAYLIST } from '../../utils/mutations';
+import { SAVE_PLAYLIST, SAVE_SONG, DELETE_PLAYLIST, DELETE_SONG } from '../../utils/mutations';
 import Auth from '../../utils/auth';
 import { Link } from 'react-router-dom';
 import Song from '../Song';
@@ -45,6 +45,18 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
         fields: {
           playlist(existingPlaylistData) {
             return updateSong
+          }
+        }
+      })
+    }
+  });
+
+  const [deleteSong] = useMutation(DELETE_SONG, {
+    update(cache, { data: { deleteSong } }) {
+      cache.modify({
+        fields: {
+          playlist(existingPlaylistData) {
+            return deleteSong
           }
         }
       })
@@ -106,6 +118,12 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
     }
   }
 
+  const removeSong = async (songId) => {
+    await deleteSong({
+      variables: { playlistId, songId }
+    });
+  }
+
   const setVisibility = async value => {
     const visibility = value === 'public' ? 'public' : 'private';
     const { data } = await updatePlaylist({
@@ -163,7 +181,7 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
       <Col xs={12} md={12} lg={9} className="song-list">
         {playlist.songs.map((song) => {
           const canEdit = currentUser.username === song.username;
-          return <Song key={song._id} song={song} canEdit={canEdit} saveSong={saveSong} setVideo={setVideo}></Song>;
+          return <Song key={song._id} song={song} canEdit={canEdit} saveSong={saveSong} setVideo={setVideo} deleteSong={removeSong}></Song>;
         })}
         {(isMember || isOwner) && !!playlist._id ? (
           <Song key={"newsong"} song={null} canEdit={true} saveSong={saveSong}></Song>

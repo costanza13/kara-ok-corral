@@ -337,6 +337,11 @@ const resolvers = {
     removeSong: async (parent, { playlistId, songId }, context) => {
       if (context.user) {
         const removedSong = await Song.findOneAndDelete({ _id: songId, username: context.user.username });
+        
+        // remove any associated performance
+        if (removedSong) {
+          Performance.deleteOne({ song: songId });
+        }
 
         const updatedPlaylist = removedSong
           ? await Playlist.findOneAndUpdate(

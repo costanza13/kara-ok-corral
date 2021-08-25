@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Collapse from 'react-bootstrap/Collapse';
 import './Song.css';
 
-const Song = ({ song, canEdit, saveSong, setVideo }) => {
+const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
   const [open, setOpen] = useState(false);
 
   const isAddForm = !song;
@@ -38,6 +38,11 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
     } else {
       setOpen(false);
     }
+  };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    deleteSong(song._id);
   };
 
   const songCollapse = (
@@ -124,7 +129,7 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
               >
                 update
               </button>
-              <button type="submit" className="song-form-btn">
+              <button type="submit" className="song-form-btn" onClick={(e) => handleDelete(e)}>
                 <i className="fas fa-trash-alt fa-sm"></i>
               </button>
               <span

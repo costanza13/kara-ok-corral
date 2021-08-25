@@ -85,6 +85,28 @@ export const SAVE_SONG = gql`
   }
 `;
 
+export const DELETE_SONG = gql`
+  mutation removeSong($playlistId: ID!, $songId: ID!) {
+    removeSong(playlistId: $playlistId, songId: $songId) {
+      _id
+      name
+      createdAt
+      username
+      members
+      visibility
+      songs {
+        _id
+        title
+        artist
+        lyricsUrl
+        videoUrl
+        createdAt
+        username
+      }
+    }
+  }
+`;
+
 export const ADD_FRIEND = gql`
   mutation addFriend($username: String!) {
     addFriend(friendUsername: $username) {
