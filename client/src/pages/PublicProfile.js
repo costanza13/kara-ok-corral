@@ -72,7 +72,7 @@ const PublicProfile = props => {
               <ul>
               <li>{user.friendCount}{" "}
               {user.friendCount === 1 ? "friend" : "friends"} 
-            )} </li>
+            </li>
               <li>
               {user.playlistCount}{" "}
               {user.playlistsCount === 1 ? "public playlist" : "public playlists"}</li>
