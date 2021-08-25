@@ -289,6 +289,10 @@ em {
   font-size: 20px; 
 }
 
+/* performance styles */
+.performance-video .video-wrap {
+  width: 80%;
+}
 
 /* reactions styles */
 .reaction-section {
