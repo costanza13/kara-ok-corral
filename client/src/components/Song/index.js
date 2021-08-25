@@ -34,7 +34,7 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
     e.preventDefault();
     saveSong(formState);
     if (isAddForm) {
-      setFormState({ title: '', artist: '', lyricsUrl: '', videoUrl: '' })
+      setFormState({ title: '', artist: '', lyricsUrl: '', videoUrl: '', performanceUrl: '' })
     } else {
       setOpen(false);
     }

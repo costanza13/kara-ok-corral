@@ -58,6 +58,7 @@ const Dashboard = () => {
     ...user.partyPlaylists
   ];
 
+  const performanceCount = 0;
 
   const handleClose = () => setShowFriends(false);
   const handleShow = () => setShowFriends(true);
@@ -84,11 +85,10 @@ const Dashboard = () => {
           </span>
           <h2 className="username">
             {user.username}
-            <br></br>
-            <span>
-              {friendsOffCanvas}
-            </span>
           </h2>
+          <div className='dashsboard-stats'>
+            <span>playlists: {user.playlists.length}</span>|<span>performances: {performanceCount}</span>|<span>friends: {friendsOffCanvas}</span>
+          </div>
         </div>
       </Row>
       <Row xs={1} md={2}>
