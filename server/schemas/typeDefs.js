@@ -62,6 +62,8 @@ type User {
   friendCount: Int
   friends: [User]
   playlistCount: Int
+  songCount: Int
+  performanceCount: Int
   playlists: [Playlist]
   partyPlaylists: [Playlist]
   performances: [Performance]

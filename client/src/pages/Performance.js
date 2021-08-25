@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_PERFORMANCE } from '../utils/queries';
@@ -11,6 +12,7 @@ import Spinner from "react-bootstrap/Spinner";
 
 const Performance = () => {
   // const [currentVideo, setCurrentVideo] = useState(null);
+  const [reactionInput, setReactionInput] = useState('');
   const { performanceId } = useParams();
   const { loading, error, data: performanceData } = useQuery(QUERY_PERFORMANCE, { variables: { performanceId } });
 
@@ -46,6 +48,28 @@ const Performance = () => {
     }
   }
 
+  const handleChange = (e) => {
+    e.preventDefault();
+    setReactionInput(e.target.value);
+  };
+
+  const handleKeyUp = (e) => {
+    switch (e.key) {
+      case 'Escape':
+        setReactionInput('');
+        break;
+      case 'Enter':
+        reactionSubmit();
+        break;
+      default:
+      // do nothing
+    }
+  }
+
+  const reactionSubmit = () => {
+    // reaction submission magic here!
+  };
+
   console.log(performanceData);
   const { username, url, reactions, song } = performanceData.performance;
 
@@ -58,13 +82,13 @@ const Performance = () => {
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col className='performance-video'>
           <EmbeddedVideo title={song.title} artist={username} url={url} />
         </Col>
       </Row>
       <Row>
         <Col className='reaction-section'>
-          <h3>Let's hear it for {username}!</h3>
+          <h3>Let's hear it for <Link to={`/profile/${username}`}>{username}</Link>!</h3>
           <div className='reactions'>
             {
               reactions.map(reaction => {
@@ -75,8 +99,8 @@ const Performance = () => {
               })
             }
             <div className='reaction-form'>
-              <textarea id='reaction-text-input'></textarea>
-              <span className='reaction-submit'><i className="far fa-share-square fa-2x"></i></span>
+              <textarea id='reaction-text-input' onChange={(e) => handleChange(e)} onKeyUp={(e) => handleKeyUp(e)} placeholder={`some kind words for ${username}`} />
+              <span className='reaction-submit'><i className="far fa-share-square fa-2x" onClick={reactionSubmit}></i></span>
             </div>
           </div>
         </Col>

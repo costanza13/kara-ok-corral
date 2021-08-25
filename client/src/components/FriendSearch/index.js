@@ -27,7 +27,7 @@ const handleInputOnChange = e => {
       <InputGroup className="mb-3">
         <InputGroup.Text id="basic-addon1">
           <span className="add-friend-btn">
-            <i class="fas fa-user-plus fa-sm"></i>
+            <i className="fas fa-user-plus fa-sm"></i>
           </span>
         </InputGroup.Text>
         <FormControl

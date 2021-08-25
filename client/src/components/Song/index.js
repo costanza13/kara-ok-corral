@@ -120,7 +120,7 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
               update
             </button>
             <button type="submit" className="song-btn">
-              <i class="fas fa-trash-alt fa-sm"></i>
+              <i className="fas fa-trash-alt fa-sm"></i>
             </button>
             <span
               onClick={() => setOpen(!open)}
