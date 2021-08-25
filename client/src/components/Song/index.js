@@ -48,14 +48,20 @@ const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
   const songCollapse = (
     <Row>
       <Col xs={12}>
-        <span
-          onClick={() => setOpen(!open)}
-          aria-controls="editSong-collapse-text"
-          aria-expanded={open}
-          className="song-btn song-edit-btn"
-        >
-          <i className="far fa-edit fa-md"></i>
-        </span>
+        {
+          canEdit ? (
+            <span
+              onClick={() => setOpen(!open)}
+              aria-controls="editSong-collapse-text"
+              aria-expanded={open}
+              className="song-btn song-edit-btn"
+            >
+              <i className="far fa-edit fa-md"></i>
+            </span>
+          ) : (
+            ''
+          )
+        }
         {song.title && song.artist ? (<p className="song-content">
           <span className="song-title">{song.title}</span>{' - '}
           <span className="song-artist">by {song.artist}</span>
