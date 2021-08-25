@@ -338,7 +338,29 @@ em {
 /* performance styles */
 .performance-video .video-wrap {
   width: 80%;
+  border: 2px solid var(--yellow);
+  box-shadow: 12px 12px 20px 1px rgba(39, 12, 1, .6);
 }
+
+.performance-headline {
+  margin-top: 40px;
+}
+
+.performance-byline {
+  color: var(--yellow);
+  margin-bottom: 30px;
+}
+
+.fa-thumbs-up {
+  margin-left: 10px;
+  color: var(--dark);
+}
+
+.visibility-btn.friends.selected {
+  color: var(--xtra-light);
+  background-color: var(--yellow);
+}
+
 
 /* reactions styles */
 .reaction-section {
@@ -372,8 +394,8 @@ em {
 
 .reaction-form {
   align-items: center;
-  background-color: white;
-  border: solid 1px brown;
+  background-color: var(--xtra-light);
+  border: 1px dashed var(--red);
   border-radius: 10px;
   display: flex;
   padding: 0.2rem;
@@ -381,7 +403,7 @@ em {
 }
 
 #reaction-text-input {
-  border-color: var(--turq);
+  border-color: var(--red);
   border-radius: 5px;
   flex-grow: 1;
   margin: 0.5rem;
@@ -391,5 +413,7 @@ em {
 
 .reaction-submit {
   color: var(--yellow);
+  margin-left: 10px;
+  margin-right: 10px;
 }
 

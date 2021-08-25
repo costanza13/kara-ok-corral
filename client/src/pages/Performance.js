@@ -148,8 +148,8 @@ const Performance = () => {
     <Container>
       <Row>
         <Col className='text-center'>
-          <h1 className='performance-headline'>{song.title} - {song.artist}!</h1>
-          <h2 className='performance-byline'>A performance by {username}!</h2>
+          <h2 className='performance-headline'>{song.title} - {song.artist}</h2>
+          <h4 className='performance-byline'>A performance by {username}!</h4>
         </Col>
       </Row>
       {
@@ -172,7 +172,7 @@ const Performance = () => {
       </Row>
       <Row>
         <Col className='reaction-section'>
-          <h3>Let's hear it for <Link to={`/profile/${username}`}>{username}</Link>!</h3>
+          <h3>Let's hear it for <Link to={`/profile/${username}`}>{username}</Link><i class="far fa-thumbs-up fa-md"></i></h3>
           <div className='reactions'>
             {
               reactions.map(reaction => {
