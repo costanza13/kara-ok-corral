@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useMutation } from '@apollo/client'
 import { REMOVE_FRIEND } from '../../utils/mutations';
 import { Link } from 'react-router-dom';
@@ -60,7 +60,7 @@ const FriendList = ({ username, friends, setFriendCount }) => {
     return (
       <>
         <p className="bg-dark text-light p-3">{username}, make some friends!</p>
-        <FriendSearch handleClick={handleClickAdd} />
+        <FriendSearch exclude={[...friends, username]} handleClick={handleClickAdd} />
       </>
     )
   }
@@ -73,7 +73,7 @@ const FriendList = ({ username, friends, setFriendCount }) => {
           <i className="fas fa-minus-circle fa-xs friend-delete" onClick={() => handleClickRemove(friend.username)} ></i>
         </button>
       ))}
-      <FriendSearch handleClick={handleClickAdd} />
+      <FriendSearch exclude={[...friends, username]} handleClick={handleClickAdd} />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_USER, QUERY_ME } from '../utils/queries';
 import { ADD_FRIEND } from '../utils/mutations';
 import EmbeddedVideo from '../components/EmbeddedVideo';
+import Auth from '../utils/auth';
 
 const PublicProfile = props => {
   const { username: userParam } = useParams();
@@ -31,12 +32,14 @@ const PublicProfile = props => {
   const user = data.user;
 
   const handleClick = async (addUsername) => {
-    try {
-      await addFriend({
-        variables: { username: addUsername }
-      });
-    } catch (e) {
-      console.error(e);
+    if (addUsername !== Auth.getProfile().data.username) {
+      try {
+        await addFriend({
+          variables: { username: addUsername }
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
   };
 

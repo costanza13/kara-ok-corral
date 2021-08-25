@@ -1,26 +1,34 @@
 import React, { useState } from 'react';
 import fuzzySearch from 'fz-search';
-import { useQuery} from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { QUERY_USERS } from '../../utils/queries';
 import { InputGroup, FormControl } from 'react-bootstrap';
 
 
-const FriendSearch = ({handleClick}) => {
+const FriendSearch = ({ exclude, handleClick }) => {
 
-const [value, setValue] = useState("");
-const [fuzzyValue, setFuzzyValue] = useState("");
-const { loading: queryUsersLoading, data: usersData } = useQuery(QUERY_USERS);
+  const [value, setValue] = useState("");
+  const [fuzzyValue, setFuzzyValue] = useState("");
+  const { loading: queryUsersLoading, data: usersData } = useQuery(QUERY_USERS);
 
+  let nonFriends;
+  if (!queryUsersLoading && usersData && usersData.users && usersData.users.length) {
+    nonFriends = usersData.users.filter(user => {
+      return exclude.indexOf(user.username) === -1;
+    });
+  }
 
-const handleInputOnChange = e => {
+  const handleInputOnChange = e => {
     setValue(e.target.value)
-    const searcher = new fuzzySearch({ source: usersData.users, keys: ["username"] });   
+    const searcher = new fuzzySearch({ source: nonFriends, keys: ["username"] });
     setFuzzyValue(searcher.search(e.target.value))
-}
+  }
 
   const handleClickAdd = async (username) => {
-    handleClick(username)
-};
+    if (exclude.indexOf(username) !== -1) {
+      handleClick(username)
+    }
+  };
 
   return (
     <>
@@ -51,7 +59,8 @@ const handleInputOnChange = e => {
         </div>
       )}
     </>
-  );}
-           
-   
+  );
+}
+
+
 export default FriendSearch;

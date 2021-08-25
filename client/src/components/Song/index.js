@@ -133,7 +133,7 @@ const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
                 className="song-form-btn"
                 onClick={handleSubmit}
               >
-                update
+                {formState._id ? 'update' : 'add'}
               </button>
               <button type="submit" className="song-form-btn" onClick={(e) => handleDelete(e)}>
                 <i className="fas fa-trash-alt fa-sm"></i>
