@@ -107,3 +107,35 @@ export const REMOVE_FRIEND = gql`
     }
   } 
 `;
+
+export const ADD_REACTION = gql`
+  mutation addReaction($performanceId: ID!, $reactionBody: String!) {
+    addReaction(performanceId: $performanceId, reactionBody: $reactionBody) {
+      _id
+      url
+      username
+      reactions {
+        _id
+        username
+        reactionBody
+        createdAt
+      }
+    }
+  }
+`;
+
+export const REMOVE_REACTION = gql`
+  mutation removeReaction($performanceId: ID!, $reactionId: ID!) {
+    removeReaction(performanceId: $performanceId, reactionId: $reactionId) {
+      _id
+      url
+      username
+      reactions {
+        _id
+        username
+        reactionBody
+        createdAt
+      }
+    }
+  }
+`;

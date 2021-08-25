@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_PERFORMANCE } from '../utils/queries';
+import { ADD_REACTION, REMOVE_REACTION } from '../utils/mutations';
 import EmbeddedVideo from '../components/EmbeddedVideo';
 import Auth from '../utils/auth';
 import { Link } from 'react-router-dom';
@@ -13,8 +14,39 @@ import Spinner from "react-bootstrap/Spinner";
 const Performance = () => {
   // const [currentVideo, setCurrentVideo] = useState(null);
   const [reactionInput, setReactionInput] = useState('');
+  const [reactions, setReactions] = useState();
   const { performanceId } = useParams();
   const { loading, error, data: performanceData } = useQuery(QUERY_PERFORMANCE, { variables: { performanceId } });
+  const [addReaction] = useMutation(ADD_REACTION);
+  const [removeReaction] = useMutation(REMOVE_REACTION);
+
+  const reactionSubmit = async () => {
+    // reaction submission magic here!
+    console.log(reactionInput);
+
+    const reactionsUpdated = await addReaction({
+      variables: { performanceId, reactionBody: reactionInput }
+    });
+
+    if (reactionsUpdated) {
+      console.log(reactionsUpdated);
+      // setReactions()
+    }
+  };
+
+  const reactionDelete = async reactionId => {
+    // reaction delete magic here!
+    console.log(reactionInput);
+
+    const reactionsUpdated = await removeReaction({
+      variables: { performanceId, reactionId }
+    });
+
+    if (reactionsUpdated) {
+      console.log(reactionsUpdated);
+      // setReactions()
+    }
+  }
 
   // if data isn't here yet, say so
   if (!performanceData && loading) {
@@ -50,7 +82,10 @@ const Performance = () => {
 
   const handleChange = (e) => {
     e.preventDefault();
-    setReactionInput(e.target.value);
+    const value = e.target.value;
+    if (!value[value.length - 1].match(/\n/)) {
+      setReactionInput(value);
+    }
   };
 
   const handleKeyUp = (e) => {
@@ -62,16 +97,16 @@ const Performance = () => {
         reactionSubmit();
         break;
       default:
-      // do nothing
+        // do nothing
     }
   }
 
-  const reactionSubmit = () => {
-    // reaction submission magic here!
-  };
-
   console.log(performanceData);
-  const { username, url, reactions, song } = performanceData.performance;
+  const { username, url, song } = performanceData.performance;
+
+  if (reactions.length === 0 && performanceData.performance.reactions.length) {
+    setReactions(performanceData.performance.reactions);
+  }
 
   return (
     <Container>
@@ -99,7 +134,7 @@ const Performance = () => {
               })
             }
             <div className='reaction-form'>
-              <textarea id='reaction-text-input' onChange={(e) => handleChange(e)} onKeyUp={(e) => handleKeyUp(e)} placeholder={`some kind words for ${username}`} />
+              <textarea id='reaction-text-input' onChange={(e) => handleChange(e)} onKeyUp={(e) => handleKeyUp(e)} value={reactionInput} placeholder={`some kind words for ${username}`} />
               <span className='reaction-submit'><i className="far fa-share-square fa-2x" onClick={reactionSubmit}></i></span>
             </div>
           </div>

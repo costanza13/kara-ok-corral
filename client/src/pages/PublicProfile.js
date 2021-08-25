@@ -1,23 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import FriendList from '../components/FriendList';
 import { Container, Row, Col } from 'react-bootstrap';
-
-
 import { useQuery, useMutation } from '@apollo/client';
-import { QUERY_USER } from '../utils/queries';
+import { QUERY_USER, QUERY_ME } from '../utils/queries';
 import { ADD_FRIEND } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const PublicProfile = props => {
   const { username: userParam } = useParams();
-
-  const [addFriend] = useMutation(ADD_FRIEND);
-
-  const { loading, data } = useQuery(QUERY_USER, {
+  const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME, {
     variables: { username: userParam }
   });
+
+   const [addFriend] = useMutation(ADD_FRIEND, {
+     update(cache, {data: { addFriend }}) {
+       cache.modify({
+         fields: {
+           me(existingMeData) {
+             return addFriend
+           }
+        }
+       })
+     }
+   });
 
   if (loading) {
     return <div>Loading...</div>;
@@ -31,16 +37,16 @@ const PublicProfile = props => {
   //     return "Welcome to your public profile page!"
   // }
 
-  const handleClick = async () => {
-    try {
-      await addFriend({
-        variables: { id: user._id }
-      });
-    } catch (e) {
-      console.error(e);
+   const handleClick = async (addUsername) => {
+     try {
+       await addFriend({
+         variables: { username: addUsername }
+       });
+     } catch (e) {
+       console.error(e);
     }
   };
-
+ 
   return (
     <div>
       <Container>
@@ -52,23 +58,44 @@ const PublicProfile = props => {
           </Col>
           <Col xs={11}>
             <h2 className="pub-name">
-              {userParam ? `${user.username}'s` : "your"} profile
+              {userParam ? `${user.username}'s` : "your"} profile 
+              <button className="btn ml-auto" onClick={handleClick(user.username)}>
+                Add Friend
+              </button>
             </h2>
           </Col>
         </Row>
         <Row>
           <Col xs={12} md={3} className="pub-friends">
-            <p className="friend-count">
-              {user.username} has {user.friendCount}{" "}
-              {user.friendCount === 1 ? "friend" : "friends"}
-            </p>
-            {userParam && (
-              <button className="btn ml-auto" onClick={handleClick}>
-                Add Friend
-              </button>
-            )}
+            <div className="friend-count">
+              {user.username} (member since {user.createdAt}) has ... 
+              <ul>
+              <li><div className="profile-stats">{user.friendCount}{" "}</div>
+              {user.friendCount === 1 ? "friend" : "friends"}</li>
+              <li>
+              <div className="profile-stats">{user.songCount}{" "}</div>
+              {user.songCount === 1 ? "songs in the public playlist" : "songs in public playlists"}</li>
+              <li><div className="profile-stats">{user.playlistCount}{" "}</div>
+              {user.playlistsCount === 1 ? "public playlist" : "public playlists"}:</li>
+              <ul>
+              {user.playlists.map((playlist) => {
+                return (
+                  <li key={"li" + playlist._id}>
+                    <Link key={playlist._id} to={`/playlist/${playlist._id}`}>
+                      {playlist.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+            <li><div className="profile-stats">{user.performanceCount}{" "}</div>
+              {user.performanceCount === 1 ? "public performance" : "public performances"}</li>
+              </ul>
+              {console.log(user)}
+            </div>
+            
           </Col>
-          <Col xs={12}>
+          {/* <Col xs={12}>
             <ul>
               {user.playlists.map((playlist) => {
                 return (
@@ -80,9 +107,10 @@ const PublicProfile = props => {
                 );
               })}
             </ul>
-          </Col>
+          </Col> */}
         </Row>
       </Container>
+      
     </div>
   );
 };

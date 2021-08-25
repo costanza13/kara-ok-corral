@@ -78,15 +78,20 @@ export const QUERY_USER = gql`
     user(username: $username) {
       username
       email
+      friendCount
       friends {
         username
       }
-      friendCount
+      playlistCount
       playlists {
         _id
         name
-        visibility
       }
+      performanceCount
+      performances {
+        _id
+      }
+      songCount
     }
   }
 `;
