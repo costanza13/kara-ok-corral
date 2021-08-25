@@ -420,7 +420,14 @@ const resolvers = {
       throw new ForbiddenError('FORBIDDEN: You must be logged in to add reactions.');
     },
     removeReaction: async (parent, { performanceId, reactionId }, context) => {
-      return {};
+      if (context.user) {
+        return await Performance.findOneAndUpdate(
+          { _id: performanceId, username: context.user.username },
+          { $pull: { reactions: reactionId } },
+          { new: true }
+        );
+      }
+      throw new ForbiddenError('FORBIDDEN: You must be logged in to manage reactions.');
     }
   }
 };
