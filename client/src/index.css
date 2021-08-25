@@ -318,6 +318,7 @@ em {
   padding: 5px;
   color: var(--xtra-light);
   border-radius: 6px 6px 0 0;
+  text-align: center;
 }
 
 .pub-add-friend-btn {

@@ -125,7 +125,7 @@ const PublicProfile = props => {
                   <p className="publist-header">{user.username} invited to:</p>
                   {user.partyPlaylists.map((playlist) => {
                     return (
-                      <p className="pub-li" keys={"li" + playlist._id}>
+                      <p className="pub-li" key={"li" + playlist._id}>
                         <Link key={playlist._id} to={`/party/${playlist._id}`}>
                           {playlist.name}
                         </Link>
