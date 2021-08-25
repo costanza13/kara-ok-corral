@@ -54,6 +54,10 @@ li {
   border-radius: 50px;
 }
 
+.container {
+  max-width: 1000px;
+}
+
 
 /* dashboard styles */
 

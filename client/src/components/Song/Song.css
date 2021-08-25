@@ -10,10 +10,6 @@
   font-style: italic;
 }
 
-.song-content {
-  text-align: center;
-}
-
 .song-title {
   font-weight: bold;
   font-size: 18px;
@@ -30,12 +26,6 @@
 .song-btn {
   margin-right: 30px;
   cursor: pointer;
-}
-
-.song-btn:hover {
-  padding: 8px;
-  padding-left: 28px;
-  padding-right: 28px;
 }
 
 .fa-edit {
@@ -62,12 +52,21 @@
 }
 
 .song-form-btn:hover, .song-form-btn:focus {
-  padding: 8px;
-  padding-left: 13px;
-  padding-right: 13px;
+  padding: 6px;
+  padding-left: 11px;
+  padding-right: 11px;
   background-color: var(--yellow);
   color: var(--dark);
   box-shadow: 3px 3px 2px 1px rgba(36, 27, 1, 0.2);
-  
+}
+
+div.test.list-group-item {
+  margin-left: 50px;
+}
+
+@media (max-width: 1000px) {
+    div.test.list-group-item {
+    margin-left: 0;
+  }
 }
 

@@ -183,7 +183,7 @@ const PublicProfile = props => {
                 <Col xs={12} md={4}>
                   <div className="pub-play-list">
                     <p className="publist-header">
-                      {user.username} not performances yet
+                      {user.username} no performances yet
                     </p>
                     <p className="pub-li no-info">stay tuned!</p>
                   </div>

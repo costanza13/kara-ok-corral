@@ -40,12 +40,28 @@
 }
 
 .delete-btn {
-  display: inline-block;
   margin: 1rem auto;
-  background-color: red;
+  background-color: rgba(235, 74, 68, .5);
   color: white;
   border-radius: 25px;
-  padding: 1rem;
-  font-size: 140%;
+  padding: 10px;
+  font-size: 14px;
   font-weight: bold;
+  float: right;
+}
+
+.delete-btn:hover {
+  background-color: rgba(235, 74, 68, 1);
+  color: var(--xtra-light);
+}
+
+@media (max-width: 750px) {
+  .no-disp {
+    display: none;
+  }
+
+  .delete-btn {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
 }

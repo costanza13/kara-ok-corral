@@ -140,25 +140,47 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
 
   return (
     <>
-      <Col xs={12} md={12}>
+      <Col xs={11} md={3}>
         <EditableText
-          inputClass={'playlist-title'}
-          textClass={'playlist-title'}
-          blur={'save'}
+          inputClass={"playlist-title"}
+          textClass={"playlist-title"}
+          blur={"save"}
           save={saveName}
         >
-          {playlist.name || 'Name this playlist to get started!'}
+          {playlist.name || "Name this playlist to get started!"}
         </EditableText>
         <p className="playlist-owner">
-          created by <Link to={`/profile/${playlist.username}`}>{playlist.username}</Link>
-          {playlist.members.length ? ' (and posse)' : ''}
+          created by{" "}
+          <Link to={`/profile/${playlist.username}`}>{playlist.username}</Link>
+          {playlist.members.length ? " (and posse)" : ""}
         </p>
+      </Col>
+      <Col xs={1} md={{ span: 3, offset: 6 }}>
+        <span className="btn delete-btn" onClick={() => handleDeleteClick()}>
+          <i class="fas fa-trash-alt fa-md"></i> <span className="no-disp">delete playlist</span>
+        </span>
       </Col>
       <Col xs={12} md={12}>
         {(isMember || isOwner) && !!playlist._id ? (
           <>
-            <span className={`visibility-btn private ${playlist.visibility !== 'public' ? ' selected' : ''}`} onClick={() => setVisibility('private')}> private</span>
-            <span className={`visibility-btn public ${playlist.visibility === 'public' ? ' selected' : ''}`} onClick={() => setVisibility('public')}> public</span>
+            <span
+              className={`visibility-btn private ${
+                playlist.visibility !== "public" ? " selected" : ""
+              }`}
+              onClick={() => setVisibility("private")}
+            >
+              {" "}
+              private
+            </span>
+            <span
+              className={`visibility-btn public ${
+                playlist.visibility === "public" ? " selected" : ""
+              }`}
+              onClick={() => setVisibility("public")}
+            >
+              {" "}
+              public
+            </span>
           </>
         ) : (
           ""
@@ -175,16 +197,27 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
       <Col xs={12} md={12} lg={9} className="song-list">
         {playlist.songs.map((song) => {
           const canEdit = currentUser.username === song.username;
-          return <Song key={song._id} song={song} canEdit={canEdit} saveSong={saveSong} setVideo={setVideo} deleteSong={removeSong}></Song>;
+          return (
+            <Song
+              key={song._id}
+              song={song}
+              canEdit={canEdit}
+              saveSong={saveSong}
+              setVideo={setVideo}
+              deleteSong={removeSong}
+            ></Song>
+          );
         })}
         {(isMember || isOwner) && !!playlist._id ? (
-          <Song key={"newsong"} song={null} canEdit={true} saveSong={saveSong}></Song>
+          <Song
+            key={"newsong"}
+            song={null}
+            canEdit={true}
+            saveSong={saveSong}
+          ></Song>
         ) : (
           ""
         )}
-      </Col>
-      <Col xs={12} md={12}>
-        <span className='btn delete-btn' onClick={() => handleDeleteClick()}>Delete Playlist</span>
       </Col>
     </>
   );

@@ -17,15 +17,11 @@
   margin: 6px 5px 6px 6px;
   border-color: none;
   color: var(--yellow);
-  font-family: adobe-handwriting-ernie, sans-serif;
-  font-weight: 400;
-  font-style: normal;
   padding: 3px;
   padding-left: 9px;
   padding-right: 9px;
-  box-shadow: 6px 6px 6px 1px rgba(39, 12, 1, .1);
   font-weight: bold;
-  background-image: url('../../assets/paperslip.png');
+  border-bottom: 1px solid var(--yellow);
 } 
 
 .member-button {

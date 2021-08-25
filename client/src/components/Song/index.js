@@ -68,7 +68,7 @@ const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
         </p>) : (<p className="song-content">
           <span className="song-title italic">Add a new song...</span></p>)}
       </Col>
-      <Col xs={{span: 10, offset: 2}} md={{span: 8, offset: 4}} lg={{ span: 8, offset: 4 }}>
+      <Col xs={12} md={12} lg={12}>
         {song.lyricsUrl ? (<span><a href={song.lyricsUrl} target="_blank" rel="noreferrer" className="song-btn">lyrics <i className="far fa-file-alt"></i></a></span>) : ('')}
         {song.videoUrl ? (<span><a href={song.videoUrl} onClick={(e) => launchVideo(e)} rel="noreferrer" className="song-btn">video <i title="watch" className="fas fa-desktop"></i></a></span>) : ('')}
         {song.performance ? (<span><Link to={`/performance/${song.performance._id}`} className="song-btn">performance <i className="fas fa-video"></i></Link></span>) : ('')}
@@ -155,32 +155,23 @@ const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
 
   return (
     <ListGroup>
-      {
-        song.title ? (
-          <ListGroup.Item>
-            <Collapse in={!open}>
-              {songCollapse}
-            </Collapse>
-            <Collapse in={open}>
-              <Row>
-                <Col xs={12}>
-                  Enter Song Info
-                </Col>
-                {canEdit ? (<Col xs={12}>{editCollapse}</Col>) : ('')}
-              </Row>
-            </Collapse>
-          </ListGroup.Item>
-        ) : (
-          <ListGroup.Item>
-            <Collapse in={!open}>
-              {songCollapse}
-            </Collapse>
-
-            {canEdit ? (<span>{editCollapse}</span>) : ("")}
-          </ListGroup.Item>
-        )
-      }
-    </ListGroup >
+      {song.title ? (
+        <ListGroup.Item className="test">
+          <Collapse in={!open}>{songCollapse}</Collapse>
+          <Collapse in={open}>
+            <Row>
+              <Col xs={12}>Enter Song Info</Col>
+              {canEdit ? <Col xs={12}>{editCollapse}</Col> : ""}
+            </Row>
+          </Collapse>
+        </ListGroup.Item>
+      ) : (
+        <ListGroup.Item className="test">
+          <Collapse in={!open}>{songCollapse}</Collapse>
+          {canEdit ? <span>{editCollapse}</span> : ""}
+        </ListGroup.Item>
+      )}
+    </ListGroup>
   );
 };
 
