@@ -29,14 +29,15 @@ const resolvers = {
       return userData;
     },
     user: async (parent, { username }) => {
-      return User.findOne({ username })
+      const user = await User.findOne({ username })
         .select('-_id -__v -password')
         .populate('friends', 'username')
         .populate({
           path: 'playlists',
           match: { visibility: 'public' },
-          select: 'name'
+          select: '_id name'
         });
+      return user;
     },
     stats: async (parent) => {
       return {
@@ -109,10 +110,10 @@ const resolvers = {
     publicPerformances: async (parent, { username }) => {
       const userFilter = username ? { username } : {};
       const performances = await Performance
-      .find({ ...userFilter, visibility: 'public' })
-      .sort('-createAt')
-      .populate('reactions')
-      .limit(10);
+        .find({ ...userFilter, visibility: 'public' })
+        .sort('-createAt')
+        .populate('reactions')
+        .limit(10);
       return performances;
     },
     performance: async (parent, { _id }, context) => {
@@ -131,16 +132,24 @@ const resolvers = {
             }
           }
         }
-        throw new ForbiddenError('FORBIDDEN: You are not authorized to view this document.');
+        throw new UserInputError('NOT FOUND: The requested performance was not found.');
       }
-      throw new UserInputError('NOT FOUND: The requested performance was not found.');
+      throw new ForbiddenError('FORBIDDEN: You are not authorized to view this document.');
     }
   },
 
   User: {
     partyPlaylists: async ({ username }) => {
-      const playlists = await Playlist.find({ members: { $in: [username] } });
-      return playlists;
+      return await Playlist.find({ members: { $in: [username] } });
+    },
+    performances: async ({ username }) => {
+      return await Performance.find({ username, visibility: 'public' }, '_id');
+    },
+    performanceCount: async ({ username }) => {
+      return await Performance.countDocuments({ username });
+    },
+    songCount: async ({ username }) => {
+      return await Song.countDocuments({ username });
     }
   },
 

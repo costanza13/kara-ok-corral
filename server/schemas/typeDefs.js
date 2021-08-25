@@ -48,13 +48,6 @@ type PlaylistName {
   name: String
 }
 
-type UserBasic {
- 
-  username: String
-  playlists: [PlaylistName]
-  playlistCount: Int
-}
-
 type User {
   _id: ID
   username: String
@@ -62,11 +55,11 @@ type User {
   friendCount: Int
   friends: [User]
   playlistCount: Int
-  songCount: Int
-  performanceCount: Int
   playlists: [Playlist]
   partyPlaylists: [Playlist]
   performances: [Performance]
+  performanceCount: Int
+  songCount: Int
 }
 
 type Auth {
@@ -103,7 +96,7 @@ input PerformanceInfo {
 
 type Query {
   me: User
-  users: [UserBasic]
+  users: [User]
   user(username: String!): User
   stats: SiteStats
   publicPlaylists(username: String): [Playlist]

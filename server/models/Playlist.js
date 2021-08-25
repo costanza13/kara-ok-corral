@@ -28,6 +28,10 @@ const playlistSchema = new Schema({
   }]
 });
 
+playlistSchema.virtual('songCount').get(function () {
+  return this.songs.length;
+});
+
 const Playlist = model('Playlist', playlistSchema);
 
 module.exports = Playlist;
