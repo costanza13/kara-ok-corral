@@ -10,6 +10,18 @@ const { ApolloError } = require("apollo-server-errors");
 
 const resolvers = {
   Query: {
+    // query a user by username
+    user: async (parent, { username }) => {
+      const user = await User.findOne({ username })
+        .select('-_id -__v -password -email')
+        .populate('friends', 'username')
+        .populate({
+          path: 'playlists',
+          match: { visibility: 'public' },
+          select: '_id name'
+        });
+      return user;
+    },
     me: async (parent, args, context) => {
       if (context.user) {
         const userData = await User.findOne({ username: context.user.username })
