@@ -108,9 +108,9 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
 
   const saveName = async name => {
     if (name.trim().length) {
-      console.log('what the glorious crap!');
-      const { visibility, members, songs } = playlist;
-      const variables = { playlist: { name, visibility, members, songs } };
+      const { visibility, members } = playlist;
+      const variables = { playlist: { name, visibility, members } };
+      console.log('what the glorious crap!', variables);
       if (playlist._id) {
         variables.playlistId = playlist._id;
       }
@@ -122,8 +122,8 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
   };
 
   const updateMembers = async (members) => {
-    const { name, visibility, songs } = playlist;
-    const variables = { playlistId: playlist._id, playlist: { name, visibility, songs, members } };
+    const { name, visibility } = playlist;
+    const variables = { playlistId: playlist._id, playlist: { name, visibility, members } };
     await updatePlaylist({ variables });
     const { data } = await updatePlaylist({ variables });
     if (data) {

@@ -173,7 +173,7 @@ const Performance = () => {
       </Row>
       <Row>
         <Col className='reaction-section'>
-          <h3>Let's hear it for <Link to={`/profile/${username}`}>{username}</Link><i class="far fa-thumbs-up fa-md"></i></h3>
+          <h3>Let's hear it for <Link to={`/profile/${username}`}>{username}</Link><i className="far fa-thumbs-up fa-md"></i></h3>
           <div className='reactions'>
             {
               reactions.map(reaction => {
