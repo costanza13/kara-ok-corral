@@ -53,9 +53,11 @@ const PublicProfile = props => {
             {userParam ? `${user.username}'s` : "your"} profile
             <button
               className="btn ml-auto"
-              onClick={handleClick(user.username)}
+              onClick={() => handleClick(user.username)}
             >
-              Add Friend
+              <span className="pub-add-friend-btn">
+                <i className="fas fa-user-plus fa-sm"></i>
+              </span>
             </button>
           </h2>
         </Col>
@@ -124,10 +126,7 @@ const PublicProfile = props => {
                   {user.partyPlaylists.map((playlist) => {
                     return (
                       <p className="pub-li" keys={"li" + playlist._id}>
-                        <Link
-                          key={playlist._id}
-                          to={`/partyPlaylist/${playlist._id}`}
-                        >
+                        <Link key={playlist._id} to={`/party/${playlist._id}`}>
                           {playlist.name}
                         </Link>
                       </p>

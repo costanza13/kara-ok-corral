@@ -320,6 +320,15 @@ em {
   border-radius: 6px 6px 0 0;
 }
 
+.pub-add-friend-btn {
+  color: var(--dark);
+  font-size: 18px;
+}
+
+.pub-add-friend-btn:hover {
+  font-size: 25px;
+  color: var(--red);
+}
 /* performance styles */
 .performance-video .video-wrap {
   width: 80%;
