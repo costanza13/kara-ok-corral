@@ -80,7 +80,8 @@ const Performance = () => {
       </div>
     );
   } else if (error) {
-    if (error.toString().indexOf('NOT FOUND:') > -1) {
+    console.log(error);
+    if (error.message.indexOf('NOT FOUND:') > -1) {
       return (
         <>
           <h1 className='display-2'>Not Found!</h1>
@@ -88,7 +89,7 @@ const Performance = () => {
         </>
       )
     }
-    if (error.message.indexOf('NOT AUTHORIZED:') > -1) {
+    if (error.message.indexOf('FORBIDDEN:') > -1) {
       return (
         <>
           <h1 className='display-2'>Not AUTHORIZED!</h1>
@@ -155,7 +156,7 @@ const Performance = () => {
       {
         isOwner ? (
           <Row>
-            <Col className='text-center'>
+            <Col className='text-center perf-btn-group'>
               <span className={`visibility-btn private ${visibility !== 'public' && visibility !== 'friends' ? ' selected' : ''}`} onClick={() => setVisibility('private')}> private</span>
               <span className={`visibility-btn friends ${visibility === 'friends' ? ' selected' : ''}`} onClick={() => setVisibility('friends')}> friends</span>
               <span className={`visibility-btn public ${visibility === 'public' ? ' selected' : ''}`} onClick={() => setVisibility('public')}> public</span>

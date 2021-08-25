@@ -133,9 +133,7 @@ const PublicProfile = props => {
                       <p className="publist-header">
                         {user.username} has no plalists!
                       </p>
-                      <p className="pub-li no-info">
-                        nothing to see here
-                      </p>
+                      <p className="pub-li no-info">nothing to see here</p>
                     </div>
                   </Col>
                 )}
@@ -166,9 +164,7 @@ const PublicProfile = props => {
                     <p className="publist-header">
                       {user.username} not yet invited to party
                     </p>
-                    <p className="pub-li no-info">
-                      invite them to party!
-                    </p>
+                    <p className="pub-li no-info">invite them to party!</p>
                   </div>
                 </Col>
               )}
@@ -184,7 +180,14 @@ const PublicProfile = props => {
                   </div>
                 </Col>
               ) : (
-                ""
+                <Col xs={12} md={4}>
+                  <div className="pub-play-list">
+                    <p className="publist-header">
+                      {user.username} not performances yet
+                    </p>
+                    <p className="pub-li no-info">stay tuned!</p>
+                  </div>
+                </Col>
               )}
             </Row>
           </div>

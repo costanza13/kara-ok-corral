@@ -18,6 +18,6 @@
 
 /* And set the max-width of the parent element */
 .video-wrap {
-  margin: 3rem auto 5rem;
+  margin: 0 auto 5rem;
   width: 100%;
 }
