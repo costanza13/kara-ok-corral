@@ -1,24 +1,26 @@
 .visibility-btn {
-  background-color: lightgray;
+  background-color: var(--xtra-light);
+  color: var(--dark);
   border: none;
   border-radius: 50px;
   padding: 5px;
   padding-left: 25px;
   padding-right: 25px;
   margin: 3px;
-  box-shadow: 6px 6px 6px 1px rgb(39 12 1 / 20%);
+  
 }
 
 .visibility-btn.selected {
   box-shadow: none;
   color: #fff;
   font-weight: bold;
+  box-shadow: 6px 6px 6px 1px rgb(39 12 1 / 20%);
 }
 
 .visibility-btn.public.selected {
-  background-color: green;
+  background-color: var(--turq);
 }
 
 .visibility-btn.private.selected {
-  background-color: red;
+  background-color: var(--red);
 }

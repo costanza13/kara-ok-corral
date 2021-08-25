@@ -57,7 +57,7 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
         </p>) : (<p className="song-content">
           <span className="song-title italic">Add a new song...</span></p>)}
       </Col>
-      <Col xs={12} md={12} lg={{ span: 9, offset: 3 }}>
+      <Col xs={{span: 10, offset: 2}} md={{span: 8, offset: 4}} lg={{ span: 8, offset: 4 }}>
         {song.lyricsUrl ? (<span><a href={song.lyricsUrl} target="_blank" rel="noreferrer" className="song-btn">lyrics <i className="far fa-file-alt"></i></a></span>) : ('')}
         {song.videoUrl ? (<span><a href={song.videoUrl} onClick={(e) => launchVideo(e)} rel="noreferrer" className="song-btn">video <i title="watch" className="fas fa-desktop"></i></a></span>) : ('')}
         {song.performance ? (<span><Link to={`/performance/${song.performance._id}`} className="song-btn">performance <i className="fas fa-video"></i></Link></span>) : ('')}
@@ -116,20 +116,26 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
                 onChange={(e) => handleChange(e, "performanceUrl")}
               />
             </div>
-            <button type="submit" className="song-btn" onClick={handleSubmit}>
-              update
-            </button>
-            <button type="submit" className="song-btn">
-              <i className="fas fa-trash-alt fa-sm"></i>
-            </button>
-            <span
-              onClick={() => setOpen(!open)}
-              aria-controls="song-collapse-text"
-              aria-expanded={open}
-              className="song-btn"
-            >
-              cancel
-            </span>
+            <Col xs={{span: 10, offset: 2}} md={{span: 8, offset: 4}}>
+              <button
+                type="submit"
+                className="song-form-btn"
+                onClick={handleSubmit}
+              >
+                update
+              </button>
+              <button type="submit" className="song-form-btn">
+                <i className="fas fa-trash-alt fa-sm"></i>
+              </button>
+              <span
+                onClick={() => setOpen(!open)}
+                aria-controls="song-collapse-text"
+                aria-expanded={open}
+                className="song-form-btn"
+              >
+                cancel
+              </span>
+            </Col>
           </form>
         </div>
       </Collapse>
