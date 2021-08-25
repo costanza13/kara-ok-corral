@@ -13,7 +13,7 @@ import './Playlist.css';
 
 
 const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
-  const { loading, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
+  const { loading, data: playlistData, error } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
 
   const [updatePlaylist] = useMutation(SAVE_PLAYLIST, {
     update(cache, { data: { updatePlaylist } }) {
@@ -70,7 +70,8 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
 
   const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
 
-  if (loading) {
+  // if data isn't here yet, say so
+  if (!playlistData && loading) {
     return (
       <div className="spinner">
         <Spinner animation="border" role="status">
@@ -78,6 +79,28 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
         </Spinner>
       </div>
     );
+  } else if (error) {
+    console.log(error);
+    if (error.message.indexOf('NOT FOUND:') > -1) {
+      return (
+        <>
+          <h1 className='display-2'>Not Found!</h1>
+          <h2>We could not find the playlist you're looking for.</h2>
+        </>
+      )
+    }
+    if (error.message.indexOf('FORBIDDEN:') > -1) {
+      return (
+        <>
+          <h1 className='display-2'>Not AUTHORIZED!</h1>
+          <h2>{
+            Auth.loggedIn()
+              ? 'You do not have permission to view this playlist.'
+              : 'You might need to be logged in to view this playlist.'
+          }</h2>
+        </>
+      )
+    }
   }
 
   const playlist = !playlistId || playlistId === 'new' ? { name: '', visibility: 'private', members: [], songs: [] } : playlistData.playlist;

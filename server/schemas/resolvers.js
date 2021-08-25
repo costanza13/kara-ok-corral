@@ -75,7 +75,7 @@ const resolvers = {
       });
       return playlists;
     },
-    partyPlaylists: async (parent, {}, context) => {
+    partyPlaylists: async (parent, { }, context) => {
       if (context.user) {
         const playlists = await Playlist.find({
           members: { $in: [context.user.username] },
@@ -90,36 +90,42 @@ const resolvers = {
       throw new AuthenticationError("Not logged in");
     },
     playlist: async (parent, { _id }, context) => {
-      const playlist = await Playlist.findOne({ _id }).populate({
-        path: "songs",
-        populate: {
-          path: "performance",
-        },
-      });
-      if (!playlist) {
+      try {
+        const playlist = await Playlist.findOne({ _id }).populate({
+          path: "songs",
+          populate: {
+            path: "performance",
+          },
+        });
+        if (!playlist) {
+          throw new UserInputError(
+            "NOT FOUND: The requested playlist was not found."
+          );
+        } else {
+          const { username, visibility, members } = playlist;
+          // check that the user has access
+          if (visibility === "private") {
+            if (typeof context.user === "undefined") {
+              throw new ForbiddenError(
+                "FORBIDDEN: You are not authorized to view this document."
+              );
+            }
+            if (
+              username !== context.user.username &&
+              members.indexOf(context.user.username) < 0
+            ) {
+              throw new ForbiddenError(
+                "FORBIDDEN: You are not authorized to view this document."
+              );
+            }
+          }
+        }
+        return playlist;
+      } catch (error) {
         throw new UserInputError(
           "NOT FOUND: The requested playlist was not found."
         );
-      } else {
-        const { username, visibility, members } = playlist;
-        // check that the user has access
-        if (visibility === "private") {
-          if (typeof context.user === "undefined") {
-            throw new ForbiddenError(
-              "FORBIDDEN: You are not authorized to view this document."
-            );
-          }
-          if (
-            username !== context.user.username &&
-            members.indexOf(context.user.username) < 0
-          ) {
-            throw new ForbiddenError(
-              "FORBIDDEN: You are not authorized to view this document."
-            );
-          }
-        }
       }
-      return playlist;
     },
     songs: async () => {
       const songs = await Song.find();
@@ -235,15 +241,15 @@ const resolvers = {
 
         const updatedUser = friend
           ? await User.findOneAndUpdate(
-              { _id: context.user._id },
-              { $addToSet: { friends: friend._id } },
-              { new: true }
-            )
-              .populate("friends")
-              .populate("playlists")
+            { _id: context.user._id },
+            { $addToSet: { friends: friend._id } },
+            { new: true }
+          )
+            .populate("friends")
+            .populate("playlists")
           : await User.findOne({ _id: context.user._id })
-              .populate("friends")
-              .populate("playlists");
+            .populate("friends")
+            .populate("playlists");
 
         return updatedUser;
       }
@@ -257,15 +263,15 @@ const resolvers = {
         const friend = await User.findOne({ username: friendUsername });
         const updatedUser = friend
           ? await User.findOneAndUpdate(
-              { _id: context.user._id },
-              { $pull: { friends: friend._id } },
-              { new: true }
-            )
-              .populate("friends")
-              .populate("playlists")
+            { _id: context.user._id },
+            { $pull: { friends: friend._id } },
+            { new: true }
+          )
+            .populate("friends")
+            .populate("playlists")
           : await User.findOne({ _id: context.user._id })
-              .populate("friends")
-              .populate("playlists");
+            .populate("friends")
+            .populate("playlists");
 
         return updatedUser;
       }
@@ -278,17 +284,17 @@ const resolvers = {
       if (context.user) {
         const updatedPlaylist = !playlistId
           ? await Playlist.create({
-              ...playlist,
-              songs: [],
-              username: context.user.username,
-            })
+            ...playlist,
+            songs: [],
+            username: context.user.username,
+          })
           : await Playlist.findOneAndUpdate(
-              { _id: playlistId },
-              { ...playlist, username: context.user.username },
-              { new: true, runValidators: true }
-            )
-              .populate("songs")
-              .populate("songs.song.performance");
+            { _id: playlistId },
+            { ...playlist, username: context.user.username },
+            { new: true, runValidators: true }
+          )
+            .populate("songs")
+            .populate("songs.song.performance");
 
         // if this is a new playlist, and it was created successfully, add it to the user's list of playlists
         if (updatedPlaylist) {
@@ -340,9 +346,9 @@ const resolvers = {
           // check if the song already has a performance
           const songToUpdate = songId
             ? await Song.findOne({
-                _id: songId,
-                username: context.user.username,
-              })
+              _id: songId,
+              username: context.user.username,
+            })
             : null;
 
           // if the song already exists, check if it has a performance
@@ -374,14 +380,14 @@ const resolvers = {
 
         const updatedSong = !songId
           ? await Song.create({
-              ...songUpdate,
-              username: context.user.username,
-            })
+            ...songUpdate,
+            username: context.user.username,
+          })
           : await Song.findOneAndUpdate(
-              { _id: songId, username: context.user.username },
-              songUpdate,
-              { new: true }
-            );
+            { _id: songId, username: context.user.username },
+            songUpdate,
+            { new: true }
+          );
 
         console.log("4", updatedSong);
         // finally, update the performance with the song
@@ -429,15 +435,15 @@ const resolvers = {
 
         const updatedPlaylist = removedSong
           ? await Playlist.findOneAndUpdate(
-              { _id: playlistId },
-              { $pull: { songs: songId } },
-              { new: true }
-            ).populate({
-              path: "songs",
-              populate: {
-                path: "performance",
-              },
-            })
+            { _id: playlistId },
+            { $pull: { songs: songId } },
+            { new: true }
+          ).populate({
+            path: "songs",
+            populate: {
+              path: "performance",
+            },
+          })
           : null;
 
         return updatedPlaylist;
@@ -485,10 +491,10 @@ const resolvers = {
         if (removedPerformance) {
           const updatedSong = removedPerformance
             ? await Song.findOneAndUpdate(
-                { performance: performanceId },
-                { performance: null },
-                { new: true }
-              )
+              { performance: performanceId },
+              { performance: null },
+              { new: true }
+            )
             : null;
 
           return updatedSong;
