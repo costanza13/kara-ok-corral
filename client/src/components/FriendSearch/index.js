@@ -25,7 +25,7 @@ const FriendSearch = ({ exclude, handleClick }) => {
   }
 
   const handleClickAdd = async (username) => {
-    if (exclude.indexOf(username) !== -1) {
+    if (exclude.indexOf(username) === -1) {
       handleClick(username)
     }
   };

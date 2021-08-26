@@ -8,7 +8,7 @@ import { ADD_FRIEND } from '../../utils/mutations';
 const FriendList = ({ username, friends, setFriendCount }) => {
 
   const [addFriend] = useMutation(ADD_FRIEND, {
-    update(cache, {data: { addFriend }}) {
+    update(cache, { data: { addFriend } }) {
       cache.modify({
         fields: {
           me(existingMeData) {
@@ -18,9 +18,9 @@ const FriendList = ({ username, friends, setFriendCount }) => {
       })
     }
   });
- 
+
   const [removeFriend] = useMutation(REMOVE_FRIEND, {
-    update(cache, {data: { removeFriend }}) {
+    update(cache, { data: { removeFriend } }) {
       cache.modify({
         fields: {
           me(existingMeData) {
@@ -46,15 +46,15 @@ const FriendList = ({ username, friends, setFriendCount }) => {
   const handleClickAdd = async (addUsername) => {
     try {
       const updatedUser = await addFriend({
-       variables: { username: addUsername }
+        variables: { username: addUsername }
       });
       console.log("updated user:");
-       console.log(updatedUser);
-       setFriendCount(updatedUser.data.addFriend.friendCount);
-     } catch (e) {
-       console.error(e);
-     }
-   };
+      console.log(updatedUser);
+      setFriendCount(updatedUser.data.addFriend.friendCount);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   if (!friends || !friends.length) {
     return (
@@ -73,7 +73,7 @@ const FriendList = ({ username, friends, setFriendCount }) => {
           <i className="fas fa-minus-circle fa-xs friend-delete" onClick={() => handleClickRemove(friend.username)} ></i>
         </button>
       ))}
-      <FriendSearch exclude={[...friends, username]} handleClick={handleClickAdd} />
+      <FriendSearch exclude={[...friends.map(friend => friend.username), username]} handleClick={handleClickAdd} />
     </div>
   );
 };
