@@ -114,38 +114,43 @@ const PublicProfile = props => {
             </Row>
             <Row>
               <Col xs={12} md={4}>
-                {user.playlists.length ? (
-                  <div className="pub-play-list">
-                    <p className="publist-header">{user.username} created:</p>
-                    {user.playlists.map((playlist) => {
-                      return (
-                        <p className="pub-li" key={"li" + playlist._id}>
-                          <Link
-                            key={playlist._id}
-                            to={`/playlist/${playlist._id}`}
-                          >
-                            {playlist.name}
-                          </Link>
-                        </p>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <Col xs={12} md={4}>
-                    <div className="pub-play-list">
-                      <p className="publist-header">
-                        {user.username} has no plalists!
-                      </p>
-                      <p className="pub-li no-info">nothing to see here</p>
-                    </div>
-                  </Col>
-                )}
+                <div className="pub-play-list">
+                  {
+                    user.playlists.length ?
+                      (
+                        <>
+                          <p className="publist-header">{user.username}<br />created these playlists:</p>
+                          {user.playlists.map((playlist) => {
+                            return (
+                              <p className="pub-li" key={"li" + playlist._id}>
+                                <Link
+                                  key={playlist._id}
+                                  to={`/playlist/${playlist._id}`}
+                                >
+                                  {playlist.name}
+                                </Link>
+                              </p>
+                            );
+                          }
+                          )
+                          }
+                        </>
+                      ) : (
+                        <>
+                          <p className="publist-header">
+                            {user.username}<br />has no playlists!
+                          </p>
+                          <p className="pub-li no-info">nothing to see here</p>
+                        </>
+                      )
+                  }
+                </div>
               </Col>
               {user.partyPlaylists.length ? (
                 <Col xs={12} md={4}>
                   <div className="pub-play-list">
                     <p className="publist-header">
-                      {user.username} invited to:
+                      {user.username}<br />is in these parties:
                     </p>
                     {user.partyPlaylists.map((playlist) => {
                       return (
@@ -165,7 +170,7 @@ const PublicProfile = props => {
                 <Col xs={12} md={4}>
                   <div className="pub-play-list">
                     <p className="publist-header">
-                      {user.username} not yet invited to party
+                      {user.username}<br />is not yet in a party
                     </p>
                     <p className="pub-li no-info">invite them to party!</p>
                   </div>
@@ -175,7 +180,7 @@ const PublicProfile = props => {
                 <Col xs={12} md={4}>
                   <div className="pub-play-list">
                     <p className="publist-header">
-                      {user.username}'s latest performance
+                      {user.username}'s<br />latest performance
                     </p>
                     <div className="perfromance-video">
                       {showLatestPerformance(user.performances)}
@@ -186,7 +191,7 @@ const PublicProfile = props => {
                 <Col xs={12} md={4}>
                   <div className="pub-play-list">
                     <p className="publist-header">
-                      {user.username} no performances yet
+                      {user.username}<br />no performances yet
                     </p>
                     <p className="pub-li no-info">stay tuned!</p>
                   </div>
