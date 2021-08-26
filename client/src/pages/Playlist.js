@@ -26,7 +26,7 @@ const PlaylistPage = () => {
         </Spinner>
       </div>
     );
-  } else if (error) {
+  } else if (playlistId && playlistId !== 'new' && error) {
     if (error.message.indexOf('NOT FOUND:') > -1) {
       return (
         <div className='error'>

@@ -290,8 +290,8 @@ const resolvers = {
             username: context.user.username,
           })
           : await Playlist.findOneAndUpdate(
-            { _id: playlistId },
-            { ...playlist, username: context.user.username },
+            { _id: playlistId, username: context.user.username },
+            { ...playlist },
             { new: true, runValidators: true }
           )
             .populate("songs")
