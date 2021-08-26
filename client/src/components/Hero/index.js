@@ -21,13 +21,13 @@ function Hero() {
       <Jumbotron>
         <Container fluid>
           <div className="jumbo-text">
-            <h2 className="display-3">
+            <h3 className="display-3">
               <span className='no-wrap'>
                 Your karaoke<span className='no-wrap'> </span>
                 <span className="jumbo-span" ref={textRef}></span><br />
                 <p className="text-right">roundup</p>
               </span>
-            </h2>
+            </h3>
           </div>
         </Container>
       </Jumbotron>

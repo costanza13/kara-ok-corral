@@ -103,7 +103,6 @@ li {
 
 .friends-toggle:hover {
   color: var(--red);
-  font-style: italic;
 }
 
 .dash-stats {
@@ -249,7 +248,7 @@ em {
   padding-top: 0px;
   margin-top: 0px;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   height: 500px;
   background-image: url('../src/assets/kokc-hero-web.png');
   background-repeat: repeat;
@@ -268,23 +267,23 @@ em {
   width: 100%;
   justify-content: center;
   align-items: center;
-  color: #ffeedb;
+  color: #ffead4;
 }
 
 .jumbo-span {
   color: #fd2f40;
 }
 
-.jumbo-text h2 {
-  background-color: rgba(39, 12, 1, .4);
-  box-shadow: 0 0 30px rgba(39, 12, 1, .8);
+.jumbo-text h3 {
+  background-color: rgba(39, 12, 1, .3);
+  box-shadow: 0 0 30px rgba(39, 12, 1, .4);
   border-radius: 4px;  
   padding: 1rem;
   width: 100%;
 }
 
-.jumbo-text h2 .text-right {
-  margin-left: 40%;
+.jumbo-text h3 .text-right {
+  margin-left: 30%;
 }
 
 @media (max-width: 750px) {
@@ -421,6 +420,11 @@ em {
   margin-bottom: 40px;
 }
 
+.fa-share-square:hover {
+  color: var(--dark);
+  cursor: pointer;
+}
+
 
 /* reactions styles */
 .reaction-section {
@@ -434,22 +438,24 @@ em {
 }
 
 .reaction {
-  background-color: white;
+  background-color: var(--xtra-light);
   border-radius: 10px;
-  padding: 0.5rem;
+  padding: .5rem;
   width: 100%;
 }
 
 .reaction-body {
   padding: 0.5rem;
   text-align: left;
+  margin-left: 20px;
+  font-size: 18px;
 }
 
 .reaction-byline {
-  text-align: right;
-  font-size: smaller;
+  text-align: left;
+  font-size: 15px;
   font-style: italic;
-  padding-right: 0.5rem;
+  padding-left: 35px;
 }
 
 .reaction-form {
@@ -475,5 +481,12 @@ em {
   color: var(--yellow);
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.reaction .delete-btn {
+  margin-right: 10px;
+  background-color: var(--xtra-light);
+  color: var(--red);
+  cursor: pointer;
 }
 

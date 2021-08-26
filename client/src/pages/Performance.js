@@ -178,7 +178,7 @@ const Performance = () => {
             {
               reactions.map(reaction => {
                 return <div className="reaction" key={reaction._id}>
-                  {isOwner ? <div className='delete-btn' onClick={() => reactionDelete(reaction._id)}><i className="far fa-trash-alt"></i></div> : ''}
+                  {isOwner ? <div className='delete-btn' onClick={() => reactionDelete(reaction._id)}><i className="far fa-trash-alt fa-lg"></i></div> : ''}
                   <div className='reaction-body'>{reaction.reactionBody}</div>
                   <div className='reaction-byline'><Link to={`/profile/${reaction.username}`}>{reaction.username}</Link> - {reaction.createdAt}</div>
                 </div>
