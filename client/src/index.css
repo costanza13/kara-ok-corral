@@ -483,6 +483,15 @@ em {
   margin-right: 10px;
 }
 
+.playlist-name .delete-btn {
+  font-size: 10px;
+  margin: 0;
+  padding: 0.2rem;
+  background-color: var(--xtra-light);
+  color: var(--red);
+  cursor: pointer;
+}
+
 .reaction .delete-btn {
   margin-right: 10px;
   background-color: var(--xtra-light);

@@ -328,7 +328,9 @@ const resolvers = {
           { _id: context.user._id },
           { $pull: { playlists: playlistId } },
           { new: true }
-        ).populate("playlists");
+        )
+        .populate("friends")
+        .populate("playlists");
 
         return updatedUser;
       }

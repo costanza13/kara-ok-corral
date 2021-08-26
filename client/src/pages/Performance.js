@@ -83,22 +83,22 @@ const Performance = () => {
     console.log(error);
     if (error.message.indexOf('NOT FOUND:') > -1) {
       return (
-        <>
+        <div className='error'>
           <h1 className='display-2'>Not Found!</h1>
           <h2>We could not find the performance you're looking for.</h2>
-        </>
+        </div>
       )
     }
     if (error.message.indexOf('FORBIDDEN:') > -1) {
       return (
-        <>
+        <div className='error'>
           <h1 className='display-2'>Not AUTHORIZED!</h1>
           <h2>{
             Auth.loggedIn()
               ? 'You do not have permission to view this performance.'
               : 'You might need to be logged in to view this performance.'
           }</h2>
-        </>
+        </div>
       )
     }
   }

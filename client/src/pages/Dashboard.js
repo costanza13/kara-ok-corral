@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import React, { useState, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useQuery, useMutation } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
+import { SAVE_PLAYLIST, DELETE_PLAYLIST } from '../utils/mutations';
 import FriendList from '../components/FriendList';
 import Auth from '../utils/auth';
 import Container from "react-bootstrap/Container";
@@ -10,11 +11,54 @@ import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import ListGroup from 'react-bootstrap/ListGroup';
+import EditableText from '../components/EditableText';
 
 const Dashboard = () => {
   const [friendCount, setFriendCount] = useState(-1);
   const [show, setShowFriends] = useState(false);
   const { loading, data: userData } = useQuery(QUERY_ME);
+  const history = useHistory();
+
+  const [savePlaylist] = useMutation(
+    SAVE_PLAYLIST,
+    {
+      update(cache, { data: { updatePlaylist } }) {
+        console.log('updatePlaylist', updatePlaylist);
+        const { me } = cache.readQuery({ query: QUERY_ME });
+        cache.writeQuery({
+          query: QUERY_ME,
+          data: { me: { ...me, playlists: [...me.playlists, updatePlaylist] } },
+        });
+      }
+    }
+  );
+
+  const [removePlaylist] = useMutation(
+    DELETE_PLAYLIST,
+    {
+      update(cache, { data: { removePlaylist } }) {
+        console.log('removePlaylist', removePlaylist);
+        cache.writeQuery({
+          query: QUERY_ME,
+          data: { me: removePlaylist }
+        });
+      }
+    });
+
+  useEffect(() => {
+    // Update the document title using the browser API
+    console.log('something updated!');
+  }, [userData, savePlaylist, removePlaylist]);
+
+  const addPlaylist = async (name) => {
+    const { data: { updatePlaylist: { _id: newPlaylistId } } } = await savePlaylist({ variables: { playlist: { name, visibility: 'private', members: [] } } });
+    history.push(`/playlist/${newPlaylistId}`);
+  };
+
+  const deletePlaylist = (e, playlistId) => {
+    e.preventDefault();
+    removePlaylist({ variables: { playlistId } });
+  };
 
   let user;
 
@@ -99,9 +143,20 @@ const Dashboard = () => {
             <h3 className="playlist-header">Your Playlists</h3>
             <ListGroup variant="flush">
               <ListGroup.Item key={"linew_playlist"} className="playlist-name">
-                <Link key={"new_playlist"} to={"/playlist/new"}>
-                  <em>create a new playlist &raquo;</em>
-                </Link>
+                <EditableText
+                  inputClass={"create-playlist"}
+                  textClass={"create-playlist"}
+                  blur={'hold'}
+                  save={addPlaylist}
+                  showSave={true}
+                  showCancel={true}
+                  saveButtonClass={'edit-btn'}
+                  cancelButtonClass={'edit-btn'}
+                  initClear={true}
+                  editIcon={<i className="far fa-plus-square"></i>}
+                >
+                  create a new playlist
+                </EditableText>
               </ListGroup.Item>
               {personalPlaylists.map((playlist) => {
                 return (
@@ -113,6 +168,7 @@ const Dashboard = () => {
                       {playlist.name}
                     </Link>
                     <em>&raquo;</em>
+                    <span onClick={(e) => deletePlaylist(e, playlist._id)} className='dashboard delete-btn'><i className="far fa-trash-alt fa-lg"></i></span>
                   </ListGroup.Item>
                 );
               })}

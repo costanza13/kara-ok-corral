@@ -1,10 +1,27 @@
 import { useState } from 'react';
 import './EditableText.css';
 
-const EditableText = ({ edit, textClass, inputClass, blur, save, children }) => {
+const EditableText = ({
+  edit,
+  textClass,
+  inputClass,
+  blur,
+  save,
+  showSave,
+  showCancel,
+  saveButtonClass,
+  cancelButtonClass,
+  initClear,
+  editIcon,
+  children
+}) => {
   const [editMode, setEditMode] = useState(edit);
   const [inputValue, setInputValue] = useState(children);
 
+  const init = () => {
+    initClear && setInputValue('');
+    setEditMode(true);
+  }
   const handleChange = (e) => {
     e.preventDefault();
     const value = e.target.value;
@@ -30,27 +47,50 @@ const EditableText = ({ edit, textClass, inputClass, blur, save, children }) => 
     switch (blur) {
       case 'save':
         save(e.target.value);
+        setEditMode(false);
+        break;
+      case 'hold':
+        // do nothing
         break;
       case 'cancel':
       default:
         e.target.value = children;
+        setEditMode(false);
         break;
     }
-    setEditMode(false);
   };
+
+  const handleSaveButton = () => {
+    const value = document.querySelector('#et-input').value;
+    save(value);
+    setEditMode(false);
+  }
+
+  const handleCancelButton = () => {
+    document.querySelector('#et-input').value = children;
+    setEditMode(false);
+  }
 
   return (
     <>
       {
         editMode
-          ? <input className={inputClass} type="text" value={inputValue} onBlur={handleBlur} onChange={handleChange} onKeyUp={handleKeyUp} autoFocus />
-          : <span className={textClass}>{children}
-            <span
-              onClick={() => setEditMode(true)}
-              className="edit-btn"
-            >
-              <i className="far fa-edit fa-md"></i>
-            </span></span>
+          ? (
+            <>
+              <input id='et-input' className={inputClass} type="text" value={inputValue} onBlur={handleBlur} onChange={handleChange} onKeyUp={handleKeyUp} autoFocus />
+              {showSave ? <span onClick={handleSaveButton} className={`et-btn ${saveButtonClass}`}><i className="far fa-save"></i></span> : ('')}
+              {showCancel ? <span onClick={handleCancelButton} className={`et-btn ${cancelButtonClass}`}><i className="far fa-window-close"></i></span> : ('')}
+            </>
+          ) : (
+            <span className={`et-editable-text ${textClass}`} onClick={() => init()}>
+              {children}
+              <span
+                className="et-btn et-edit-btn"
+              >
+                {editIcon ? editIcon : <i className="far fa-edit fa-md"></i>}
+              </span>
+            </span>
+          )
       }
     </>
   )

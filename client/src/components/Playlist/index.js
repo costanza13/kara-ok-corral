@@ -12,7 +12,7 @@ import Col from 'react-bootstrap/Col';
 import './Playlist.css';
 
 
-const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
+const Playlist = ({ playlistId, setVideo, updatePlaylists, updatePlaylistId }) => {
   const { loading, data: playlistData, error } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
 
   const [updatePlaylist] = useMutation(SAVE_PLAYLIST, {

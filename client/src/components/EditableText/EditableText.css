@@ -1,8 +1,12 @@
-.edit-btn i {
+.et-btn i {
   margin-left: 0.5rem;
   color: rgba(0 0 0 / 19%);
 }
 
-.playlist-title:hover .edit-btn i {
+.et-btn:hover {
+  cursor: pointer;
+}
+
+.et-editable-text:hover .et-btn i, .et-btn:hover i {
   color: rgba(0 0 0 / 50%);
 }
