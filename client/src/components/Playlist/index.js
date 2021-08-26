@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { QUERY_PLAYLIST } from '../../utils/queries';
+import { QUERY_ME, QUERY_PLAYLIST } from '../../utils/queries';
 import { SAVE_PLAYLIST, SAVE_SONG, DELETE_PLAYLIST, DELETE_SONG } from '../../utils/mutations';
 import Auth from '../../utils/auth';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Song from '../Song';
 import PlaylistMembers from '../PlaylistMembers';
 import EditableText from '../EditableText';
@@ -14,6 +14,7 @@ import './Playlist.css';
 
 const Playlist = ({ playlistId, setVideo, updatePlaylists, updatePlaylistId }) => {
   const { loading, data: playlistData, error } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
+  const history = useHistory();
 
   const [updatePlaylist] = useMutation(SAVE_PLAYLIST, {
     update(cache, { data: { updatePlaylist } }) {
@@ -27,17 +28,17 @@ const Playlist = ({ playlistId, setVideo, updatePlaylists, updatePlaylistId }) =
     }
   });
 
-  const [deletePlaylist] = useMutation(DELETE_PLAYLIST, {
-    update(cache, { data: { deletePlaylist } }) {
-      cache.modify({
-        fields: {
-          me(existingMeData) {
-            return deletePlaylist
-          }
-        }
-      })
-    }
-  });
+  const [deletePlaylist] = useMutation(
+    DELETE_PLAYLIST,
+    {
+      update(cache, { data: { removePlaylist } }) {
+        console.log('removePlaylist', removePlaylist);
+        cache.writeQuery({
+          query: QUERY_ME,
+          data: { me: removePlaylist }
+        });
+      }
+    });
 
   const [updateSong] = useMutation(SAVE_SONG, {
     update(cache, { data: { updateSong } }) {
@@ -155,7 +156,7 @@ const Playlist = ({ playlistId, setVideo, updatePlaylists, updatePlaylistId }) =
     await deletePlaylist({
       variables: { playlistId: playlist._id }
     });
-    window.location.assign('/dashboard');
+    history.push('/dashboard');
   };
 
   const isOwner = playlist.username === currentUser.username;
