@@ -79,7 +79,7 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
         </Spinner>
       </div>
     );
-  } else if (error) {
+  } else if (playlistId && playlistId !== 'new' && error) {
     console.log(error);
     if (error.message.indexOf('NOT FOUND:') > -1) {
       return (
@@ -161,11 +161,13 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
   const isOwner = playlist.username === currentUser.username;
   const isMember = playlist.members.indexOf(currentUser.username) > -1;
 
+  const canEditMeta = isOwner || !playlistId || playlistId === 'new';
+
   return (
     <>
       <Col xs={11} md={3}>
         {
-          isOwner ?
+          canEditMeta ?
             (
               <EditableText
                 inputClass={"playlist-title"}
@@ -179,11 +181,15 @@ const Playlist = ({ playlistId, setVideo, updatePlaylistId }) => {
               <span className='playlist-title'>{playlist.name}</span>
             )
         }
-        <p className="playlist-owner">
-          created by{" "}
-          <Link to={`/profile/${playlist.username}`}>{playlist.username}</Link>
-          {playlist.members.length ? " (and posse)" : ""}
-        </p>
+        {
+          playlistId && playlistId !== 'new' ? (
+            <p className="playlist-owner">
+              created by{" "}
+              <Link to={`/profile/${playlist.username}`}>{playlist.username}</Link>
+              {playlist.members.length ? " (and posse)" : ""}
+            </p>
+          ) : ('')
+        }
       </Col>
       <Col xs={1} md={{ span: 3, offset: 6 }}>
         {
