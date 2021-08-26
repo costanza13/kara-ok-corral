@@ -140,7 +140,6 @@ const Performance = () => {
     }
   }
 
-  console.log('PD', performanceData);
   const { username, url, reactions, song, visibility } = performanceData.performance;
 
   const isOwner = Auth.loggedIn() && Auth.getProfile().data.username === username;

@@ -12,7 +12,7 @@ const Stats = props => {
   if (loading) {
     return <div>Loading...</div>;
   }
-  console.log(data);
+
   return (
     <div className="stats-bar">
       <h2 className="stats-h2">In the Corral <i className="fas fa-hat-cowboy"></i>

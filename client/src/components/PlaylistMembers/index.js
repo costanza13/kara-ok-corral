@@ -39,10 +39,6 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
 
     const updatedMembers = members.filter(member => member !== removeUsername);
 
-    console.log(memberButton);
-    console.log(removeUsername);
-    console.log('updatedMembers', updatedMembers);
-
     updateMembers(updatedMembers);
   }
 

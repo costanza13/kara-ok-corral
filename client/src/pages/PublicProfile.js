@@ -50,8 +50,6 @@ const PublicProfile = props => {
     }
   }
 
-  console.log(user);
-
   return (
     <Container>
       <Row className="pub-header">

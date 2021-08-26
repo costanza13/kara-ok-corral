@@ -12,7 +12,7 @@ import Col from 'react-bootstrap/Col';
 import './Playlist.css';
 
 
-const Playlist = ({ playlistId, setVideo, updatePlaylists, updatePlaylistId }) => {
+const Playlist = ({ playlistId, setVideo }) => {
   const { loading, data: playlistData, error } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
   const history = useHistory();
 
@@ -32,7 +32,6 @@ const Playlist = ({ playlistId, setVideo, updatePlaylists, updatePlaylistId }) =
     DELETE_PLAYLIST,
     {
       update(cache, { data: { removePlaylist } }) {
-        console.log('removePlaylist', removePlaylist);
         cache.writeQuery({
           query: QUERY_ME,
           data: { me: removePlaylist }
@@ -65,8 +64,7 @@ const Playlist = ({ playlistId, setVideo, updatePlaylists, updatePlaylistId }) =
   });
 
   useEffect(() => {
-    // Update the document title using the browser API
-    console.log('something updated!');
+    // not much to do -- the hooks will work their magic
   }, [playlistData, updatePlaylist, updateSong]);
 
   const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
@@ -104,21 +102,16 @@ const Playlist = ({ playlistId, setVideo, updatePlaylists, updatePlaylistId }) =
     }
   }
 
-  const playlist = !playlistId || playlistId === 'new' ? { name: '', visibility: 'private', members: [], songs: [] } : playlistData.playlist;
-  console.log('playlistData', playlistData);
+  const playlist = playlistData.playlist;
 
   const saveName = async name => {
     if (name.trim().length) {
       const { visibility, members } = playlist;
       const variables = { playlist: { name, visibility, members } };
-      console.log('what the glorious crap!', variables);
       if (playlist._id) {
         variables.playlistId = playlist._id;
       }
-      const { data } = await updatePlaylist({ variables });
-      if (data) {
-        updatePlaylistId(data.updatePlaylist._id);
-      }
+      await updatePlaylist({ variables });
     }
   };
 
@@ -126,10 +119,6 @@ const Playlist = ({ playlistId, setVideo, updatePlaylists, updatePlaylistId }) =
     const { name, visibility } = playlist;
     const variables = { playlistId: playlist._id, playlist: { name, visibility, members } };
     await updatePlaylist({ variables });
-    const { data } = await updatePlaylist({ variables });
-    if (data) {
-      updatePlaylistId(data.updatePlaylist._id);
-    }
   }
 
   const saveSong = async (songData) => {

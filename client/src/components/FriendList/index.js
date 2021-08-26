@@ -36,7 +36,6 @@ const FriendList = ({ username, friends, setFriendCount }) => {
       const updatedUser = await removeFriend({
         variables: { username: removeUsername }
       });
-      console.log('JUST UPDATED', updatedUser);
       setFriendCount(updatedUser.data.removeFriend.friendCount);
     } catch (e) {
       console.error(e);
@@ -48,8 +47,6 @@ const FriendList = ({ username, friends, setFriendCount }) => {
       const updatedUser = await addFriend({
         variables: { username: addUsername }
       });
-      console.log("updated user:");
-      console.log(updatedUser);
       setFriendCount(updatedUser.data.addFriend.friendCount);
     } catch (e) {
       console.error(e);

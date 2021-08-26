@@ -3,7 +3,6 @@ import './EmbeddedVideo.css';
 
 const EmbeddedVideo = ({ title, artist, url }) => {
 
-  console.log(url);
   // youtube embed links look like youtube video links but with `/embed/` instead of `/watch?v=`
   let embedUrl;
   if (url && url.indexOf('www.youtube.com/watch') > -1) {

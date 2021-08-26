@@ -12,8 +12,7 @@ import Spinner from "react-bootstrap/Spinner";
 // import Confetti from "react-confetti";
 
 const PlaylistPage = () => {
-  const { playlistId: playlistIdParam } = useParams();
-  const [playlistId, setPlaylistId] = useState(playlistIdParam);
+  const { playlistId } = useParams();
   const [currentVideo, setCurrentVideo] = useState(null);
   const { loading, error, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
 
@@ -53,19 +52,12 @@ const PlaylistPage = () => {
     setCurrentVideo({ ...video });
   };
 
-  const updatePlaylistId = (newId) => {
-    if (!playlistId || playlistId !== newId) {
-      window.history.pushState("The Kara-OK Corral", "The Kara-OK Corral", `/playlist/${newId}`);
-    }
-    setPlaylistId(newId);
-  }
-
   return (
     <>
       <Container className="mt-4">
         {/* <Confetti confettiSource={(-10, 40, 1, 0)} /> */}
         <Row>
-          <Playlist key={playlistId} playlistId={playlistId} setVideo={setVideo} updatePlaylistId={updatePlaylistId} />
+          <Playlist key={playlistId} playlistId={playlistId} setVideo={setVideo} />
         </Row>
         <Row>
           <Col>

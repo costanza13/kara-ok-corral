@@ -345,7 +345,6 @@ const resolvers = {
 
         let newPerf;
         if (performanceUrl) {
-          console.log("1", song);
           // check if the song already has a performance
           const songToUpdate = songId
             ? await Song.findOne({
@@ -356,7 +355,6 @@ const resolvers = {
 
           // if the song already exists, check if it has a performance
           if (songToUpdate && songToUpdate.performance) {
-            console.log("2", songToUpdate);
             // if so, update the url
             const updatedPerformance = await Performance.updateOne(
               {
@@ -365,7 +363,6 @@ const resolvers = {
               },
               { url: performanceUrl }
             );
-            console.log("2b", updatedPerformance);
           } else {
             // otherwise, create the performance
             newPerf = await Performance.create({
@@ -375,7 +372,6 @@ const resolvers = {
             });
           }
         }
-        console.log("3", newPerf);
 
         const songUpdate = { title, artist, videoUrl, lyricsUrl };
         // if a new performance was added, include it in the song update
@@ -392,7 +388,6 @@ const resolvers = {
             { new: true }
           );
 
-        console.log("4", updatedSong);
         // finally, update the performance with the song
         await Performance.updateOne(
           { _id: updatedSong.performance, username: context.user.username },
@@ -554,7 +549,6 @@ const resolvers = {
     },
     removeReaction: async (parent, { performanceId, reactionId }, context) => {
       if (context.user) {
-        console.log(reactionId);
         return await Performance.findOneAndUpdate(
           { _id: performanceId, username: context.user.username },
           { $pull: { reactions: { _id: reactionId } } },

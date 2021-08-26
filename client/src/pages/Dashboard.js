@@ -23,7 +23,6 @@ const Dashboard = () => {
     SAVE_PLAYLIST,
     {
       update(cache, { data: { updatePlaylist } }) {
-        console.log('updatePlaylist', updatePlaylist);
         const { me } = cache.readQuery({ query: QUERY_ME });
         cache.writeQuery({
           query: QUERY_ME,
@@ -37,7 +36,6 @@ const Dashboard = () => {
     DELETE_PLAYLIST,
     {
       update(cache, { data: { removePlaylist } }) {
-        console.log('removePlaylist', removePlaylist);
         cache.writeQuery({
           query: QUERY_ME,
           data: { me: removePlaylist }
@@ -46,8 +44,7 @@ const Dashboard = () => {
     });
 
   useEffect(() => {
-    // Update the document title using the browser API
-    console.log('something updated!');
+    // not much to do -- the hooks will work their magic
   }, [userData, savePlaylist, removePlaylist]);
 
   const addPlaylist = async (name) => {
@@ -86,7 +83,6 @@ const Dashboard = () => {
   }
 
   user = userData.me;
-  console.log(userData);
   if (friendCount === -1) {
     setFriendCount(user.friendCount);
   }
