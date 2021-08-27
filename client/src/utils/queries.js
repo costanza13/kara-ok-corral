@@ -118,6 +118,11 @@ export const QUERY_USER = gql`
       playlists {
         _id
         name
+        songs {
+          _id
+          title
+          artist
+        }
       }
       partyPlaylists {
         _id

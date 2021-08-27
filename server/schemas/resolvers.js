@@ -291,7 +291,7 @@ const resolvers = {
         // if this is a new playlist, and it was created successfully, add it to the user's list of playlists
         if (updatedPlaylist) {
           if (!playlistId) {
-            const updatedUser = await User.update(
+            const updatedUser = await User.updateOne(
               { _id: context.user._id },
               { $addToSet: { playlists: updatedPlaylist._id } }
             );
