@@ -100,12 +100,10 @@ const Playlist = ({ playlistId, setVideo }) => {
   }
 
   const playlist = playlistData.playlist;
-  const songs = [...playlistData.playlist.songs];
+  const songs = playlist.songs;
   const songlist = songs.map(song => {
-    return { ...song, performanceUrl: song.performance.url }
+    return song.performance ? { ...song, performanceUrl: song.performance.url } : { ...song, performanceUrl: '' }
   });
-
-  console.log(songlist);
 
   const saveName = async name => {
     if (name.trim().length) {
