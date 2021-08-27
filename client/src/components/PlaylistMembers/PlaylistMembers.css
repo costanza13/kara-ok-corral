@@ -2,7 +2,11 @@
   display: flex;
 }
 
-.party-members {
+.members-panel {
+  padding-top: 2rem;
+}
+
+.members-list {
   padding: 5px;
   padding-bottom: 10px;
 }

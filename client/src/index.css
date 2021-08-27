@@ -67,6 +67,13 @@ li {
   max-width: 1000px;
 }
 
+.panel-header {
+  font-weight: 600;
+  color: var(--yellow);
+  font-size: 20px;
+  padding: 0.5rem;
+  text-align: center;
+}
 
 /* dashboard styles */
 

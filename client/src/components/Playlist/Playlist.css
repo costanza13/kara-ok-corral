@@ -55,6 +55,16 @@
   color: var(--xtra-light);
 }
 
+.songs-panel {
+  padding-top: 2rem;
+  padding-left: 32px;
+}
+
+.song-list {
+  margin-top: 1rem;
+  padding: 0 1vw 0.5rem;
+}
+
 @media (max-width: 750px) {
   .no-disp {
     display: none;

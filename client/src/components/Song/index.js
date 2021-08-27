@@ -71,8 +71,8 @@ const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
           )
         }
         {song.title && song.artist ? (<p className="song-content">
-          <span className="song-title">{song.title}</span>{' - '}
-          <span className="song-artist">by {song.artist}</span>
+          <span className="song-title">{song.title}</span>
+          <span className="song-artist"> - by {song.artist}</span>
         </p>) : (<p className="song-content">
           <span className="song-title italic">Add a new song...</span></p>)}
       </Col>
@@ -161,9 +161,9 @@ const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
   );
 
   return (
-    <ListGroup>
+    <>
       {song.title ? (
-        <ListGroup.Item className="test">
+        <ListGroup.Item>
           <Collapse in={!open} timeout={900}>{songCollapse}</Collapse>
           <Collapse in={open}>
             <Row>
@@ -173,7 +173,7 @@ const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
           </Collapse>
         </ListGroup.Item>
       ) : (
-        <ListGroup.Item className="test">
+        <ListGroup.Item>
           <Collapse in={!open} timeout={900}>{songCollapse}</Collapse>
           <Collapse in={open}>
             <Row>
@@ -183,7 +183,7 @@ const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
           </Collapse>
         </ListGroup.Item>
       )}
-    </ListGroup>
+    </>
   );
 };
 

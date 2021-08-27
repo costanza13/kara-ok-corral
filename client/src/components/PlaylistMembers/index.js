@@ -64,7 +64,7 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
   const leftToAdd = friends.filter(friend => members.indexOf(friend) === -1);
 
   return (
-    <div className="btn-group my-2 d-inline-block" role="group">
+    <div className="btn-group d-inline-block members-panel" role="group">
       {
         members.length === 0 && leftToAdd.length && canEdit ?
           (
@@ -81,7 +81,7 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
             )
           )
       }
-      <div className="party-members">
+      <div className="members-list">
 
         {canEdit && leftToAdd.length ? (
           <select

@@ -7,8 +7,7 @@ import { Link, useHistory } from 'react-router-dom';
 import Song from '../Song';
 import PlaylistMembers from '../PlaylistMembers';
 import EditableText from '../EditableText';
-import Spinner from 'react-bootstrap/Spinner';
-import Col from 'react-bootstrap/Col';
+import { Row, Col, ListGroup, Spinner } from 'react-bootstrap';
 import './Playlist.css';
 
 
@@ -156,104 +155,117 @@ const Playlist = ({ playlistId, setVideo }) => {
 
   return (
     <>
-      <Col xs={11} md={3}>
-        {
-          canEditMeta ?
-            (
-              <EditableText
-                inputClass={"playlist-title"}
-                textClass={"playlist-title"}
-                blur={"save"}
-                save={saveName}
+      <Row>
+        <Col xs={10} md={10}>
+          {
+            canEditMeta ?
+              (
+                <EditableText
+                  inputClass={"playlist-title"}
+                  textClass={"playlist-title"}
+                  blur={"save"}
+                  save={saveName}
+                >
+                  {playlist.name || "Name this playlist to get started!"}
+                </EditableText>
+              ) : (
+                <span className='playlist-title'>{playlist.name}</span>
+              )
+          }
+          {
+            playlistId && playlistId !== 'new' ? (
+              <p className='playlist-owner'>
+                a {playlist.visibility} party created by{' '}
+                <Link to={`/profile/${playlist.username}`}>{playlist.username}</Link>
+                {playlist.members.length ? ' (and posse)' : ''}
+              </p>
+            ) : ('')
+          }
+        </Col>
+        <Col xs={2} md={2}>
+          {
+            isOwner ?
+              (
+                <span className="btn delete-btn" onClick={() => handleDeleteClick()}>
+                  <i className="fas fa-trash-alt fa-md"></i> <span className="no-disp">delete playlist</span>
+                </span>
+              ) : (
+                ''
+              )
+          }
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12} md={12}>
+          {isOwner && !!playlist._id ? (
+            <>
+              <span
+                className={`visibility-btn private ${playlist.visibility !== "public" ? " selected" : ""
+                  }`}
+                onClick={() => setVisibility("private")}
               >
-                {playlist.name || "Name this playlist to get started!"}
-              </EditableText>
-            ) : (
-              <span className='playlist-title'>{playlist.name}</span>
-            )
-        }
-        {
-          playlistId && playlistId !== 'new' ? (
-            <p className="playlist-owner">
-              created by{" "}
-              <Link to={`/profile/${playlist.username}`}>{playlist.username}</Link>
-              {playlist.members.length ? " (and posse)" : ""}
-            </p>
-          ) : ('')
-        }
-      </Col>
-      <Col xs={1} md={{ span: 3, offset: 6 }}>
-        {
-          isOwner ?
-            (
-              <span className="btn delete-btn" onClick={() => handleDeleteClick()}>
-                <i className="fas fa-trash-alt fa-md"></i> <span className="no-disp">delete playlist</span>
+                {" "}
+                private
               </span>
-            ) : (
-              ''
-            )
-        }
-      </Col>
-      <Col xs={12} md={12}>
-        {isOwner && !!playlist._id ? (
-          <>
-            <span
-              className={`visibility-btn private ${playlist.visibility !== "public" ? " selected" : ""
-                }`}
-              onClick={() => setVisibility("private")}
-            >
-              {" "}
-              private
+              <span
+                className={`visibility-btn public ${playlist.visibility === "public" ? " selected" : ""
+                  }`}
+                onClick={() => setVisibility("public")}
+              >
+                {" "}
+                public
+              </span>
+            </>
+          ) : (
+            ''
+          )}
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12} md={12} lg={3}>
+          <PlaylistMembers
+            members={playlist.members}
+            canEdit={isOwner}
+            updateMembers={updateMembers}
+            className='members'
+          />
+        </Col>
+        <Col xs={12} md={12} lg={9}>
+          <div className='songs-panel'>
+            <span className='panel-header'>
+              Songs{' '}
             </span>
-            <span
-              className={`visibility-btn public ${playlist.visibility === "public" ? " selected" : ""
-                }`}
-              onClick={() => setVisibility("public")}
-            >
-              {" "}
-              public
-            </span>
-          </>
-        ) : (
-          ""
-        )}
-      </Col>
-      <Col xs={12} md={12} lg={3}>
-        <br />
-        <PlaylistMembers
-          members={playlist.members}
-          canEdit={isOwner}
-          updateMembers={updateMembers}
-        />
-      </Col>
-      <Col xs={12} md={12} lg={9} className="song-list">
-        {songlist.map((song) => {
-          const preppedSong = !song.performance ? { ...song, performance: { _id: '', url: '' } } : song;
-          const canEdit = currentUser.username === song.username;
-          return (
-            <Song
-              key={song._id}
-              song={preppedSong}
-              canEdit={canEdit}
-              saveSong={saveSong}
-              setVideo={setVideo}
-              deleteSong={removeSong}
-            ></Song>
-          );
-        })}
-        {(isMember || isOwner) && !!playlist._id ? (
-          <>
-            <Song
-              key={"newsong"}
-              song={{ title: '', artist: '', lyricsUrl: '', videoUrl: '', performance: { _id: '', url: '' } }}
-              canEdit={true}
-              saveSong={saveSong}
-            ></Song>
-          </>
-        ) : (
-          ""
-        )}
-      </Col>
+            <ListGroup className='song-list'>
+              {songlist.map((song) => {
+                const preppedSong = !song.performance ? { ...song, performance: { _id: '', url: '' } } : song;
+                const canEdit = currentUser.username === song.username;
+                return (
+                  <Song
+                    key={song._id}
+                    song={preppedSong}
+                    canEdit={canEdit}
+                    saveSong={saveSong}
+                    setVideo={setVideo}
+                    deleteSong={removeSong}
+                  ></Song>
+                );
+              })}
+              {(isMember || isOwner) && !!playlist._id ? (
+                <>
+                  <Song
+                    key={"newsong"}
+                    song={{ title: '', artist: '', lyricsUrl: '', videoUrl: '', performance: { _id: '', url: '' } }}
+                    canEdit={true}
+                    saveSong={saveSong}
+                  ></Song>
+                </>
+              ) : (
+                ""
+              )}
+            </ListGroup>
+          </div>
+        </Col>
+      </Row >
     </>
   );
 };

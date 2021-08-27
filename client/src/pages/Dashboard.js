@@ -94,7 +94,6 @@ const Dashboard = () => {
   const personalPlaylists = user.playlists.filter(playlist => playlist.members.length === 0);
   const partyPlaylists = [
     ...user.playlists.filter(playlist => playlist.members.length > 0),
-    ...user.partyPlaylists, 
     ...friendsParties.partyPlaylists
   ];
 
