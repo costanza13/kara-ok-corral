@@ -20,10 +20,10 @@ const Stats = props => {
             <div className="stats-padding">
                 <Container>
                     <Row>
-                        <Col size="3">Total songs: <div className="stats-number">{data.stats.songCount}</div></Col>
-                        <Col size="3">Total singers: <div className="stats-number">{data.stats.userCount}</div></Col>
-                        <Col size="3">Total playlists: <div className="stats-number">{data.stats.playlistCount}</div></Col>
-                        <Col size="3">Total performances: <div className="stats-number">{data.stats.performanceCount}</div></Col>
+                        <Col size="3">Total songs: <div className="stats-number">{data?.stats.songCount}</div></Col>
+                        <Col size="3">Total singers: <div className="stats-number">{data?.stats.userCount}</div></Col>
+                        <Col size="3">Total playlists: <div className="stats-number">{data?.stats.playlistCount}</div></Col>
+                        <Col size="3">Total performances: <div className="stats-number">{data?.stats.performanceCount}</div></Col>
                     </Row>
                 </Container>
             </div>

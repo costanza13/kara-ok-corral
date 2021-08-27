@@ -51,8 +51,8 @@ const PlaylistPage = () => {
       )
     }
   }
-  const playlist = playlistId !== "new" ? playlistData.playlist : { _id: null, username: currentUser.username };
-  const isOwner = playlist.username === currentUser.username;
+  const playlist = playlistId !== "new" ? playlistData?.playlist : { _id: null, username: currentUser?.username };
+  const isOwner = playlist?.username === currentUser?.username;
 
   const setVideo = (video) => {
     setCurrentVideo({ ...video });
@@ -65,12 +65,12 @@ const PlaylistPage = () => {
       <Container className="mt-4">
         {/* <Confetti confettiSource={(-10, 40, 1, 0)} /> */}
         <Row>
-          <Playlist key={playlist._id} playlistId={playlist._id} setVideo={setVideo}></Playlist>
+          <Playlist key={playlist?._id} playlistId={playlist?._id} setVideo={setVideo}></Playlist>
         </Row>
         <Row>
           <Col>
             {currentVideo ?
-              <EmbeddedVideo title={currentVideo.title} artist={currentVideo.artist} url={currentVideo.videoUrl} />
+              <EmbeddedVideo title={currentVideo?.title} artist={currentVideo?.artist} url={currentVideo?.videoUrl} />
               :
               ''}
           </Col>
