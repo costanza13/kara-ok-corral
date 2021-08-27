@@ -142,12 +142,12 @@ const Dashboard = () => {
                 <EditableText
                   inputClass={"create-playlist"}
                   textClass={"create-playlist"}
-                  blur={'hold'}
+                  blur={"hold"}
                   save={addPlaylist}
                   showSave={true}
                   showCancel={true}
-                  saveButtonClass={'edit-btn'}
-                  cancelButtonClass={'edit-btn'}
+                  saveButtonClass={"edit-btn"}
+                  cancelButtonClass={"edit-btn"}
                   initClear={true}
                   editIcon={<i className="far fa-plus-square"></i>}
                 >
@@ -164,7 +164,12 @@ const Dashboard = () => {
                       {playlist.name}
                     </Link>
                     <em>&raquo;</em>
-                    <span onClick={(e) => deletePlaylist(e, playlist._id)} className='dashboard delete-btn'><i className="far fa-trash-alt fa-lg"></i></span>
+                    <span
+                      onClick={(e) => deletePlaylist(e, playlist._id)}
+                      className="dashboard delete-btn"
+                    >
+                      <i className="far fa-trash-alt fa-lg"></i>
+                    </span>
                   </ListGroup.Item>
                 );
               })}
@@ -175,22 +180,30 @@ const Dashboard = () => {
           <div className="playlist-list">
             <h3 className="playlist-header">Party Playlists</h3>
             <ListGroup variant="flush">
-              {partyPlaylists.map((playlist) => {
-                return (
-                  <ListGroup.Item
-                    key={"li" + playlist._id}
-                    className="playlist-name"
-                  >
-                    <Link key={playlist._id} to={`/party/${playlist._id}`}>
-                      {playlist.name}
-                    </Link>
-                    <span>
-                      <i className="fas fa-glass-cheers fa-sm"></i>
-                      <em>&raquo;</em>
-                    </span>
-                  </ListGroup.Item>
-                );
-              })}
+              {partyPlaylists.length ? (
+                <>
+                  {partyPlaylists.map((playlist) => {
+                    return (
+                      <ListGroup.Item
+                        key={"li" + playlist._id}
+                        className="playlist-name"
+                      >
+                        <Link key={playlist._id} to={`/party/${playlist._id}`}>
+                          {playlist.name}
+                        </Link>
+                        <span>
+                          <i className="fas fa-glass-cheers fa-sm"></i>
+                          <em>&raquo;</em>
+                        </span>
+                      </ListGroup.Item>
+                    );
+                  })}
+                </>
+              ) : (
+                <ListGroup.Item>
+                  <em>no parties yet!</em>
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </div>
         </Col>

@@ -249,7 +249,7 @@ em {
   margin-top: 0px;
   align-items: center;
   justify-content: center;
-  height: 500px;
+  height: 400px;
   background-image: url('../src/assets/kokc-hero-web.png');
   background-repeat: repeat;
   background-size: cover;
@@ -268,27 +268,27 @@ em {
   justify-content: center;
   align-items: center;
   color: #ffead4;
+  text-align: center;
 }
 
 .jumbo-span {
   color: #fd2f40;
+  margin-left: 6px;
+  margin-right: 6px;
 }
 
 .jumbo-text h3 {
   background-color: rgba(39, 12, 1, .3);
   box-shadow: 0 0 30px rgba(39, 12, 1, .4);
   border-radius: 4px;  
-  padding: 1rem;
+  padding: 0.5rem;
   width: 100%;
-}
-
-.jumbo-text h3 .text-right {
-  margin-left: 30%;
+  font-size: 45px;
 }
 
 @media (max-width: 750px) {
   .jumbo {
-    height: 300px;
+    height: 250px;
   }
 
   .jumbotron {
@@ -299,9 +299,9 @@ em {
     height: 50%;
   }
 
-  /* .display-3 {
-    font-size: 4.3vw;
-  } */
+ .jumbo-text h3 {
+   font-size: 25px;
+ }
 }
 
 /* public profile*/
@@ -346,11 +346,12 @@ em {
 .pub-play-list {
   margin-top: 40px;
   box-shadow: 8px 8px 15px 1px rgba(39, 12, 1, .3);
+  border-radius: 0 0 8px 8px;
 }
 
 .pub-li {
   background-color: var(--xtra-light);
-  margin-bottom: 3px;
+  margin-bottom: 2px;
   text-align: center;
   padding: 8px;
   color: var(--red);
