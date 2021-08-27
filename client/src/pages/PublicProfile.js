@@ -50,11 +50,9 @@ const PublicProfile = props => {
     }
   }
 
-  console.log(user.playlists);
-  // const publicSongCount = user.playlists.reduce(playlist => {
-  //   return playlist.length;
-  // }, 0);
-  // console.log(publicSongCount);
+  const publicSongCount = user.playlists.reduce((total, playlist) => {
+    return total + playlist.songs.length;
+  }, 0);
 
   return (
     <Container>
@@ -99,10 +97,10 @@ const PublicProfile = props => {
               </Col>
               <Col xs={6} md={3}>
                 <span className="stats-number pub-stats">
-                  {user.songCount}{" "}
+                  {publicSongCount}{" "}
                 </span>
                 <br></br>
-                {user.songCount === 1
+                {publicSongCount === 1
                   ? "song in public playlists"
                   : "songs in public playlists"}
               </Col>

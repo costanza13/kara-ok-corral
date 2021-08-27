@@ -18,7 +18,8 @@ const resolvers = {
         .populate({
           path: 'playlists',
           match: { visibility: 'public' },
-          select: '_id name username'
+          select: '_id name username',
+          populate: 'songs'
         });
       return user;
     },
