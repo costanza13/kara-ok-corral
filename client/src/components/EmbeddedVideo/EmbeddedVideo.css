@@ -18,6 +18,12 @@
 
 /* And set the max-width of the parent element */
 .video-wrap {
+  margin: 0 auto 2rem;
+  width: 100%;
+}
+
+.video-alternate {
   margin: 0 auto 5rem;
+  text-align: center;
   width: 100%;
 }
