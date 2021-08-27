@@ -392,6 +392,12 @@ em {
   box-shadow: 12px 12px 20px 1px rgba(39, 12, 1, .6);
 }
 
+.playlist-page .video-wrap {
+  border: 2px solid var(--yellow);
+  box-shadow: 12px 12px 20px 1px rgba(39, 12, 1, .6);
+  margin: 2rem auto;
+  width: 96%;  
+}
 /* .pub-play-list .performance-video .video-wrap {
   margin: 0 0 0;
   width: 100%;

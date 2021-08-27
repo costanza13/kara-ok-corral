@@ -54,7 +54,7 @@ const PlaylistPage = () => {
 
   return (
     <>
-      <Container className="mt-4">
+      <Container className="mt-4 playlist-page">
         {/* <Confetti confettiSource={(-10, 40, 1, 0)} /> */}
         <Row>
           <Playlist key={playlistId} playlistId={playlistId} setVideo={setVideo} />
