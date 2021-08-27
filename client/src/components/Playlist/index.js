@@ -100,6 +100,12 @@ const Playlist = ({ playlistId, setVideo }) => {
   }
 
   const playlist = playlistData.playlist;
+  const songs = [...playlistData.playlist.songs];
+  const songlist = songs.map(song => {
+    return { ...song, performanceUrl: song.performance.url }
+  });
+
+  console.log(songlist);
 
   const saveName = async name => {
     if (name.trim().length) {
@@ -223,12 +229,13 @@ const Playlist = ({ playlistId, setVideo }) => {
         />
       </Col>
       <Col xs={12} md={12} lg={9} className="song-list">
-        {playlist.songs.map((song) => {
+        {songlist.map((song) => {
+          const preppedSong = !song.performance ? { ...song, performance: { _id: '', url: '' } } : song;
           const canEdit = currentUser.username === song.username;
           return (
             <Song
               key={song._id}
-              song={song}
+              song={preppedSong}
               canEdit={canEdit}
               saveSong={saveSong}
               setVideo={setVideo}
@@ -237,12 +244,14 @@ const Playlist = ({ playlistId, setVideo }) => {
           );
         })}
         {(isMember || isOwner) && !!playlist._id ? (
-          <Song
-            key={"newsong"}
-            song={null}
-            canEdit={true}
-            saveSong={saveSong}
-          ></Song>
+          <>
+            <Song
+              key={"newsong"}
+              song={{ title: '', artist: '', lyricsUrl: '', videoUrl: '', performance: { _id: '', url: '' } }}
+              canEdit={true}
+              saveSong={saveSong}
+            ></Song>
+          </>
         ) : (
           ""
         )}

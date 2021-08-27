@@ -18,7 +18,34 @@ export const QUERY_PLAYLISTS = gql`
         artist
         lyricsUrl
         videoUrl
-        performance
+        performance {
+          _id
+          url
+        }
+      }
+    }
+  }
+`;
+
+export const QUERY_PARTIES = gql`
+  query getPartyPlaylists {
+    partyPlaylists {
+      _id
+      name
+      createdAt
+      username
+      members
+      songs {
+        title
+        artist
+        lyricsUrl
+        videoUrl
+        createdAt
+        username
+        performance {
+          _id
+          url
+        }
       }
     }
   }
@@ -35,15 +62,18 @@ export const QUERY_ME = gql`
         name
         visibility
         members
+        username
       }
       partyPlaylists {
         _id
         name
         members
+        username
       }
       friends {
         username
       }
+      performanceCount
     }
   }
 `;
@@ -67,6 +97,7 @@ export const QUERY_PLAYLIST = gql`
         username
         performance {
           _id
+          url
         }
       }
     }

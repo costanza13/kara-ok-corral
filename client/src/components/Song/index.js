@@ -9,13 +9,10 @@ import './Song.css';
 const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
   const [open, setOpen] = useState(false);
 
-  const isAddForm = !song;
-  if (isAddForm) {
-    song = { title: '', artist: '', lyricsUrl: '', videoUrl: '', performanceUrl: '' };
-  }
-
   const [formState, setFormState] = useState({ ...song });
   const [errorMessage, setErrorMessage] = useState('');
+
+  const isAddForm = !song.title;
 
   const videoDetails = { title: song.title, artist: song.artist, videoUrl: song.videoUrl };
   const launchVideo = (e) => {
@@ -37,9 +34,8 @@ const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
       saveSong(formState);
       if (isAddForm) {
         setFormState({ title: '', artist: '', lyricsUrl: '', videoUrl: '', performanceUrl: '' })
-      } else {
-        setOpen(false);
       }
+      setOpen(false);
       setErrorMessage('');
     } else {
       setErrorMessage('Title and Artist are reqiured to add a song');
@@ -83,11 +79,10 @@ const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
       <Col xs={12} md={12} lg={12}>
         {song.lyricsUrl ? (<span><a href={song.lyricsUrl} target="_blank" rel="noreferrer" className="song-btn">lyrics <i className="far fa-file-alt"></i></a></span>) : ('')}
         {song.videoUrl ? (<span><a href={song.videoUrl} onClick={(e) => launchVideo(e)} rel="noreferrer" className="song-btn">video <i title="watch" className="fas fa-desktop"></i></a></span>) : ('')}
-        {song.performance ? (<span><Link to={`/performance/${song.performance._id}`} className="song-btn">performance <i className="fas fa-video"></i></Link></span>) : ('')}
+        {song.performance && song.performance._id ? (<span><Link to={`/performance/${song.performance._id}`} className="song-btn">performance <i className="fas fa-video"></i></Link></span>) : ('')}
       </Col>
     </Row>
   )
-
   const editCollapse = (
     <>
       <Collapse in={open}>

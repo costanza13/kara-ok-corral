@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import { QUERY_ME } from '../utils/queries';
+import { QUERY_ME, QUERY_PARTIES } from '../utils/queries';
 import { SAVE_PLAYLIST, DELETE_PLAYLIST } from '../utils/mutations';
 import FriendList from '../components/FriendList';
 import Auth from '../utils/auth';
@@ -17,6 +17,7 @@ const Dashboard = () => {
   const [friendCount, setFriendCount] = useState(-1);
   const [show, setShowFriends] = useState(false);
   const { loading, data: userData } = useQuery(QUERY_ME);
+  const { loading: loadingParties, data: friendsParties } = useQuery(QUERY_PARTIES);
   const history = useHistory();
 
   const [savePlaylist] = useMutation(
@@ -63,15 +64,15 @@ const Dashboard = () => {
 
   if (!token) {
     return (
-      <div>
+      <div className='error'>
+        <h1 className='display-2'>Forbidden</h1>
         <h2>You must be logged in to see this page.</h2>
-        {/* do we want to include the login form here? */}
       </div>
     );
   }
 
   // if data isn't here yet, say so
-  if (loading) {
+  if (loading || loadingParties) {
     user = null;
     return (
       <div className="spinner">
@@ -93,10 +94,12 @@ const Dashboard = () => {
   const personalPlaylists = user.playlists.filter(playlist => playlist.members.length === 0);
   const partyPlaylists = [
     ...user.playlists.filter(playlist => playlist.members.length > 0),
-    ...user.partyPlaylists
+    ...user.partyPlaylists, 
+    ...friendsParties.partyPlaylists
   ];
 
-  const performanceCount = 0;
+  console.log('YOU',user);
+  const performanceCount = user.performanceCount;
 
   const handleClose = () => setShowFriends(false);
   const handleShow = () => setShowFriends(true);
@@ -127,7 +130,7 @@ const Dashboard = () => {
           <Col xs={12} md={8}>
             <span className="dash-stats">
               <Link to={`/profile/${user.username}`}>public profile</Link> ||
-              playlists: {user.playlists.length} || performances:{" "}
+              playlists: {user.playlists.length} || performances:{' '}
               {performanceCount} || {friendsOffCanvas}
             </span>
           </Col>
@@ -182,7 +185,7 @@ const Dashboard = () => {
             <ListGroup variant="flush">
               {partyPlaylists.length ? (
                 <>
-                  {partyPlaylists.map((playlist) => {
+                  {partyPlaylists.map(playlist => {
                     return (
                       <ListGroup.Item
                         key={"li" + playlist._id}
@@ -195,6 +198,16 @@ const Dashboard = () => {
                           <i className="fas fa-glass-cheers fa-sm"></i>
                           <em>&raquo;</em>
                         </span>
+                        {playlist.username === user.username ? (
+                          <span
+                            onClick={(e) => deletePlaylist(e, playlist._id)}
+                            className="dashboard delete-btn"
+                          >
+                            <i className="far fa-trash-alt fa-lg"></i>
+                          </span>
+                        ) : (
+                          ''
+                        )}
                       </ListGroup.Item>
                     );
                   })}

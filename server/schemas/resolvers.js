@@ -2,44 +2,44 @@ const {
   AuthenticationError,
   UserInputError,
   ForbiddenError,
-} = require("apollo-server-express");
-const { User, Playlist, Song, Performance } = require("../models");
-const { signToken } = require("../utils/auth");
+} = require('apollo-server-express');
+const { User, Playlist, Song, Performance } = require('../models');
+const { signToken } = require('../utils/auth');
 
-const { ApolloError } = require("apollo-server-errors");
+const { ApolloError } = require('apollo-server-errors');
 
 const resolvers = {
   Query: {
     // query a user by username
-    user: async (parent, { username }) => {
+    user: async (parent, { username }, context) => {
       const user = await User.findOne({ username })
         .select('-_id -__v -password -email')
         .populate('friends', 'username')
         .populate({
           path: 'playlists',
           match: { visibility: 'public' },
-          select: '_id name'
+          select: '_id name username'
         });
       return user;
     },
     me: async (parent, args, context) => {
       if (context.user) {
         const userData = await User.findOne({ username: context.user.username })
-          .select("-__v -password")
-          .populate("friends")
-          .populate("playlists");
+          .select('-__v -password')
+          .populate('friends')
+          .populate('playlists');
         return userData;
       }
 
-      throw new AuthenticationError("Not logged in");
+      throw new AuthenticationError('Not logged in');
     },
     users: async () => {
       const userData = await User.find()
-        .select("-_id")
+        .select('-_id')
         .populate({
-          path: "playlists",
-          match: { visibility: "public" },
-          select: "name",
+          path: 'playlists',
+          match: { visibility: 'public' },
+          select: 'name',
         });
       return userData;
     },
@@ -52,53 +52,56 @@ const resolvers = {
       };
     },
     publicPlaylists: async (parent, { username }) => {
-      const filter = { visibility: "public" };
+      const filter = { visibility: 'public' };
       if (username) {
         filter.username = username;
       }
       const playlists = await Playlist.find(filter)
         .populate({
-          path: "songs",
+          path: 'songs',
           populate: {
-            path: "performance",
+            path: 'performance',
           },
         });
       return playlists;
     },
     partyPlaylists: async (parent, { }, context) => {
+      const perfPopulate = { path: 'performance' };
       if (context.user) {
+        perfPopulate.match = { username: context.user.username };
         const playlists = await Playlist.find({
           members: { $in: [context.user.username] },
-        }).populate({
-          path: "songs",
-          populate: {
-            path: "performance",
-          },
-        });
+        })
+          .populate({
+            path: 'songs',
+            populate: perfPopulate
+          });
         return playlists;
       }
-      throw new AuthenticationError("Not logged in");
+      throw new AuthenticationError('Not logged in');
     },
     playlist: async (parent, { _id }, context) => {
       try {
+        const perfPopulate = { path: 'performance' };
+        if (context && context.user) {
+          perfPopulate.match = { username: context.user.username };
+        }
         const playlist = await Playlist.findOne({ _id })
           .populate({
-            path: "songs",
-            populate: {
-              path: "performance",
-            },
+            path: 'songs',
+            populate: perfPopulate
           });
         if (!playlist) {
           throw new UserInputError(
-            "NOT FOUND: The requested playlist was not found."
+            'NOT FOUND: The requested playlist was not found.'
           );
         } else {
           const { username, visibility, members } = playlist;
           // check that the user has access
-          if (visibility === "private") {
-            if (typeof context.user === "undefined") {
+          if (visibility === 'private') {
+            if (typeof context.user === 'undefined') {
               throw new ForbiddenError(
-                "FORBIDDEN: You are not authorized to view this document."
+                'FORBIDDEN: You are not authorized to view this document.'
               );
             }
             if (
@@ -106,7 +109,7 @@ const resolvers = {
               members.indexOf(context.user.username) < 0
             ) {
               throw new ForbiddenError(
-                "FORBIDDEN: You are not authorized to view this document."
+                'FORBIDDEN: You are not authorized to view this document.'
               );
             }
           }
@@ -114,7 +117,7 @@ const resolvers = {
         return playlist;
       } catch (error) {
         throw new UserInputError(
-          "NOT FOUND: The requested playlist was not found."
+          'NOT FOUND: The requested playlist was not found.'
         );
       }
     },
@@ -130,10 +133,10 @@ const resolvers = {
       const userFilter = username ? { username } : {};
       const performances = await Performance.find({
         ...userFilter,
-        visibility: "public",
+        visibility: 'public',
       })
-        .sort("-createAt")
-        .populate("reactions")
+        .sort('-createAt')
+        .populate('reactions')
         .limit(10);
       return performances;
     },
@@ -141,17 +144,17 @@ const resolvers = {
       try {
         const performance = await Performance.findOne({ _id })
           .populate(
-            "song",
-            "title artist -_id"
+            'song',
+            'title artist -_id'
           );
 
         if (performance) {
           if (
-            performance.visibility === "public" ||
+            performance.visibility === 'public' ||
             (context.user && performance.username === context.user.username)
           ) {
             return performance;
-          } else if (performance.visibility === "friends") {
+          } else if (performance.visibility === 'friends') {
             if (context.user) {
               // get the owner's friend list and see if the current logged in user is a friend
               const performer = await User.findOne({
@@ -164,35 +167,32 @@ const resolvers = {
             }
           }
           throw new ForbiddenError(
-            "FORBIDDEN: You are not authorized to view this document."
+            'FORBIDDEN: You are not authorized to view this document.'
           );
         }
         throw new UserInputError(
-          "NOT FOUND: The requested performance was not found."
+          'NOT FOUND: The requested performance was not found.'
         );
       } catch (error) {
         throw new UserInputError(
-          "NOT FOUND: The requested performance was not found."
+          'NOT FOUND: The requested performance was not found.'
         );
       }
     },
   },
 
   User: {
-    partyPlaylists: async ({ username }, context) => {
-      const filter = { members: { $in: [username] } };
-      if (!context.user) {
-        filter.visibility = "public";
-      }
+    partyPlaylists: async ({ username }) => {
+      const filter = { members: { $in: [username] }, visibility: 'public' };
       return await Playlist.find(filter);
     },
     performances: async ({ username }) => {
       return await Performance.find(
-        { username, visibility: "public" },
-        "_id url"
+        { username, visibility: 'public' },
+        '_id url'
       )
-        .populate("song")
-        .sort("-createAt")
+        .populate('song')
+        .sort('-createAt')
         .limit(1);
     },
     performanceCount: async ({ username }) => {
@@ -214,13 +214,13 @@ const resolvers = {
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw new AuthenticationError("Incorrect credentials");
+        throw new AuthenticationError('Incorrect credentials');
       }
 
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError("Incorrect credentials");
+        throw new AuthenticationError('Incorrect credentials');
       }
 
       const token = signToken(user);
@@ -237,17 +237,17 @@ const resolvers = {
             { $addToSet: { friends: friend._id } },
             { new: true }
           )
-            .populate("friends")
-            .populate("playlists")
+            .populate('friends')
+            .populate('playlists')
           : await User.findOne({ _id: context.user._id })
-            .populate("friends")
-            .populate("playlists");
+            .populate('friends')
+            .populate('playlists');
 
         return updatedUser;
       }
 
       throw new ForbiddenError(
-        "FORBIDDEN: You must be logged in to add friends!"
+        'FORBIDDEN: You must be logged in to add friends!'
       );
     },
     removeFriend: async (parent, { friendUsername }, context) => {
@@ -259,17 +259,17 @@ const resolvers = {
             { $pull: { friends: friend._id } },
             { new: true }
           )
-            .populate("friends")
-            .populate("playlists")
+            .populate('friends')
+            .populate('playlists')
           : await User.findOne({ _id: context.user._id })
-            .populate("friends")
-            .populate("playlists");
+            .populate('friends')
+            .populate('playlists');
 
         return updatedUser;
       }
 
       throw new ForbiddenError(
-        "FORBIDDEN: You must be logged in to manage friends!"
+        'FORBIDDEN: You must be logged in to manage friends!'
       );
     },
     updatePlaylist: async (parent, { playlistId, playlist }, context) => {
@@ -285,8 +285,8 @@ const resolvers = {
             { ...playlist },
             { new: true, runValidators: true }
           )
-            .populate("songs")
-            .populate("songs.song.performance");
+            .populate('songs')
+            .populate('songs.song.performance');
 
         // if this is a new playlist, and it was created successfully, add it to the user's list of playlists
         if (updatedPlaylist) {
@@ -300,12 +300,12 @@ const resolvers = {
         }
 
         throw new UserInputError(
-          "NOT FOUND: The requested playlist was not found."
+          'NOT FOUND: The requested playlist was not found.'
         );
       }
 
       throw new ForbiddenError(
-        "FORBIDDEN: You must be logged in to manage playlists!"
+        'FORBIDDEN: You must be logged in to manage playlists!'
       );
     },
     removePlaylist: async (parent, { playlistId }, context) => {
@@ -320,14 +320,14 @@ const resolvers = {
           { $pull: { playlists: playlistId } },
           { new: true }
         )
-          .populate("friends")
-          .populate("playlists");
+          .populate('friends')
+          .populate('playlists');
 
         return updatedUser;
       }
 
       throw new ForbiddenError(
-        "FORBIDDEN: You must be logged in to manage playlists!"
+        'FORBIDDEN: You must be logged in to manage playlists!'
       );
     },
     updateSong: async (parent, { playlistId, songId, song }, context) => {
@@ -359,7 +359,7 @@ const resolvers = {
             newPerf = await Performance.create({
               url: performanceUrl,
               username: context.user.username,
-              visibility: "private",
+              visibility: 'private',
             });
           }
         }
@@ -397,9 +397,9 @@ const resolvers = {
           { $addToSet: { songs: updatedSong._id } },
           { new: true }
         ).populate({
-          path: "songs",
+          path: 'songs',
           populate: {
-            path: "performance",
+            path: 'performance',
           },
         });
 
@@ -407,7 +407,7 @@ const resolvers = {
       }
 
       throw new ForbiddenError(
-        "FORBIDDEN: You must be logged in to edit songs and playlists!"
+        'FORBIDDEN: You must be logged in to edit songs and playlists!'
       );
     },
     removeSong: async (parent, { playlistId, songId }, context) => {
@@ -428,9 +428,9 @@ const resolvers = {
             { $pull: { songs: songId } },
             { new: true }
           ).populate({
-            path: "songs",
+            path: 'songs',
             populate: {
-              path: "performance",
+              path: 'performance',
             },
           })
           : null;
@@ -439,7 +439,7 @@ const resolvers = {
       }
 
       throw new ForbiddenError(
-        "FORBIDDEN: You must be logged in to manage playlists!"
+        'FORBIDDEN: You must be logged in to manage playlists!'
       );
     },
     updatePerformance: async (
@@ -448,9 +448,9 @@ const resolvers = {
       context
     ) => {
       if (context.user) {
-        if (performanceInfo.url && performanceInfo.url.trim() === "") {
+        if (performanceInfo.url && performanceInfo.url.trim() === '') {
           throw new UserInputError(
-            "BAD REQUEST: Performance URL cannot be blank."
+            'BAD REQUEST: Performance URL cannot be blank.'
           );
         }
         const performance = await Performance.findOneAndUpdate(
@@ -463,11 +463,11 @@ const resolvers = {
           return performance;
         }
         throw new UserInputError(
-          "NOT FOUND: The requested performance was not found."
+          'NOT FOUND: The requested performance was not found.'
         );
       }
       throw new ForbiddenError(
-        "FORBIDDEN: You must be logged in to manage performances."
+        'FORBIDDEN: You must be logged in to manage performances.'
       );
     },
     removePerformance: async (parent, { performanceId }, context) => {
@@ -489,11 +489,11 @@ const resolvers = {
           return updatedSong;
         }
         throw new UserInputError(
-          "NOT FOUND: The requested performance was not found."
+          'NOT FOUND: The requested performance was not found.'
         );
       }
       throw new ForbiddenError(
-        "FORBIDDEN: You must be logged in to manage performances."
+        'FORBIDDEN: You must be logged in to manage performances.'
       );
     },
     addReaction: async (parent, { performanceId, reactionBody }, context) => {
@@ -505,11 +505,11 @@ const resolvers = {
         let canAdd = false;
         if (performance) {
           if (
-            performance.visibility === "public" ||
+            performance.visibility === 'public' ||
             (context.user && performance.username === context.user.username)
           ) {
             canAdd = true;
-          } else if (performance.visibility === "friends") {
+          } else if (performance.visibility === 'friends') {
             // get the owner's friend list and see if the current logged in user is a friend
             const performer = await User.findOne({
               username: performance.username,
@@ -531,11 +531,11 @@ const resolvers = {
           }
         }
         throw new UserInputError(
-          "NOT FOUND: The requested performance was not found."
+          'NOT FOUND: The requested performance was not found.'
         );
       }
       throw new ForbiddenError(
-        "FORBIDDEN: You must be logged in to add reactions."
+        'FORBIDDEN: You must be logged in to add reactions.'
       );
     },
     removeReaction: async (parent, { performanceId, reactionId }, context) => {
@@ -547,7 +547,7 @@ const resolvers = {
         );
       }
       throw new ForbiddenError(
-        "FORBIDDEN: You must be logged in to manage reactions."
+        'FORBIDDEN: You must be logged in to manage reactions.'
       );
     },
   },
