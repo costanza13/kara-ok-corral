@@ -23,6 +23,10 @@
   width: 90%;
 }
 
+.song-title .error {
+  color: red;
+}
+
 .song-btn {
   margin-right: 30px;
   cursor: pointer;
@@ -51,7 +55,7 @@
   color: var(--yellow);
 }
 
-.song-form-btn:hover, .song-form-btn:focus {
+.song-form-btn:hover, .song-form-btn:active {
   padding: 6px;
   padding-left: 11px;
   padding-right: 11px;

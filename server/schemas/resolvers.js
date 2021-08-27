@@ -43,17 +43,6 @@ const resolvers = {
         });
       return userData;
     },
-    user: async (parent, { username }) => {
-      const user = await User.findOne({ username })
-        .select("-_id -__v -password")
-        .populate("friends", "username")
-        .populate({
-          path: "playlists",
-          match: { visibility: "public" },
-          select: "_id name",
-        });
-      return user;
-    },
     stats: async (parent) => {
       return {
         userCount: await User.countDocuments(),
@@ -67,12 +56,13 @@ const resolvers = {
       if (username) {
         filter.username = username;
       }
-      const playlists = await Playlist.find(filter).populate({
-        path: "songs",
-        populate: {
-          path: "performance",
-        },
-      });
+      const playlists = await Playlist.find(filter)
+        .populate({
+          path: "songs",
+          populate: {
+            path: "performance",
+          },
+        });
       return playlists;
     },
     partyPlaylists: async (parent, { }, context) => {
@@ -149,10 +139,11 @@ const resolvers = {
     },
     performance: async (parent, { _id }, context) => {
       try {
-        const performance = await Performance.findOne({ _id }).populate(
-          "song",
-          "title artist -_id"
-        );
+        const performance = await Performance.findOne({ _id })
+          .populate(
+            "song",
+            "title artist -_id"
+          );
 
         if (performance) {
           if (
@@ -172,12 +163,12 @@ const resolvers = {
               }
             }
           }
-          throw new UserInputError(
-            "NOT FOUND: The requested performance was not found."
+          throw new ForbiddenError(
+            "FORBIDDEN: You are not authorized to view this document."
           );
         }
-        throw new ForbiddenError(
-          "FORBIDDEN: You are not authorized to view this document."
+        throw new UserInputError(
+          "NOT FOUND: The requested performance was not found."
         );
       } catch (error) {
         throw new UserInputError(
@@ -329,8 +320,8 @@ const resolvers = {
           { $pull: { playlists: playlistId } },
           { new: true }
         )
-        .populate("friends")
-        .populate("playlists");
+          .populate("friends")
+          .populate("playlists");
 
         return updatedUser;
       }
