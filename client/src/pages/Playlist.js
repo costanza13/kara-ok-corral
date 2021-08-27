@@ -62,7 +62,7 @@ const PlaylistPage = () => {
         <Row>
           <Col>
             {currentVideo ?
-              <EmbeddedVideo title={currentVideo.title} artist={currentVideo.artist} url={currentVideo.videoUrl} />
+              <EmbeddedVideo title={currentVideo?.title} artist={currentVideo?.artist} url={currentVideo?.videoUrl} />
               :
               ''}
           </Col>
