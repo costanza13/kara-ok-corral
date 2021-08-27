@@ -52,14 +52,11 @@ const Playlist = ({ playlistId, setVideo }) => {
   });
 
   const [deleteSong] = useMutation(DELETE_SONG, {
-    update(cache, { data: { deleteSong } }) {
-      cache.modify({
-        fields: {
-          playlist(existingPlaylistData) {
-            return deleteSong
-          }
-        }
-      })
+    update(cache, { data: { removeSong } }) {
+      cache.writeQuery({
+        query: QUERY_PLAYLIST,
+        data: { playlist: removeSong },
+      });
     }
   });
 
