@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_ME } from '../../utils/queries';
 import Spinner from "react-bootstrap/Spinner";
+import './PlaylistMembers.css';
 
 const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
   const { loading, data } = useQuery(QUERY_ME);
@@ -38,10 +39,6 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
 
     const updatedMembers = members.filter(member => member !== removeUsername);
 
-    console.log(memberButton);
-    console.log(removeUsername);
-    console.log('updatedMembers', updatedMembers);
-
     updateMembers(updatedMembers);
   }
 
@@ -67,43 +64,48 @@ const PlaylistMembers = ({ members, canEdit, updateMembers }) => {
   const leftToAdd = friends.filter(friend => members.indexOf(friend) === -1);
 
   return (
-    <div className="btn-group my-2 d-inline-block" role="group">
-      {members.length === 0 && canEdit ? (
-        <span className="h-100 align-middle member-text">
-          Add your friends to make this a party list!
-        </span>
-      ) : members.length !== 0 ? (
-        <span className="d-inline-block h-100 align-middle member-text">
-          Members{" "}
-        </span>
-      ) : (
-        ""
-      )}
-      <div className="party-members">
-       
-          {canEdit && leftToAdd.length ? (
-            <select
-              defaultValue=""
-              onChange={handleAddMember}
-              className="btn btn-outline add-member-button"
-            >
-              <option key="default" value="" disabled={true}>
-                add a friend
-              </option>
-              {leftToAdd.map((friend) => {
-                return (
-                  <option key={friend} value={friend}>
-                    {friend}
-                  </option>
-                );
-              })}
-            </select>
+    <div className="btn-group d-inline-block members-panel" role="group">
+      {
+        members.length === 0 && leftToAdd.length && canEdit ?
+          (
+            <span className="h-100 align-middle member-text">
+              Add your friends to make this a party list!
+            </span>
           ) : (
-            ""
-          )}
+            members.length !== 0 ? (
+              <span className="d-inline-block h-100 align-middle member-text">
+                Members{" "}
+              </span>
+            ) : (
+              ''
+            )
+          )
+      }
+      <div className="members-list">
 
-          {partyMembers}
-        
+        {canEdit && leftToAdd.length ? (
+          <select
+            defaultValue=""
+            onChange={handleAddMember}
+            className="btn btn-outline add-member-button"
+          >
+            <option key="default" value="" disabled={true}>
+              add a friend
+            </option>
+            {leftToAdd.map((friend) => {
+              return (
+                <option key={friend} value={friend}>
+                  {friend}
+                </option>
+              );
+            })}
+          </select>
+        ) : (
+          ""
+        )}
+
+        {partyMembers}
+
       </div>
     </div>
   );

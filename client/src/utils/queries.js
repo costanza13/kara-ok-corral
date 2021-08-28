@@ -18,7 +18,34 @@ export const QUERY_PLAYLISTS = gql`
         artist
         lyricsUrl
         videoUrl
-        performance
+        performance {
+          _id
+          url
+        }
+      }
+    }
+  }
+`;
+
+export const QUERY_PARTIES = gql`
+  query getPartyPlaylists {
+    partyPlaylists {
+      _id
+      name
+      createdAt
+      username
+      members
+      songs {
+        title
+        artist
+        lyricsUrl
+        videoUrl
+        createdAt
+        username
+        performance {
+          _id
+          url
+        }
       }
     }
   }
@@ -35,15 +62,18 @@ export const QUERY_ME = gql`
         name
         visibility
         members
+        username
       }
       partyPlaylists {
         _id
         name
         members
+        username
       }
       friends {
         username
       }
+      performanceCount
     }
   }
 `;
@@ -67,6 +97,7 @@ export const QUERY_PLAYLIST = gql`
         username
         performance {
           _id
+          url
         }
       }
     }
@@ -77,16 +108,36 @@ export const QUERY_USER = gql`
   query user($username: String!) {
     user(username: $username) {
       username
+      createdAt
       email
+      friendCount
       friends {
         username
       }
-      friendCount
+      playlistCount
       playlists {
         _id
         name
-        visibility
+        songs {
+          _id
+          title
+          artist
+        }
       }
+      partyPlaylists {
+        _id
+        name
+      }
+      performanceCount
+      performances {
+        _id
+        url
+        song {
+          title
+          artist
+        }
+      }
+      songCount
     }
   }
 `;
@@ -107,4 +158,25 @@ export const QUERY_STATS = gql`
     songCount
   }
 }
+`;
+
+export const QUERY_PERFORMANCE = gql`
+  query getPerformance($performanceId: ID!) {
+    performance(_id: $performanceId) {
+      _id
+      url
+      username
+      visibility
+      reactions {
+        _id
+        username
+        reactionBody
+        createdAt
+      }
+      song {
+        title
+        artist
+      }
+    }
+  }
 `;

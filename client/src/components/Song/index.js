@@ -1,22 +1,24 @@
 import React, { useState } from "react";
-import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Link } from "react-router-dom";
-import Button from 'react-bootstrap/button';
 import Collapse from 'react-bootstrap/Collapse';
 import './Song.css';
 
-const Song = ({ song, canEdit, saveSong, setVideo }) => {
+const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
   const [open, setOpen] = useState(false);
 
-  const isAddForm = !song;
-  if (isAddForm) {
-    song = { title: '', artist: '', lyricsUrl: '', videoUrl: '' };
-  }
-
   const [formState, setFormState] = useState({ ...song });
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const isAddForm = !song.title;
+
+  const videoDetails = { title: song.title, artist: song.artist, videoUrl: song.videoUrl };
+  const launchVideo = (e) => {
+    e.preventDefault();
+    setVideo({ ...videoDetails });
+  };
 
   const handleChange = (e, field) => {
     e.preventDefault();
@@ -28,42 +30,59 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    saveSong(formState);
-    if (isAddForm) {
-      setFormState({ title: '', artist: '', lyricsUrl: '', videoUrl: '' })
-    } else {
+    if (formState.title && formState.artist) {
+      saveSong(formState);
+      if (isAddForm) {
+        setFormState({ title: '', artist: '', lyricsUrl: '', videoUrl: '', performanceUrl: '' })
+      }
       setOpen(false);
+      setErrorMessage('');
+    } else {
+      setErrorMessage('Title and Artist are reqiured to add a song');
     }
   };
 
-  const SongCollapse = (
-    <>
-      <Collapse in={!open}>
-        <Row>
-          <Col xs={12}>
-            {song.title && song.artist ? (<p className="song-content">
-              <span className="song-title">{song.title}</span>{' - '}
-              <span className="song-artist">by {song.artist}</span>
-            </p>) : ('')}
-          </Col>
-          <Col xs={12} md={12} lg={{ span: 9, offset: 3 }}>
-            {song.lyricsUrl ? (<span><a href={song.lyricsUrl} target="_blank" rel="noreferrer" className="song-btn">lyrics</a></span>) : ('')}
-            {song.videoUrl ? (<span><a href={song.videoUrl} target="_blank" rel="noreferrer" className="song-btn">video</a></span>) : ('')}
+  const handleDelete = (e) => {
+    e.preventDefault();
+    deleteSong(song._id);
+  };
 
+  const handleCancel = () => {
+    setOpen(!open);
+    setFormState({ ...song });
+    setErrorMessage('');
+  };
+
+  const songCollapse = (
+    <Row>
+      <Col xs={12}>
+        {
+          canEdit ? (
             <span
               onClick={() => setOpen(!open)}
               aria-controls="editSong-collapse-text"
               aria-expanded={open}
-              className="song-btn"
+              className="song-btn song-edit-btn"
             >
-              <i className="far fa-edit fa-md"></i>
+              {isAddForm ? <i className="far fa-plus-square"></i> : <i className="far fa-edit fa-md"></i>}
             </span>
-          </Col>
-        </Row>
-      </Collapse>
-    </>
+          ) : (
+            ''
+          )
+        }
+        {song.title && song.artist ? (<p className="song-content">
+          <span className="song-title">{song.title}</span>
+          <span className="song-artist"> - by {song.artist}</span>
+        </p>) : (<p className="song-content">
+          <span className="song-title italic">Add a new song...</span></p>)}
+      </Col>
+      <Col xs={12} md={12} lg={12}>
+        {song.lyricsUrl ? (<span><a href={song.lyricsUrl} target="_blank" rel="noreferrer" className="song-btn">lyrics <i className="far fa-file-alt"></i></a></span>) : ('')}
+        {song.videoUrl ? (<span><a href={song.videoUrl} onClick={(e) => launchVideo(e)} rel="noreferrer" className="song-btn">video <i title="watch" className="fas fa-desktop"></i></a></span>) : ('')}
+        {song.performance && song.performance._id ? (<span><Link to={`/performance/${song.performance._id}`} className="song-btn">performance <i className="fas fa-video"></i></Link></span>) : ('')}
+      </Col>
+    </Row>
   )
-
   const editCollapse = (
     <>
       <Collapse in={open}>
@@ -100,7 +119,7 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
               <input
                 type="url"
                 className="form-control"
-                value={formState.videoUrl}
+                value={{ ...formState }.videoUrl}
                 placeholder="karaoke video URL"
                 onChange={(e) => handleChange(e, "videoUrl")}
               />
@@ -110,99 +129,62 @@ const Song = ({ song, canEdit, saveSong, setVideo }) => {
               <input
                 type="url"
                 className="form-control"
-                value={formState.performanceUrl}
+                value={{ ...formState }.performanceUrl}
                 placeholder="performance video URL"
                 onChange={(e) => handleChange(e, "performanceUrl")}
               />
             </div>
-            <button
-              type="submit"
-              className="song-btn"
-              onClick={handleSubmit}
-            >
-              update
-            </button>
-            <span
-              onClick={() => setOpen(!open)}
-              aria-controls="song-collapse-text"
-              aria-expanded={open}
-              className="song-btn"
-            >
-              cancel
-            </span>
+            <Col xs={{ span: 10, offset: 2 }} md={{ span: 8, offset: 4 }}>
+              <button
+                type="submit"
+                className="song-form-btn"
+                onClick={handleSubmit}
+              >
+                {formState._id ? 'update' : 'add'}
+              </button>
+              <button type="submit" className="song-form-btn" onClick={(e) => handleDelete(e)}>
+                <i className="fas fa-trash-alt fa-sm"></i>
+              </button>
+              <span
+                onClick={handleCancel}
+                aria-controls="song-collapse-text"
+                aria-expanded={open}
+                className="song-form-btn"
+              >
+                cancel
+              </span>
+            </Col>
           </form>
         </div>
       </Collapse>
     </>
   );
 
-  const videoDetails = { title: song.title, artist: song.artist, videoUrl: song.videoUrl };
-  const launchVideo = (e) => {
-    e.preventDefault();
-    setVideo({ ...videoDetails });
-  };
-
   return (
-    <ListGroup>
+    <>
       {song.title ? (
         <ListGroup.Item>
-          <Row>
-            <Col xs={12}>
-              <span>{song.title}</span>&nbsp; &middot; &nbsp;<em>{song.artist}</em>
-              <br></br>
-              <span>
-                <a href={song.lyricsUrl} target="_blank" rel="noreferrer">
-                  lyrics <i className="far fa-file-alt"></i>
-                </a>
-              </span>
-              <span className="spacer">{'//'}</span>
-              <span>
-                <a href={song.videoUrl} onClick={(e) => launchVideo(e)} rel="noreferrer">
-                  video <i title="watch" className="fas fa-desktop"></i>
-                </a>
-              </span>
-              {
-                song.performance
-                  ? <>
-                    <span className="spacer">{'//'}</span>
-                    <span>
-                      <Link to={`/performance/${performance._id}`}>
-                        performance <i className="fas fa-music"></i>
-                      </Link>
-                    </span>
-                  </>
-                  : ''
-              }
-              {
-                canEdit
-                  ?
-                  <span
-                    onClick={() => setOpen(!open)}
-                    aria-controls="editSong-collapse-text"
-                    aria-expanded={open}
-                    className="song-btn"
-                  >
-                    <i className="far fa-edit fa-md"></i>
-                  </span>
-                  : ''
-              }
-            </Col>
-            {canEdit ? (<Col xs={12}>{editCollapse}</Col>) : ('')}
-          </Row>
+          <Collapse in={!open} timeout={900}>{songCollapse}</Collapse>
+          <Collapse in={open}>
+            <Row>
+              <Col xs={12} className='song-title'>Enter Song Info{errorMessage ? <>{' - '}<span className='error'>{errorMessage}</span></> : ''}</Col>
+              {canEdit ? <Col xs={12}>{editCollapse}</Col> : ''}
+            </Row>
+          </Collapse>
         </ListGroup.Item>
       ) : (
         <ListGroup.Item>
-          <Container>
-            {SongCollapse}
-            {canEdit ? (<span>{editCollapse}</span>) : ("")}
-          </Container>
+          <Collapse in={!open} timeout={900}>{songCollapse}</Collapse>
+          <Collapse in={open}>
+            <Row>
+              <Col xs={12} className='song-title'>Enter Song Info{errorMessage ? <>{' - '}<span className='error'>{errorMessage}</span></> : ''}</Col>
+              {canEdit ? <Col xs={12}>{editCollapse}</Col> : ''}
+            </Row>
+          </Collapse>
         </ListGroup.Item>
-      )
-      }
-    </ListGroup >
+      )}
+    </>
   );
 };
 
 export default Song;
-
-

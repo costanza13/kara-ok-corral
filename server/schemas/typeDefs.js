@@ -15,6 +15,8 @@ type Performance {
   url: String
   username: String
   reactions: [Reaction]
+  song: Song
+  visibility: String
 }
 
 type Song {
@@ -42,16 +44,10 @@ type PlaylistName {
   name: String
 }
 
-type UserBasic {
- 
-  username: String
-  playlists: [PlaylistName]
-  playlistCount: Int
-}
-
 type User {
   _id: ID
   username: String
+  createdAt: String
   email: String
   friendCount: Int
   friends: [User]
@@ -59,6 +55,8 @@ type User {
   playlists: [Playlist]
   partyPlaylists: [Playlist]
   performances: [Performance]
+  performanceCount: Int
+  songCount: Int
 }
 
 type Auth {
@@ -74,9 +72,10 @@ type SiteStats {
 }
 
 input PlaylistInfo {
-  name: String!
-  visibility: String!
+  name: String
+  visibility: String
   members: [String]
+  songs: [ID]
 }
 
 input SongInfo {
@@ -95,7 +94,7 @@ input PerformanceInfo {
 
 type Query {
   me: User
-  users: [UserBasic]
+  users: [User]
   user(username: String!): User
   stats: SiteStats
   publicPlaylists(username: String): [Playlist]
@@ -119,6 +118,7 @@ type Mutation {
   updatePerformance(performanceId: ID!, performanceInfo: PerformanceInfo!): Performance
   removePerformance(performanceId: ID!): Song
   addReaction(performanceId: ID!, reactionBody: String!): Performance
+  removeReaction(performanceId: ID!, reactionId: ID!): Performance
 }
 `;
 

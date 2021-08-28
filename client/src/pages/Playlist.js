@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { QUERY_PLAYLIST } from '../utils/queries';
 import Playlist from '../components/Playlist';
@@ -12,14 +12,10 @@ import Spinner from "react-bootstrap/Spinner";
 // import Confetti from "react-confetti";
 
 const PlaylistPage = () => {
-  const [currentVideo, setCurrentVideo] = useState(null);
   const { playlistId } = useParams();
-  console.log('playlistId', playlistId);
+  const [currentVideo, setCurrentVideo] = useState(null);
   const { loading, error, data: playlistData } = useQuery(QUERY_PLAYLIST, { variables: { playlistId } });
 
-  const currentUser = Auth.loggedIn() ? Auth.getProfile().data : {};
-
-  console.log('playlistId', playlistId);
   // if data isn't here yet, say so
   if (!playlistData && loading) {
     return (
@@ -29,43 +25,39 @@ const PlaylistPage = () => {
         </Spinner>
       </div>
     );
-  } else if (error) {
-    if (error.toString().indexOf('NOT FOUND:') > -1) {
+  } else if (playlistId && playlistId !== 'new' && error) {
+    if (error.message.indexOf('NOT FOUND:') > -1) {
       return (
-        <>
+        <div className='error'>
           <h1 className='display-2'>Not Found!</h1>
           <h2>We could not find the playlist you're looking for.</h2>
-        </>
+        </div>
       )
     }
-    if (error.message.indexOf('NOT AUTHORIZED:') > -1) {
+    if (error.message.indexOf('FORBIDDEN:') > -1) {
       return (
-        <>
+        <div className='error'>
           <h1 className='display-2'>Not AUTHORIZED!</h1>
           <h2>{
             Auth.loggedIn()
               ? 'You do not have permission to view this playlist.'
               : 'You might need to be logged in to view this playlist.'
           }</h2>
-        </>
+        </div>
       )
     }
   }
-  const playlist = playlistId !== "new" ? playlistData?.playlist : { _id: null, username: currentUser?.username };
-  const isOwner = playlist?.username === currentUser?.username;
 
   const setVideo = (video) => {
     setCurrentVideo({ ...video });
-    console.log('dick', currentVideo);
   };
-
 
   return (
     <>
-      <Container className="mt-4">
+      <Container className="mt-4 playlist-page">
         {/* <Confetti confettiSource={(-10, 40, 1, 0)} /> */}
         <Row>
-          <Playlist key={playlist?._id} playlistId={playlist?._id} setVideo={setVideo}></Playlist>
+          <Playlist key={playlistId} playlistId={playlistId} setVideo={setVideo} />
         </Row>
         <Row>
           <Col>
