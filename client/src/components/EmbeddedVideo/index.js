@@ -25,7 +25,7 @@ const EmbeddedVideo = ({ title, artist, url }) => {
           <iframe src={embedUrl} title={`${title} - ${artist}`} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
         </div>
       </div>
-      <p className='video-alternate'>Video not loading?  Open it in a <a href='url' target='_blank' rel='nofollow'>new window...</a></p>
+      <p className='video-alternate'>Video not loading?  Open it in a <a href={url} target='_blank' rel='nofollow'>new window...</a></p>
     </>
   );
 };

@@ -97,7 +97,6 @@ const Dashboard = () => {
     ...friendsParties.partyPlaylists
   ];
 
-  console.log('YOU',user);
   const performanceCount = user.performanceCount;
 
   const handleClose = () => setShowFriends(false);
