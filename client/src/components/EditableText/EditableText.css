@@ -1,5 +1,10 @@
+.edit-btn {
+  font-size: 150%;
+  vertical-align: middle;
+}
+
 .et-btn i {
-  margin-left: 0.5rem;
+  margin-left: 1rem;
   color: rgba(0 0 0 / 19%);
 }
 
