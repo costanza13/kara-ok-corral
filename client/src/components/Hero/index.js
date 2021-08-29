@@ -24,8 +24,7 @@ function Hero() {
             <h3>
               <span>
                 Your karaoke 
-                 <span className="jumbo-span" ref={textRef}></span> 
-                roundup
+                 <span className="jumbo-span" ref={textRef}></span>&nbsp;roundup
               </span>
             </h3>
           </div>
