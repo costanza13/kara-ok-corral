@@ -54,8 +54,10 @@ const PublicProfile = props => {
     return total + playlist.songs.length;
   }, 0);
 
+  console.log('PP USER', user);
+
   return (
-    <Container>
+    <Container className='public-profile'>
       <Row className="pub-header">
         <Col xs={12}>
           <h2 className="pub-name">
@@ -182,11 +184,20 @@ const PublicProfile = props => {
                 <Col xs={12} md={4}>
                   <div className="pub-play-list">
                     <p className="publist-header">
-                      {user.username}'s<br />latest performance
+                      {user.username}'s<br />latest performances
                     </p>
-                    <div className="perfromance-video">
-                      {showLatestPerformance(user.performances)}
-                    </div>
+                    {user.performances.map((performance) => {
+                      return (
+                        <p className="pub-li" key={"li" + performance._id}>
+                          <Link
+                            key={performance._id}
+                            to={`/performance/${performance._id}`}
+                          >
+                            {performance.song.title}
+                          </Link>
+                        </p>
+                      );
+                    })}
                   </div>
                 </Col>
               ) : (
@@ -199,6 +210,13 @@ const PublicProfile = props => {
                   </div>
                 </Col>
               )}
+            </Row>
+            <Row>
+              <Col>
+                <div className="performance-video">
+                  {showLatestPerformance(user.performances)}
+                </div>
+              </Col>
             </Row>
           </div>
         </Col>

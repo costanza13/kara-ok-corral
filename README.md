@@ -13,20 +13,19 @@ The Kara-OK-Corral gives you all the info and features you need to tend to your 
 + Keep a karaoke playlist private to you or share it publicly
 + Turn a playlist into a party by adding friends to the list, where all party goers can enter songs for the karaoke party song queue
 + Click on a video in the queue and have the embedded video show up in The-Kara-OK app so you can start singing when it's your turn, all within the app experience
-+ Link a previously recorded performance to a song, and make the performance private or public
-+ Be able to comment on your friends’ public performances
++ Link a previously recorded performance to a song, and make the performance private, visible to friends, or public
++ Be able to comment on your friends’ shared performances
 
 ## Technology Used
 
 We built this application using the MERN Stack - **M**ongoDB/Mongoose, **E**xpress, **R**eact, **N**ode. Additional technologies used in the deployed application include:
 
-+ Apollo Client/Server
-+ GraphQL
-+ HTML & CSS
-+ React Bootstrap
-+ NPM
-+ Ityped
-+ Heroku
++ [Apollo Client/Server](https://www.apollographql.com/)
++ [GraphQL](https://graphql.org/)
++ HTML5 & CSS3
++ [React Bootstrap](https://react-bootstrap.github.io/)
++ [Ityped](https://www.npmjs.com/package/ityped)
++ [Heroku](https://www.heroku.com/home)
 + Git/GitHub
 
 ## Deployed App

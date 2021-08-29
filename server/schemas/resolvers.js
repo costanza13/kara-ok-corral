@@ -194,7 +194,7 @@ const resolvers = {
       )
         .populate('song')
         .sort({ 'createdAt': -1 })
-        .limit(1);
+        .limit(5);
     },
     performanceCount: async ({ username }) => {
       return await Performance.countDocuments({ username, visibility: 'public' });
