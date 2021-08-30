@@ -85,8 +85,23 @@ const resolvers = {
       try {
         const perfPopulate = { path: 'performance' };
         if (context && context.user) {
-          perfPopulate.match = { username: context.user.username };
+          // get the owner's friend list and see if the current logged in user is a friend
+          const friends = await User.find({
+            friends: { $in: [context.user._id] },
+          })
+            .populate('friends');
+          const friendUseernames = friends.map(friend => friend.username);
+          perfPopulate.match = {
+            $or: [
+              { username: context.user.username },
+              { visibility: 'public' },
+              { visibility: 'friends', username: { $in: [...friendUseernames] } }
+            ]
+          };
+        } else {
+          perfPopulate.match = { visibility: 'public' };
         }
+
         const playlist = await Playlist.findOne({ _id })
           .populate({
             path: 'songs',
@@ -150,10 +165,8 @@ const resolvers = {
           );
 
         if (performance) {
-          if (
-            performance.visibility === 'public' ||
-            (context.user && performance.username === context.user.username)
-          ) {
+          if (performance.visibility === 'public' ||
+            (context.user && performance.username === context.user.username)) {
             return performance;
           } else if (performance.visibility === 'friends') {
             if (context.user) {
