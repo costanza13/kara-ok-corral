@@ -23,7 +23,11 @@
 }
 
 .video-alternate {
+  background-color: inherit;
+  font-size: 90%;
+  font-style: italic;
   margin: 0 auto 5rem;
+  padding: 0.5rem;
   text-align: center;
   width: 100%;
 }

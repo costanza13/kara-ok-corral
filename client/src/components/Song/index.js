@@ -8,7 +8,6 @@ import './Song.css';
 
 const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
   const [open, setOpen] = useState(false);
-
   const [formState, setFormState] = useState({ ...song });
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -83,6 +82,7 @@ const Song = ({ song, canEdit, saveSong, setVideo, deleteSong }) => {
       </Col>
     </Row>
   )
+
   const editCollapse = (
     <>
       <Collapse in={open}>

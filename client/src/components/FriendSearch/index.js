@@ -48,8 +48,9 @@ const FriendSearch = ({ exclude, handleClick }) => {
       </InputGroup>
       {fuzzyValue.length > 0 && (
         <div>
-          {fuzzyValue.map((user) => (
+          {fuzzyValue.map((user, index) => (
             <button
+              key={index}
               className="btn ml-auto"
               onClick={() => handleClickAdd(user.username)}
             >

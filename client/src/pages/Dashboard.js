@@ -97,7 +97,6 @@ const Dashboard = () => {
     ...friendsParties.partyPlaylists
   ];
 
-  console.log('YOU',user);
   const performanceCount = user.performanceCount;
 
   const handleClose = () => setShowFriends(false);
@@ -142,8 +141,8 @@ const Dashboard = () => {
             <ListGroup variant="flush">
               <ListGroup.Item key={"linew_playlist"} className="playlist-name">
                 <EditableText
-                  inputClass={"create-playlist"}
-                  textClass={"create-playlist"}
+                  inputClass={'create-playlist'}
+                  textClass={'create-playlist italic'}
                   blur={"hold"}
                   save={addPlaylist}
                   showSave={true}

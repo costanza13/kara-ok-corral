@@ -237,7 +237,7 @@ const Playlist = ({ playlistId, setVideo }) => {
             </span>
             <ListGroup className='song-list'>
               {songlist.map((song) => {
-                const preppedSong = !song.performance ? { ...song, performance: { _id: '', url: '' } } : song;
+                const preppedSong = !song.performance ? { ...song, performanceUrl: '' } : song;
                 const canEdit = currentUser.username === song.username;
                 return (
                   <Song
@@ -254,7 +254,7 @@ const Playlist = ({ playlistId, setVideo }) => {
                 <>
                   <Song
                     key={"newsong"}
-                    song={{ title: '', artist: '', lyricsUrl: '', videoUrl: '', performance: { _id: '', url: '' } }}
+                    song={{ title: '', artist: '', lyricsUrl: '', videoUrl: '', performanceUrl: '' }}
                     canEdit={true}
                     saveSong={saveSong}
                   ></Song>

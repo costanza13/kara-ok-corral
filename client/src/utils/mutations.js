@@ -30,6 +30,7 @@ mutation updatePlaylist($playlistId: ID, $playlist: PlaylistInfo!) {
     name
     members
     visibility
+    username
     songs {
       _id
       title
@@ -50,15 +51,18 @@ export const DELETE_PLAYLIST = gql`
         name
         visibility
         members
+        username
       }
       partyPlaylists {
         _id
         name
         members
+        username
       }
       friends {
         username
       }
+      performanceCount
     }
   }
 `;

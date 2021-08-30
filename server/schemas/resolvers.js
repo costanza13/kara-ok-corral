@@ -193,11 +193,11 @@ const resolvers = {
         '_id url'
       )
         .populate('song')
-        .sort('-createAt')
-        .limit(1);
+        .sort({ 'createdAt': -1 })
+        .limit(5);
     },
     performanceCount: async ({ username }) => {
-      return await Performance.countDocuments({ username });
+      return await Performance.countDocuments({ username, visibility: 'public' });
     },
     songCount: async ({ username }) => {
       return await Song.countDocuments({ username });
